@@ -37,12 +37,6 @@ static int          g_AttribLocationTex = 0, g_AttribLocationProjMtx = 0;
 static int          g_AttribLocationPosition = 0, g_AttribLocationUV = 0, g_AttribLocationColor = 0;
 static unsigned int g_VboHandle = 0, g_VaoHandle = 0, g_ElementsHandle = 0;
 
-// typedef struct ImDrawData ImDrawData;
-// typedef struct ImGuiIO ImGuiIO;
-// typedef struct ImDrawList ImDrawList;
-// typedef struct ImDrawVert ImDrawVert;
-// typedef struct ImVec2 ImVec2;
-
 // This is the main rendering function that you have to implement and provide to ImGui (via setting up 'RenderDrawListsFn' in the ImGuiIO structure)
 // Note that this implementation is little overcomplicated because we are saving/setting up/restoring every OpenGL state explicitly, in order to be able to run within any OpenGL engine that doesn't do so. 
 // If text or lines are blurry when integrating ImGui in your engine: in your Render function, try translating your projection matrix by (0.5f,0.5f) or (0.375f,0.375f)
@@ -166,8 +160,6 @@ void ImGui_ImplGlfwGL3_RenderDrawLists(struct ImDrawData* draw_data)
     glScissor(last_scissor_box[0], last_scissor_box[1], (GLsizei)last_scissor_box[2], (GLsizei)last_scissor_box[3]);
 }
 
-
-
 static const char* ImGui_ImplGlfwGL3_GetClipboardText(void* user_data)
 {
     return glfwGetClipboardString((GLFWwindow*)user_data);
@@ -177,7 +169,6 @@ static void ImGui_ImplGlfwGL3_SetClipboardText(void* user_data, const char* text
 {
     glfwSetClipboardString((GLFWwindow*)user_data, text);
 }
-
 
 void ImGui_ImplGlfwGL3_MouseButtonCallback(struct GLFWwindow* window, int button, int action, int mods)
 {
@@ -319,7 +310,7 @@ bool ImGui_ImplGlfwGL3_CreateDeviceObjects()
     return true;
 }
 
-void    ImGui_ImplGlfwGL3_InvalidateDeviceObjects()
+void ImGui_ImplGlfwGL3_InvalidateDeviceObjects()
 {
     if (g_VaoHandle) glDeleteVertexArrays(1, &g_VaoHandle);
     if (g_VboHandle) glDeleteBuffers(1, &g_VboHandle);
@@ -346,7 +337,7 @@ void    ImGui_ImplGlfwGL3_InvalidateDeviceObjects()
     }
 }
 
-bool    ImGui_ImplGlfwGL3_Init(GLFWwindow* window, bool install_callbacks)
+bool ImGui_ImplGlfwGL3_Init(GLFWwindow* window, bool install_callbacks)
 {
     g_Window = window;
 

@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "cimgui.h": "c"
+        "cimgui.h": "c",
+        "stdio.h": "c",
+        "stdbool.h": "c"
     }
 }

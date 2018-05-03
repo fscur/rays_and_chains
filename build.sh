@@ -1,10 +1,12 @@
 clear
 mkdir bin -p
 cd bin
-rm -f *.*
 rm -f main
-
-#gcc -o foo foo.c -L$(prefix)/lib -lfoo -Wl,-rpath=$(prefix)/lib
-
-gcc -o main ../src/main.c -L../lib -l:cimgui.so -Wl,-rpath=../lib -I../inc/ -I../inc/gl3w `pkg-config --cflags glfw3` -Wall -Wformat -lGL `pkg-config --static --libs glfw3`
+gcc -std=c99 -ggdb -o main ../src/main.c \
+-I../inc/ -I../inc/gl3w \
+-L../lib \
+-l:cimgui.so -lGL \
+-Wl,-rpath=../lib \
+-Wall -Wformat \
+`pkg-config --cflags glfw3` `pkg-config --static --libs glfw3`
 ./main
