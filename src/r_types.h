@@ -2,6 +2,10 @@
 
 #include <stdint.h>
 
+#define local static
+
+//primitive types are lower-case 
+
 typedef int8_t i8;
 typedef int16_t i16;
 typedef int32_t i32;
@@ -13,7 +17,26 @@ typedef uint64_t u64;
 typedef float f32;
 typedef double f64;
 
-#define local static
+typedef struct v2 {
+    f32 x;
+    f32 y;
+} v2;
+
+typedef struct v3 {
+    f32 x;
+    f32 y;
+    f32 z;
+} v3;
+
+typedef struct Ray {
+    v3 origin;
+    v3 direction;
+} Ray;
+
+typedef struct Plane {
+    v3 position;
+    v3 normal;
+} Plane;
 
 typedef struct Color {
     f32 r;
@@ -21,3 +44,20 @@ typedef struct Color {
     f32 b;
     f32 a;
 } Color;
+
+typedef struct Camera {
+    f32 near;
+    f32 far;
+    f32 fov;
+    v3 position;
+    v3 look_at;    
+    v3 up;
+    v3 right;
+    v3 direction;
+} Camera;
+
+typedef struct World {
+    Color sky_color;
+    Camera camera;
+    Plane floor;
+} World;

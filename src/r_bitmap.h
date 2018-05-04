@@ -8,10 +8,15 @@
 
 #pragma pack(push, 1) //pack struct bits
 
+typedef struct {
+  ;
+} BITMAPV5HEADER, *PBITMAPV5HEADER;
+
+
 typedef struct BitmapHeader {
     u16 type;
     u32 file_size;
-    u32 reserved;
+    u32 reserved0;
     u32 offset;
     u32 size;
     u32 width;
@@ -24,6 +29,23 @@ typedef struct BitmapHeader {
     i32 y_pels_per_meter;
     u32 colors_used;
     u32 colors_important;
+    u32 red_mask;
+    u32 green_mask;
+    u32 blue_mask;
+    u32 alpha_mask;
+    u32 cs_type;
+    u32 cie_red_x;
+    u32 cie_red_y;
+    u32 cie_red_z;
+    u32 cie_green_x;
+    u32 cie_green_y;
+    u32 cie_green_z;
+    u32 cie_blue_x;
+    u32 cie_blue_y;
+    u32 cie_blue_z;
+    u32 gamma_red;
+    u32 gamma_green;
+    u32 gamma_blue;
 } BitmapHeader;
 
 #pragma pack(pop)
@@ -35,7 +57,8 @@ typedef struct Bitmap {
     u8* data;
 } Bitmap;
 
-Bitmap* rc_create_image (const u32 width, const i32 height) {
+Bitmap* 
+r_create_image (const u32 width, const i32 height) {
     Bitmap* image = (Bitmap*)malloc(sizeof(Bitmap));
     image->width = width;
     image->height = height < 0 ? -height : height;
@@ -46,7 +69,7 @@ Bitmap* rc_create_image (const u32 width, const i32 height) {
     u32 file_size = header_size + data_size;
     u32 offset = file_size - data_size;
 
-    BitmapHeader header = {};
+    BitmapHeader header = {0};
     header.type = 0x4D42;
     header.file_size = file_size;
     header.offset = offset;
@@ -63,7 +86,8 @@ Bitmap* rc_create_image (const u32 width, const i32 height) {
     return image;
 }
 
-void rc_clear_image(const Bitmap* image, Color color) {
+void 
+r_clear_image(const Bitmap* image, const Color color) {
     i32 x, y, w, h, bpp, stride;
     w = image->width;
     h = image->height;
@@ -91,7 +115,31 @@ void rc_clear_image(const Bitmap* image, Color color) {
     }
 }
 
-void rc_save_image (const Bitmap* image, char* file_name) {
+Bitmap*
+r_load_image(const char* file_name) {
+    FILE* file = 0;
+    file = fopen(file_name, "rb");
+    fseek(file, 0L, SEEK_END);
+    size_t file_size = ftell(file);
+    fseek(file, 0L, SEEK_SET);
+
+    size_t header_size = sizeof(BitmapHeader);
+    size_t data_size = file_size - header_size;
+
+    Bitmap* image = malloc(sizeof(Bitmap));
+    image->data = malloc(data_size);
+
+    fread(&image->header, 1, header_size, file);
+    fread(image->data, 1, data_size, file);
+    fclose(file);
+
+    image->width = image->header.width;
+    image->height = image->header.height < 0 ? -image->header.height : image->header.height;
+    return image;
+}
+
+void 
+r_save_image (const Bitmap* image, char* file_name) {
     FILE* file = 0;
     file = fopen("image.bmp", "wb");
     fwrite(&image->header, 1, sizeof(BitmapHeader), file);
@@ -99,7 +147,14 @@ void rc_save_image (const Bitmap* image, char* file_name) {
     fclose(file);
 }
 
-void rc_destroy_image (Bitmap* image) {
+void 
+r_flip_image (Bitmap* image) {
+    image->header.height = -image->header.height;
+}
+
+void 
+r_destroy_image (Bitmap* image) {
     free(image->data);
     free(image);
 }
+

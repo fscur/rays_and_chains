@@ -7,7 +7,6 @@
 #include "ui/imgui_impl_glfw_gl3.c"
 #include "r_math.h"
 #include "r_bitmap.h"
-#include "r_world.h"
 
 typedef struct ImVec4 ImColor;
 typedef struct ImVec2 ImVec2;
@@ -22,19 +21,24 @@ typedef struct DebugInfo {
 u32 texID;
 Bitmap* image;
 bool show_raytracer_window = true;
+f32 t0 = 0.0;
+Color clear_color = { 1.0f, 0.0f, 0.0f, 1.0f };
 
-static void error_callback(const int error, const char *description) {
+static void 
+error_callback(const int error, const char *description) {
     fprintf(stderr, "Error %d: %s\n", error, description);
 }
 
-void render_debug_info(const DebugInfo debug_info) {
+void 
+render_debug_info(const DebugInfo debug_info) {
 
     ImGuiIO* io = igGetIO();
     igText("average: %.3f ms/frame (%.1f FPS)", 1000.0f / io->Framerate, io->Framerate);
     igText("width: %d height: %d", debug_info.display_width, debug_info.display_height);
 }
 
-Color li(World* world, Ray ray) {
+Color 
+li(World* world, Ray ray) {
     f32 t_min = world->camera.far;
 
     if (ray_plane_intersection(ray, world->floor, &t_min))
@@ -43,19 +47,20 @@ Color li(World* world, Ray ray) {
         return world->sky_color;
 }
 
-void start_raytracing(float t) {
+void 
+start_raytracing(float t) {
     
     Camera camera = { 0 };
     camera.near = 1.0;
     camera.far = 1001.0;
     camera.fov = 90;
-    camera.position = (v3) { 0.0, 0.1, 1.0 };
+    camera.position = (v3) { 0.0, t, 1.0 };
     camera.look_at = (v3) { 0.0, 0.0, 0.0 };
     
     camera.up = (v3) { 0.0, 1.0, 0.0 };
-    camera.direction = norm3(-camera.position);
+    camera.direction = norm3(sub3(camera.position, camera.look_at));
     camera.right = norm3(cross3(camera.up, camera.direction));
-    camera.up = norm3(cross3(camera.direction, camera.right));
+    camera.up = cross3(camera.direction, camera.right);
 
     Plane plane = {0};
     plane.position = (v3) { 0.0f , 0.0f , 0.0f };
@@ -77,7 +82,7 @@ void start_raytracing(float t) {
 
     u32* pixels = image->data;
 
-    v3 film_z = mul3(camera.direction, camera.near);
+    v3 film_z = add3(camera.position, mul3(camera.direction, -camera.near));
 
     for (y = 0; y < h; ++y) {
         v3 film_y = mul3(camera.up, (y * y_factor * 2.0f - 1.0f) * y_aspect);
@@ -85,7 +90,7 @@ void start_raytracing(float t) {
         for (x = 0.0f; x < w; ++x) {
             v3 film_x = mul3(camera.right, (x * x_factor * 2.0f - 1.0f) * x_aspect);
             v3 film_pos = add3(add3(film_x, film_y), film_z);
-            Ray ray = { camera.position, norm3(film_pos) };
+            Ray ray = { camera.position, norm3(sub3(film_pos, camera.position)) };
 
             Color color = li(&world, ray);
 
@@ -97,33 +102,64 @@ void start_raytracing(float t) {
             *pixels++ = from_u8_to_32(a, r, g, b);
         }
     }
-    
-    glBindTexture(GL_TEXTURE_2D, texID);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->width, image->height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image->data);
 }
-f32 t0 = 0.0;
-void render_raytracer_ui() {
+
+void 
+render_raytracer_ui() {
     if (show_raytracer_window) {
         igBegin("raytracer", &show_raytracer_window, 0);
 
-        //static int clicked = 0;
-        if (igButton("raytrace!", (ImVec2) { 0, 0 })) {
-            t0 -=0.001;
-            start_raytracing(t0);
+        if (igButton("clear!", (ImVec2) { 0, 0 })) {
+            r_clear_image(image, clear_color);
+            glBindTexture(GL_TEXTURE_2D, texID);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->width, image->height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image->data);
         }
 
+        igSameLine(0,2);
+        
+        if (igButton("load", (ImVec2) { 0, 0 })) {
+
+            r_destroy_image(image);
+            image = r_load_image("image.bmp");
+            glBindTexture(GL_TEXTURE_2D, texID);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->width, image->height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image->data);
+        }
+        
+        igSameLine(0,2);
+        
+        if (igButton("flip", (ImVec2) { 0, 0 })) {
+
+            r_flip_image(image);
+            r_save_image(image, "image.bmp");
+            glBindTexture(GL_TEXTURE_2D, texID);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->width, image->height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image->data);
+        }
+
+        igSameLine(0,2);
+
+        if (igButton("raytrace!", (ImVec2) { 0, 0 })) {
+            t0 +=0.01;
+            start_raytracing(t0);
+            r_save_image(image, "image.bmp");
+            glBindTexture(GL_TEXTURE_2D, texID);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->width, image->height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image->data);
+        }
+
+        f32 uv_start = image->header.height < 0 ? 0.0f : 1.0f;
+        f32 uv_end = image->header.height < 0 ? 1.0f : 0.0f;
         igImage(
             (void*)texID, 
             (ImVec2) { (f32)image->width,(f32)image->height }, 
-            (ImVec2) { 0, 0 }, 
-            (ImVec2) { 1, 1 }, 
+            (ImVec2) { uv_start, uv_start }, 
+            (ImVec2) { uv_end, uv_end }, 
             (ImColor) { 255, 255, 255, 255}, 
             (ImColor) { 255, 255, 255, 128});
         igEnd();
     }
 }
 
-void render_ui(GLFWwindow *window) {
+void 
+render_ui(GLFWwindow *window) {
     ImVec4 clear_color = (ImVec4){0.1f, 0.1f, 0.12f, 1.00f};
     DebugInfo debug_info = {};
 
@@ -139,7 +175,8 @@ void render_ui(GLFWwindow *window) {
     igRender();
 }
 
-GLFWwindow *init_glfw(const char *title, const int width, const int height) {
+GLFWwindow*
+init_glfw(const char *title, const int width, const int height) {
     glfwSetErrorCallback(error_callback);
 
     if (!glfwInit())
@@ -163,7 +200,8 @@ GLFWwindow *init_glfw(const char *title, const int width, const int height) {
     return window;
 }
 
-void init_imgui(GLFWwindow *window) {
+void 
+init_imgui(GLFWwindow *window) {
     ImGui_ImplGlfwGL3_Init(window, true);
 
     struct ImGuiStyle *style = igGetStyle();
@@ -173,7 +211,8 @@ void init_imgui(GLFWwindow *window) {
     ImFontAtlas_AddFontFromFileTTF(io->Fonts, "../res/fonts/UbuntuMono-Regular.ttf", 16.0f, 0, 0);
 }
 
-u32 create_texture(Bitmap* image) {
+u32 
+create_texture(Bitmap* image) {
     GLuint textureID;
 
     glGenTextures(1, &textureID);
@@ -184,7 +223,8 @@ u32 create_texture(Bitmap* image) {
     return textureID;
 }
 
-int main(int argc, char** args) {
+int 
+main(int argc, char** args) {
 
     GLFWwindow* window = init_glfw("rays and chains", 1280, 720);
 
@@ -194,19 +234,17 @@ int main(int argc, char** args) {
 
     init_imgui(window);
 
-    image = rc_create_image(640, 480);
-    Color clear_color = { 1.0f, 0.0f, 0.0f, 1.0f };
-    rc_clear_image(image, clear_color);
+    image = r_create_image(400, 300);
+    r_clear_image(image, clear_color);
     texID = create_texture(image);
 
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();        
         render_ui(window);
-
         glfwSwapBuffers(window);
     }
 
-    rc_destroy_image(image);
+    r_destroy_image(image);
     ImGui_ImplGlfwGL3_Shutdown();
     glfwTerminate();
 
