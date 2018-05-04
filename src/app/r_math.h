@@ -1,18 +1,17 @@
 #pragma once
+
 #include <math.h>
 #include "r_types.h"
 
 u32 
-from_u8_to_32(u8 h1, u8 h0, u8 l1, u8 l0)
-{
+from_u8_to_32(u8 h1, u8 h0, u8 l1, u8 l0) {
     u32 result = (h1 << 24) | (h0 << 16) | (l1 << 8) | (l0 << 0);
 
     return result;
 }
 
 i32 
-round_f32_to_i32(f32 value)
-{
+round_f32_to_i32(f32 value) {
     return (i32)roundf(value);
 }
 

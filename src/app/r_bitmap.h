@@ -5,13 +5,9 @@
 #include <string.h>
 
 #include "r_types.h"
+#include "r_math.h"
 
 #pragma pack(push, 1) //pack struct bits
-
-typedef struct {
-  ;
-} BITMAPV5HEADER, *PBITMAPV5HEADER;
-
 
 typedef struct BitmapHeader {
     u16 type;

@@ -1,12 +1,15 @@
 clear
+inc_dir=../inc
+lib_dir=../lib
+src_dir=../src
 mkdir bin -p
 cd bin
-rm -f main
-gcc -std=c99 -ggdb -o main ../src/main.c \
--I../inc/ -I../inc/gl3w \
--L../lib \
+rm -f rays_and_chains
+gcc -std=c99 -ggdb -o rays_and_chains $src_dir/linux/main.c \
+-I$inc_dir -I$inc_dir/gl3w \
+-L$lib_dir \
 -l:cimgui.so -lGL \
--Wl,-rpath=../lib \
+-Wl,-rpath=$lib_dir \
 -Wall -Wformat \
 `pkg-config --cflags glfw3` `pkg-config --static --libs glfw3`
-./main
+./rays_and_chains

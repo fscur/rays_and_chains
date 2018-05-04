@@ -8,7 +8,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/bin/main",
+            "program": "${workspaceFolder}/bin/rays_and_chains",
             "args": [],
             "stopAtEntry": true,
             "cwd": "${workspaceFolder}/bin",
