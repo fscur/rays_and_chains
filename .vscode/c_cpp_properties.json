@@ -7,7 +7,9 @@
                 "/usr/local/include",
                 "${workspaceFolder}"
             ],
-            "defines": [],
+            "defines": [
+                "APP_DEBUG"
+            ],
             "intelliSenseMode": "clang-x64",
             "browse": {
                 "path": [
@@ -38,7 +40,9 @@
                 "${workspaceFolder}/inc",
                 "${workspaceFolder}/inc/gl3w"
             ],
-            "defines": [],
+            "defines": [
+                "_DEBUG"
+            ],
             "intelliSenseMode": "clang-x64",
             "browse": {
                 "path": [

@@ -1,7 +1,38 @@
 {
+    "editor.formatOnSave": true,
+    "clang-format.executable": "clang-format",
     "files.associations": {
         "cimgui.h": "c",
         "stdio.h": "c",
         "stdbool.h": "c"
-    }
+    },
+    "todohighlight.defaultStyle": {
+        "backgroundColor": "rgba(0,0,0,.2)",
+        "cursor": "pointer",
+        "isWholeLine": true,
+    },
+    "todohighlight.isEnable": true,
+    "todohighlight.isCaseSensitive": true,
+    "todohighlight.keywords": [
+        {
+            "text": "important:",
+            "color": "red",
+        },
+        {
+            "text": "hack:",
+            "color": "red",
+        },
+        {
+            "text": "note:",
+        },
+        {
+            "text": "todo:",            
+            "color": "#fc0",
+        },
+        {
+            "color": "gray",
+            "text": "// ",
+        }
+    ]
+
 }
