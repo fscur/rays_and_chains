@@ -14,7 +14,16 @@ typedef struct ImVec2 ImVec2;
 typedef struct ImVec4 ImVec4;
 typedef struct ImGuiIO ImGuiIO;
 
-typedef struct DebugInfo {
+typedef struct App_Code {
+  void* handle;
+  App_State* (*init)(App_Memory*);
+  void (*input)(App_State*);
+  void (*update)(App_State*);
+  void (*render)(App_State*);
+  void (*destroy)(App_State*);
+} App_Code;
+
+typedef struct Debug_Info {
   i32 display_width;
   i32 display_height;
 } DebugInfo;
@@ -29,17 +38,26 @@ error_callback(const int error, const char* description) {
 void
 render_debug_info(const DebugInfo debug_info) {
   ImGuiIO* io = igGetIO();
-  igText("average: %.3f ms/frame (%.1f FPS)", 1000.0f / io->Framerate,
+  igText("average: %.3f ms/frame (%.1f FPS)",
+         1000.0f / io->Framerate,
          io->Framerate);
-  igText("width: %d height: %d", debug_info.display_width,
+  igText("width: %d height: %d",
+         debug_info.display_width,
          debug_info.display_height);
 }
 
 void
 update_gl_texture(u32 texID, Bitmap* image) {
   glBindTexture(GL_TEXTURE_2D, texID);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->width, image->height, 0,
-               GL_BGRA, GL_UNSIGNED_BYTE, image->data);
+  glTexImage2D(GL_TEXTURE_2D,
+               0,
+               GL_RGBA,
+               image->width,
+               image->height,
+               0,
+               GL_BGRA,
+               GL_UNSIGNED_BYTE,
+               image->data);
 }
 
 void
@@ -84,8 +102,10 @@ render_raytracer_ui(App_State* state) {
 
   igImage((void*)texID,
           (ImVec2){(f32)state->image->width, (f32)state->image->height},
-          (ImVec2){uv_start, uv_start}, (ImVec2){uv_end, uv_end},
-          (ImColor){255, 255, 255, 255}, (ImColor){255, 255, 255, 128});
+          (ImVec2){uv_start, uv_start},
+          (ImVec2){uv_end, uv_end},
+          (ImColor){255, 255, 255, 255},
+          (ImColor){255, 255, 255, 128});
   igEnd();
 }
 
@@ -94,8 +114,8 @@ render_ui(GLFWwindow* window, App_State* state) {
   ImVec4 clear_color = (ImVec4){0.1f, 0.1f, 0.12f, 1.00f};
   DebugInfo debug_info = {};
 
-  glfwGetFramebufferSize(window, &debug_info.display_width,
-                         &debug_info.display_height);
+  glfwGetFramebufferSize(
+      window, &debug_info.display_width, &debug_info.display_height);
   glViewport(0, 0, debug_info.display_width, debug_info.display_height);
   glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
   glClear(GL_COLOR_BUFFER_BIT);
@@ -148,32 +168,92 @@ create_texture(Bitmap* image) {
   GLuint textureID;
   glGenTextures(1, &textureID);
   glBindTexture(GL_TEXTURE_2D, textureID);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->width, image->height, 0,
-               GL_BGRA, GL_UNSIGNED_BYTE, image->data);
+  glTexImage2D(GL_TEXTURE_2D,
+               0,
+               GL_RGBA,
+               image->width,
+               image->height,
+               0,
+               GL_BGRA,
+               GL_UNSIGNED_BYTE,
+               image->data);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   return textureID;
 }
 
-// char* dll_name = "libr_app.so";
-// char * functionname = "get_int";
-// void* handle = dlopen(dll_name, RTLD_NOW);
-// if (!handle) {
-//     fprintf(stderr, "Couldn't open handle: %s\n",
-//         dlerror());
-//     exit(1);
-// }
+App_Memory
+allocate_memory() {
 
-// int (*fun)() = (int (*)())dlsym(handle, functionname);
-// if (fun == NULL) {
-//     fprintf(stderr, "Couldn't find function: %s\n",functionname);
-//     exit(1);
-// }
-// int a = fun();
-// printf("result: %d \n", a);
+#if _DEBUG
+  void* base_addr = (void*)terabytes(1);
+#else
+  void* base_addr = 0;
+#endif
+
+  App_Memory memory;
+  memory.permanent_size = megabytes(64);
+  memory.transient_size = megabytes(512);
+
+  u64 total_memory_size = memory.permanent_size + memory.transient_size;
+
+  memory.permanent_addr = mmap(base_addr,
+                               total_memory_size,
+                               PROT_NONE,
+                               MAP_PRIVATE | MAP_ANONYMOUS,
+                               -1,
+                               0);
+  memory.transient_addr =
+      (void*)(memory.permanent_addr + memory.permanent_size);
+
+  u32 res = mprotect(
+      memory.permanent_addr, total_memory_size, PROT_READ | PROT_WRITE);
+
+  // note: (filipe)
+  // if mprotect() fails we could not allocate all memory necessary and we
+  // should quit
+
+  assert(res == 0);
+  return memory;
+}
+
+void*
+fn(void* handle, char* name) {
+  void* function = dlsym(handle, name);
+
+  if (function == NULL) {
+    fprintf(stderr, "Couldn't find function: %s\n", name);
+    exit(1);
+  }
+  return function;
+}
+
+App_Code
+load_app() {
+  char* dll_name = "libr_app.so";
+  void* handle = dlopen(dll_name, RTLD_NOW);
+
+  if (!handle) {
+    fprintf(stderr, "Couldn't open handle: %s\n", dlerror());
+    exit(1);
+  }
+  App_Code app = {};
+  app.handle = handle;
+  app.init = (App_State * (*)(App_Memory*))fn(handle, "app_init");
+  app.input = (void (*)(App_State*))fn(handle, "app_input");
+  app.update = (void (*)(App_State*))fn(handle, "app_update");
+  app.render = (void (*)(App_State*))fn(handle, "app_render");
+  app.destroy = (void (*)(App_State*))fn(handle, "app_destroy");
+  return app;
+}
 
 int
 main(int argc, char** args) {
+
+  App_Code app = load_app();
+  App_Memory memory = allocate_memory();
+  App_State* state = app.init(&memory);
+
   GLFWwindow* window = init_glfw("rays and chains", 1280, 720);
 
   if (!window)
@@ -181,43 +261,19 @@ main(int argc, char** args) {
 
   init_imgui(window);
 
-#if _DEBUG
-  void* base_addr = (void*)gigabytes(1);
-#else
-  void* base_addr = 0;
-#endif
-  // todo: (filipe)
-  // allocate transient storage memory
-
-  App_Memory memory = {};
-  memory.permanent_storage_size = megabytes(512);
-  memory.permanent_storage_addr =
-      mmap(base_addr, memory.permanent_storage_size, PROT_NONE,
-           MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-
-  u32 res = mprotect(memory.permanent_storage_addr,
-                     memory.permanent_storage_size, PROT_READ | PROT_WRITE);
-
-  // note: (filipe)
-  // if mprotect() fails we could not allocate all memory necessary and we
-  // should quit
-
-  assert(res == 0);
-
-  App_State* state = app_init(&memory);
-
   texID = create_texture(state->image);
 
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
 
     // todo: (filipe)
-    // input();
+    // app.input(state);
 
     render_ui(window, state);
 
-    // render_scene();
-    // update();
+    // todo: (filipe)
+    // app.render(state);
+    // app.update(state);
 
     glfwSwapBuffers(window);
   }
@@ -226,7 +282,7 @@ main(int argc, char** args) {
   // should we not manually release our memory?
   // munmap(memory.permanent_storage_addr, memory.permanent_storage_size);
 
-  app_destroy(state);
+  app.destroy(state);
 
   ImGui_ImplGlfwGL3_Shutdown();
   glfwTerminate();
