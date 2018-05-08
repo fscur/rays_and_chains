@@ -1,13 +1,20 @@
 #define _GNU_SOURCE
 #include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <sys/timeb.h>
 
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "../app/r_app.h"
 #include "ui/imgui_impl_glfw_gl3.c"
+
+typedef struct timeb Timespan;
 
 typedef struct ImVec4 ImColor;
 typedef struct ImVec2 ImVec2;
@@ -229,14 +236,14 @@ fn(void* handle, char* name) {
 }
 
 App_Code
-load_app() {
-  char* dll_name = "libr_app.so";
+load_app(char* dll_name) {
   void* handle = dlopen(dll_name, RTLD_NOW);
 
   if (!handle) {
     fprintf(stderr, "Couldn't open handle: %s\n", dlerror());
     exit(1);
   }
+
   App_Code app = {};
   app.handle = handle;
   app.init = (App_State * (*)(App_Memory*))fn(handle, "app_init");
@@ -247,10 +254,55 @@ load_app() {
   return app;
 }
 
+void
+unload_app(App_Code* app) {
+  i32 result = dlclose(app->handle);
+
+  if (result != 0) {
+    fprintf(stderr, "Couldn't close handle: %s\n", dlerror());
+    exit(1);
+  }
+}
+
+App_Code
+reload_app(App_Code* app) {
+
+  unload_app(app);
+
+  // note: (filipe)
+  // make temp copy of shared object so compiler can write a new one
+
+  int in_fd = open("libr_app.so", O_RDONLY);
+  assert(in_fd >= 0);
+  int out_fd = open("tmp_libr_app.so", O_WRONLY | O_CREAT);
+  assert(out_fd >= 0);
+  char buf[8192];
+
+  while (1) {
+    ssize_t result = read(in_fd, &buf[0], sizeof(buf));
+    if (!result)
+      break;
+    assert(result > 0);
+    assert(write(out_fd, &buf[0], result) == result);
+  }
+
+  // note: (filipe)
+  // give permission to read and write to this file
+  chmod("tmp_libr_app.so", S_IRUSR | S_IWUSR);
+
+  return load_app("tmp_libr_app.so");
+}
+
+long
+milliseconds_elapsed(Timespan start, Timespan end) {
+  return (long)(1000.0 * (end.time - start.time) +
+                (end.millitm - start.millitm));
+}
+
 int
 main(int argc, char** args) {
 
-  App_Code app = load_app();
+  App_Code app = load_app("libr_app.so");
   App_Memory memory = allocate_memory();
   App_State* state = app.init(&memory);
 
@@ -263,7 +315,21 @@ main(int argc, char** args) {
 
   texID = create_texture(state->image);
 
+  Timespan start, end;
+
+  ftime(&start);
+
   while (!glfwWindowShouldClose(window)) {
+    // note: (filipe)
+    // live reloading every 3 seconds
+    ftime(&end);
+    long elapsed = milliseconds_elapsed(start, end);
+    if (elapsed > 3000) {
+      app = reload_app(&app);
+      end = start;
+      ftime(&start);
+    }
+
     glfwPollEvents();
 
     // todo: (filipe)
@@ -273,7 +339,7 @@ main(int argc, char** args) {
 
     // todo: (filipe)
     // app.render(state);
-    // app.update(state);
+    app.update(state);
 
     glfwSwapBuffers(window);
   }

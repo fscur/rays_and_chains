@@ -7,7 +7,7 @@ app_init(App_Memory* memory) {
   App_State* state = (App_State*)memory->permanent_addr;
   state->memory = memory;
   state->image = r_create_image(400, 300);
-  state->clear_color = (Color){0.3f, 0.4, 0.8, 1.0};
+  state->clear_color = (Color){0.9f, 0.4f, 0.2f, 1.0f};
   state->dt = 0.0;
 
   r_clear_image(state->image, state->clear_color);
@@ -21,7 +21,8 @@ app_input(App_State* state) {
 
 void
 app_update(App_State* state) {
-  state->dt = 100.0;
+  state->dt = 0.1;
+  state->clear_color = (Color){0.2f, 0.3f, 0.7f, 1.0f};
 }
 
 void
