@@ -4,12 +4,12 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <sys/timeb.h>
+#include <time.h>
 
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
 #include "../app/r_app.h"
 #include "ui/imgui_impl_glfw_gl3.c"
@@ -23,19 +23,26 @@ typedef struct ImGuiIO ImGuiIO;
 
 typedef struct App_Code {
   void* handle;
-  App_State* (*init)(App_Memory*);
+  u64 file_creation_time;
+  App_State* (*init)(App_Window*, App_Memory*);
   void (*input)(App_State*);
   void (*update)(App_State*);
   void (*render)(App_State*);
   void (*destroy)(App_State*);
 } App_Code;
 
-typedef struct Debug_Info {
-  i32 display_width;
-  i32 display_height;
-} DebugInfo;
+long
+get_file_creation(char* file_name) {
+  struct stat st;
+  stat(file_name, &st);
+  return (long)st.st_ctime;
+}
 
-u32 texID;
+long
+milliseconds_elapsed(Timespan start, Timespan end) {
+  return (long)(1000.0 * (end.time - start.time) +
+                (end.millitm - start.millitm));
+}
 
 static void
 error_callback(const int error, const char* description) {
@@ -43,14 +50,13 @@ error_callback(const int error, const char* description) {
 }
 
 void
-render_debug_info(const DebugInfo debug_info) {
+render_debug(const App_Window* window) {
   ImGuiIO* io = igGetIO();
   igText("average: %.3f ms/frame (%.1f FPS)",
          1000.0f / io->Framerate,
          io->Framerate);
-  igText("width: %d height: %d",
-         debug_info.display_width,
-         debug_info.display_height);
+
+  igText("width: %d height: %d", window->width, window->height);
 }
 
 void
@@ -76,7 +82,7 @@ render_raytracer_ui(App_State* state) {
 
   if (igButton("clear!", (ImVec2){0, 0})) {
     r_clear_image(state->image, clear_color);
-    update_gl_texture(texID, state->image);
+    update_gl_texture(state->textureId, state->image);
   }
 
   igSameLine(0, 2);
@@ -84,7 +90,7 @@ render_raytracer_ui(App_State* state) {
   if (igButton("load", (ImVec2){0, 0})) {
     r_destroy_image(state->image);
     state->image = r_load_image("image.bmp");
-    update_gl_texture(texID, state->image);
+    update_gl_texture(state->textureId, state->image);
   }
 
   igSameLine(0, 2);
@@ -92,7 +98,7 @@ render_raytracer_ui(App_State* state) {
   if (igButton("flip", (ImVec2){0, 0})) {
     r_flip_image(state->image);
     r_save_image(state->image, "image.bmp");
-    update_gl_texture(texID, state->image);
+    update_gl_texture(state->textureId, state->image);
   }
 
   igSameLine(0, 2);
@@ -101,13 +107,13 @@ render_raytracer_ui(App_State* state) {
     state->dt += 0.01;
     start_raytracing(state->image, state->dt);
     r_save_image(state->image, "image.bmp");
-    update_gl_texture(texID, state->image);
+    update_gl_texture(state->textureId, state->image);
   }
 
   f32 uv_start = state->image->header.height < 0 ? 0.0f : 1.0f;
   f32 uv_end = state->image->header.height < 0 ? 1.0f : 0.0f;
 
-  igImage((void*)texID,
+  igImage((void*)state->textureId,
           (ImVec2){(f32)state->image->width, (f32)state->image->height},
           (ImVec2){uv_start, uv_start},
           (ImVec2){uv_end, uv_end},
@@ -117,22 +123,13 @@ render_raytracer_ui(App_State* state) {
 }
 
 void
-render_ui(GLFWwindow* window, App_State* state) {
-  ImVec4 clear_color = (ImVec4){0.1f, 0.1f, 0.12f, 1.00f};
-  DebugInfo debug_info = {};
-
-  glfwGetFramebufferSize(
-      window, &debug_info.display_width, &debug_info.display_height);
-  glViewport(0, 0, debug_info.display_width, debug_info.display_height);
-  glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-  glClear(GL_COLOR_BUFFER_BIT);
-
+render_imgui(App_Window* window, App_State* state) {
   ImGui_ImplGlfwGL3_NewFrame();
 
   // bool open = true;
   // igShowDemoWindow(&open);
 
-  render_debug_info(debug_info);
+  render_debug(window);
   render_raytracer_ui(state);
 
   igRender();
@@ -246,7 +243,7 @@ load_app(char* dll_name) {
 
   App_Code app = {};
   app.handle = handle;
-  app.init = (App_State * (*)(App_Memory*))fn(handle, "app_init");
+  app.init = (App_State * (*)(App_Window*, App_Memory*))fn(handle, "app_init");
   app.input = (void (*)(App_State*))fn(handle, "app_input");
   app.update = (void (*)(App_State*))fn(handle, "app_update");
   app.render = (void (*)(App_State*))fn(handle, "app_render");
@@ -271,7 +268,6 @@ reload_app(App_Code* app) {
 
   // note: (filipe)
   // make temp copy of shared object so compiler can write a new one
-
   int in_fd = open("libr_app.so", O_RDONLY);
   assert(in_fd >= 0);
   int out_fd = open("tmp_libr_app.so", O_WRONLY | O_CREAT);
@@ -289,59 +285,61 @@ reload_app(App_Code* app) {
   // note: (filipe)
   // give permission to read and write to this file
   chmod("tmp_libr_app.so", S_IRUSR | S_IWUSR);
-
   return load_app("tmp_libr_app.so");
-}
-
-long
-milliseconds_elapsed(Timespan start, Timespan end) {
-  return (long)(1000.0 * (end.time - start.time) +
-                (end.millitm - start.millitm));
 }
 
 int
 main(int argc, char** args) {
 
-  App_Code app = load_app("libr_app.so");
-  App_Memory memory = allocate_memory();
-  App_State* state = app.init(&memory);
+  GLFWwindow* handle = init_glfw("rays and chains", 1280, 720);
 
-  GLFWwindow* window = init_glfw("rays and chains", 1280, 720);
-
-  if (!window)
+  if (!handle)
     return 1;
 
-  init_imgui(window);
+  App_Window window = {0};
+  window.handle = handle;
 
-  texID = create_texture(state->image);
+  App_Code app = load_app("libr_app.so");
+  App_Memory memory = allocate_memory();
+  App_State* state = app.init(&window, &memory);
+
+  init_imgui(handle);
+
+  state->textureId = create_texture(state->image);
 
   Timespan start, end;
 
   ftime(&start);
 
-  while (!glfwWindowShouldClose(window)) {
-    // note: (filipe)
-    // live reloading every 3 seconds
+  while (!glfwWindowShouldClose(handle)) {
+
     ftime(&end);
     long elapsed = milliseconds_elapsed(start, end);
-    if (elapsed > 3000) {
+    if (elapsed > 100) {
       app = reload_app(&app);
       end = start;
       ftime(&start);
     }
 
     glfwPollEvents();
+    glfwGetFramebufferSize(handle, &window.width, &window.height);
 
     // todo: (filipe)
     // app.input(state);
 
-    render_ui(window, state);
+    Color clear_color = state->clear_color;
+
+    glViewport(0, 0, window.width, window.height);
+    glClearColor(clear_color.r, clear_color.g, clear_color.b, clear_color.a);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    render_imgui(&window, state);
 
     // todo: (filipe)
     // app.render(state);
     app.update(state);
 
-    glfwSwapBuffers(window);
+    glfwSwapBuffers(handle);
   }
 
   // todo: (filipe)
