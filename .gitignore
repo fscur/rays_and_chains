@@ -39,6 +39,7 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+bin/libr_window.so
 bin/libr_app.so
 bin/tmp_libr_app.so
 bin/main

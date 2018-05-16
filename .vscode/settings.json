@@ -1,5 +1,6 @@
 {
     "editor.formatOnSave": true,
+    "editor.tabSize": 2,
     "clang-format.executable": "clang-format",
     "files.associations": {
         "cimgui.h": "c",
@@ -26,13 +27,8 @@
             "text": "note:",
         },
         {
-            "text": "todo:",            
+            "text": "todo:",
             "color": "#fc0",
-        },
-        {
-            "color": "gray",
-            "text": "// ",
         }
     ]
-
 }
