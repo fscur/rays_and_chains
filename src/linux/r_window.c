@@ -2,7 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <stdio.h>
 
-#include "r_window.h"
+#include "../app/r_window.h"
 
 static void
 error_callback(const int error, const char* description) {

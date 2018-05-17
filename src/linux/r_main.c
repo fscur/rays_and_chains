@@ -1,6 +1,6 @@
 #define _GNU_SOURCE
 #include <sys/mman.h>
-#include "lib_loader.c"
+#include "r_lib_loader.c"
 #include "../app/r_app.h"
 
 long
@@ -112,7 +112,7 @@ main(int argc, char** args) {
     if (should_reload) {
 
       app.unload(state);
-      spin(100);
+      spin(500);
       reload_app(&app);
       app.load(state);
 

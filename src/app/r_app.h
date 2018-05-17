@@ -4,22 +4,15 @@
 #include "r_bitmap.h"
 #include "r_math.h"
 #include "r_window.h"
-
-typedef struct App_Memory {
-  u64 permanent_size;
-  u8* permanent_addr;
-  u64 transient_size;
-  u8* transient_addr;
-} App_Memory;
+#include "r_ui.h"
+#include "r_memory.h"
 
 typedef struct App_State {
-  bool running;
-  App_Window* window;
   App_Memory* memory;
-  Bitmap* image;
-  u32 textureId;
+  App_Window* window;
+  App_Ui* ui;
   f32 dt;
-  Color clear_color;
+  bool running;
 } App_State;
 
 typedef struct App_Code {

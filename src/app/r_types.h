@@ -1,9 +1,10 @@
 #pragma once
-
+#include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
 
 #define local static
+#define internal static
 
 // primitive types are lower-case
 
