@@ -42,7 +42,7 @@ void app_load(App_State* state);
 
 void app_input(App_State* state);
 void app_update(App_State* state);
-void app_render(App_State* state);
+void app_render(const App_State* state);
 
-void app_unload(App_State* state);
-void app_destroy(App_State* state);
+void app_unload(const App_State* state);
+void app_destroy(const App_State* state);

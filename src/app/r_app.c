@@ -6,7 +6,7 @@ app_create(App_Memory* memory) {
   assert(sizeof(App_State) <= memory->permanent_size);
 
   App_Memory_Arena arena = {};
-  arena_init(&arena, memory->permanent_addr);
+  arena_init(&arena, memory->permanent_addr, memory->permanent_size);
 
   App_State* state = arena_push_struct(&arena, App_State);
   state->window = arena_push_struct(&arena, App_Window);
@@ -15,7 +15,7 @@ app_create(App_Memory* memory) {
   state->running = true;
   state->dt = 0.0;
 
-  Color color = (Color){0.0f, 0.1f, 0.12f, 1.00f};
+  Color color = (Color){0.08f, 0.09f, 0.12f, 1.00f};
 
   App_Window* window = state->window;
   window->title = "rays and chains";
@@ -50,7 +50,7 @@ app_input(App_State* state) {
 void
 app_update(App_State* state) {
   state->dt = 0.1;
-  Color color = (Color){0.1f, 0.4f, 0.6f, 1.00f};
+  Color color = (Color){0.08f, 0.09f, 0.12f, 1.00f};
   state->window->back_color = color;
   state->ui->clear_color = color;
   state->ui->dt = state->dt;
@@ -59,18 +59,18 @@ app_update(App_State* state) {
 }
 
 void
-app_render(App_State* state) {
+app_render(const App_State* state) {
   window_render(state->window);
   ui_render(state->ui);
   window_swapbuffers(state->window);
 }
 
 void
-app_unload(App_State* state) {
+app_unload(const App_State* state) {
   ui_unload(state->ui);
 }
 
 void
-app_destroy(App_State* state) {
+app_destroy(const App_State* state) {
   window_destroy(state->window);
 }
