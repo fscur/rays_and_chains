@@ -1,4 +1,6 @@
 {
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 500,
     "editor.formatOnSave": true,
     "editor.tabSize": 2,
     "clang-format.executable": "clang-format",

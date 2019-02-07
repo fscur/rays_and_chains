@@ -1,0 +1,1 @@
+subst p: d:\rays_and_chains

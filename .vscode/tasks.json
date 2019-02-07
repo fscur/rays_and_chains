@@ -4,7 +4,35 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "./build.sh",
+            "windows": {
+                "options": {
+                    "cwd": "p:\\scripts\\windows"
+                },
+                "command": "p:\\scripts\\windows\\build.bat"
+            },
+            "linux": {
+                "command": "./scripts/linux/build.sh"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
+            "label": "debug",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "cwd": "p:\\scripts\\windows"
+                },
+                "command": "p:\\scripts\\windows\\debug.bat"
+            },
+            "linux": {
+                "command": "./scripts/linux/debug.sh"
+            },
             "group": {
                 "kind": "build",
                 "isDefault": true
