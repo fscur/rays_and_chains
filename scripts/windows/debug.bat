@@ -3,5 +3,5 @@ call "%programfiles(x86)%\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Bu
 REM back to root
 cd ..\..\
 pushd bin
-devenv r_main.exe
+devenv sandbox.exe
 popd

@@ -67,9 +67,12 @@
             "name": "Win32",
             "includePath": [
                 "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include",
-                "${workspaceFolder}"
+                "${workspaceFolder}",
+                "${workspaceFolder}/src",
+                "${workspaceFolder}/inc"
             ],
             "defines": [
+                "WIN32",
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE"
@@ -78,7 +81,9 @@
             "browse": {
                 "path": [
                     "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*",
-                    "${workspaceFolder}"
+                    "${workspaceFolder}/src/!windows",
+                    "${workspaceFolder}/src/engine",
+                    "${workspaceFolder}/src/sandbox"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""

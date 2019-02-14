@@ -4,10 +4,19 @@
     "editor.formatOnSave": true,
     "editor.tabSize": 2,
     "clang-format.executable": "clang-format",
+    "editor.renderIndentGuides": false,
     "files.associations": {
         "cimgui.h": "c",
         "stdio.h": "c",
         "stdbool.h": "c"
+    },
+    "editor.wordWrapColumn": 100,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true
     },
     "todohighlight.defaultStyle": {
         "backgroundColor": "rgba(0,0,0,.2)",
@@ -27,10 +36,16 @@
         },
         {
             "text": "note:",
+            "color": "#0cf"
+        },
+        {
+            "text": "info:",
+            "color": "#0fc"
         },
         {
             "text": "todo:",
             "color": "#fc0",
         }
-    ]
+    ],
+    "terminal.integrated.cursorStyle": "line"
 }

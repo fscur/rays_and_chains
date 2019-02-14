@@ -2,16 +2,16 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "build:debug",
             "type": "shell",
             "windows": {
                 "options": {
                     "cwd": "p:\\scripts\\windows"
                 },
-                "command": "p:\\scripts\\windows\\build.bat"
+                "command": "p:\\scripts\\windows\\build_debug.bat"
             },
             "linux": {
-                "command": "./scripts/linux/build.sh"
+                "command": "./scripts/linux/build_debug.sh"
             },
             "group": {
                 "kind": "build",
@@ -22,7 +22,7 @@
             ]
         },
         {
-            "label": "debug",
+            "label": "open vs debugger",
             "type": "shell",
             "windows": {
                 "options": {
@@ -36,7 +36,8 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
-            }
+            },
+            "problemMatcher": []
         }
     ]
 }
