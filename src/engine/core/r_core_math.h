@@ -4,12 +4,22 @@
 extern "C" {
 #endif
 
-#include "r_core_types.h";
+#include "r_core_types.h"
 
 u32
 from_u8_to_32(u8 h1, u8 h0, u8 l1, u8 l0) {
   u32 result = (h1 << 24) | (h0 << 16) | (l1 << 8) | (l0 << 0);
   return result;
+}
+
+u8
+round_f32_to_u8(f32 value) {
+  return (u8)roundf(value);
+}
+
+i8
+round_f32_to_i8(f32 value) {
+  return (i8)roundf(value);
 }
 
 i32
@@ -24,7 +34,7 @@ dot2(r_v2_t a, r_v2_t b) {
 
 f32
 len2(r_v2_t v) {
-  return sqrt(dot2(v, v));
+  return sqrtf(dot2(v, v));
 }
 
 r_v3_t
@@ -59,13 +69,12 @@ dot3(r_v3_t a, r_v3_t b) {
 
 r_v3_t
 cross3(r_v3_t a, r_v3_t b) {
-  return (r_v3_t){
-      a.y * b.z - b.y * a.z, a.z * b.x - b.z * a.x, a.x * b.y - b.x * a.y};
+  return (r_v3_t){a.y * b.z - b.y * a.z, a.z * b.x - b.z * a.x, a.x * b.y - b.x * a.y};
 }
 
 f32
 len3(r_v3_t v) {
-  return sqrt(dot3(v, v));
+  return sqrtf(dot3(v, v));
 }
 
 r_v3_t

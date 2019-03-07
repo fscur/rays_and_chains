@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "r_media_bitmap.h"
+#include "engine/core/r_core_math.h"
 
 r_media_bitmap_t* //
 r_media_create_image(const u32 width, const i32 height) {
@@ -49,10 +50,10 @@ r_media_clear_image(const r_media_bitmap_t* image, const r_color_t color) {
       if (y < 25)
         c = (r_color_t){0.0f, 0.0f, 1.0f, 1.0f};
 
-      u8 r = round_f32_to_i32(c.r * 255.0f);
-      u8 g = round_f32_to_i32(c.g * 255.0f);
-      u8 b = round_f32_to_i32(c.b * 255.0f);
-      u8 a = round_f32_to_i32(c.a * 255.0f);
+      u8 r = round_f32_to_u8(c.r * 255.0f);
+      u8 g = round_f32_to_u8(c.g * 255.0f);
+      u8 b = round_f32_to_u8(c.b * 255.0f);
+      u8 a = round_f32_to_u8(c.a * 255.0f);
 
       image->data[index + 0] = b;
       image->data[index + 1] = g;
@@ -81,8 +82,7 @@ r_media_load_image(const char* file_name) {
   fclose(file);
 
   image->width = image->header.width;
-  image->height =
-      image->header.height < 0 ? -image->header.height : image->header.height;
+  image->height = image->header.height < 0 ? -image->header.height : image->header.height;
   return image;
 }
 

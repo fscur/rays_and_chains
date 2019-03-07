@@ -1,6 +1,8 @@
 #include "engine/memory/r_memory_arena.h"
 #include "r_app_window.h"
+#include "r_app_window.c"
 #include "r_app_ui.h"
+#include "r_app_ui.c"
 #include "r_app.h"
 #include "engine/media/r_media_bitmap.h"
 
@@ -48,7 +50,7 @@ r_app_input(r_app_state_t* state) {
 
 void
 r_app_update(r_app_state_t* state) {
-  state->dt = 0.1;
+  state->dt = 0.1f;
   r_color_t color = (r_color_t){0.08f, 0.09f, 0.12f, 1.00f};
   state->window->back_color = color;
   state->ui->clear_color = color;
@@ -70,6 +72,6 @@ r_app_unload(const r_app_state_t* state) {
 }
 
 void
-app_destroy(const r_app_state_t* state) {
-  window_destroy(state->window);
+r_app_destroy(const r_app_state_t* state) {
+  r_app_window_destroy(state->window);
 }

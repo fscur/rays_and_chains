@@ -103,13 +103,10 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
 
   plugin_manager_api.add(plugin_manager_state, R_APP_API, &app, sizeof(r_app_state_t));
 
-  r_app_state_t* app_state = app.create(&plugin_manager_state->memory_arena);
+  r_app_state_t* app_state = app.create(plugin_manager_state->memory_arena);
 
   app.init(app_state);
   app.load(app_state);
-
-  i64 last_modified = 0;
-  bool should_reload = false;
 
   while (app_state->running) {
     app.input(app_state);

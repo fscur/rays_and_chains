@@ -75,7 +75,8 @@
                 "WIN32",
                 "_DEBUG",
                 "UNICODE",
-                "_UNICODE"
+                "_UNICODE",
+                "_CRT_SECURE_NO_WARNINGS"
             ],
             "intelliSenseMode": "msvc-x64",
             "browse": {

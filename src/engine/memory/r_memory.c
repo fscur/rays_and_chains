@@ -1,4 +1,5 @@
 #include "r_memory.h"
+#include "r_memory_arena.c"
 
 r_memory_t
 r_memory_create(size_t permanent_size, size_t transient_size) {

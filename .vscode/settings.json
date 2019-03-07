@@ -8,7 +8,8 @@
     "files.associations": {
         "cimgui.h": "c",
         "stdio.h": "c",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "r_core_types.h": "c"
     },
     "editor.wordWrapColumn": 100,
     "files.exclude": {

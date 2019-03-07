@@ -49,22 +49,22 @@ typedef struct r_media_bitmap_t {
   u8* data;
 } r_media_bitmap_t;
 
-r_media_bitmap_t* //
+dll_export r_media_bitmap_t* //
 r_media_create_image(const u32 width, const i32 height);
 
-void //
+dll_export void //
 r_media_clear_image(const r_media_bitmap_t* image, const r_color_t color);
 
-r_media_bitmap_t* //
+dll_export r_media_bitmap_t* //
 r_media_load_image(const char* file_name);
 
-void //
+dll_export void //
 r_media_save_image(const r_media_bitmap_t* image, char* file_name);
 
-void //
+dll_export void //
 r_media_flip_image(r_media_bitmap_t* image);
 
-void //
+dll_export void //
 r_media_destroy_image(r_media_bitmap_t* image);
 
 #ifdef __cplusplus
