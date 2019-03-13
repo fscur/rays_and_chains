@@ -76,7 +76,10 @@
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE",
-                "_CRT_SECURE_NO_WARNINGS"
+                "_CRT_SECURE_NO_WARNINGS",
+                "GLFW_INCLUDE_NONE",
+                "CIMGUI_DEFINE_ENUMS_AND_STRUCTS",
+                "IMGUI_IMPL_OPENGL_LOADER_GLAD"
             ],
             "intelliSenseMode": "msvc-x64",
             "browse": {

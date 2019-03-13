@@ -9,7 +9,9 @@
         "cimgui.h": "c",
         "stdio.h": "c",
         "stdbool.h": "c",
-        "r_core_types.h": "c"
+        "r_core_types.h": "c",
+        "r_app_window.h": "c",
+        "glfw3.h": "c"
     },
     "editor.wordWrapColumn": 100,
     "files.exclude": {

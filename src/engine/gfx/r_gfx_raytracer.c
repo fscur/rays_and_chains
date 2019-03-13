@@ -5,7 +5,7 @@
 #include "r_gfx_raytracer.h"
 
 r_color_t //
-r_graphics_raytracer_li(r_gfx_scene_t* scene, r_ray_t ray) {
+r_gfx_raytracer_li(r_gfx_scene_t* scene, r_ray_t ray) {
   f32 t_min = scene->camera->far_plane;
 
   if (ray_plane_intersection(ray, scene->floor, &t_min))
@@ -15,7 +15,7 @@ r_graphics_raytracer_li(r_gfx_scene_t* scene, r_ray_t ray) {
 }
 
 void //
-r_graphics_raytracer_start_raytracing(r_media_bitmap_t* image, f32 dt) {
+r_gfx_raytracer_start_raytracing(r_media_bitmap_t* image, f32 dt) {
 
   r_gfx_camera_t camera = {0};
   camera.near_plane = 1.0;
@@ -49,24 +49,22 @@ r_graphics_raytracer_start_raytracing(r_media_bitmap_t* image, f32 dt) {
 
   u32* pixels = (u32*)image->data;
 
-  r_v3_t film_z =
-      add3(camera.position, mul3(camera.direction, -camera.near_plane));
+  r_v3_t film_z = add3(camera.position, mul3(camera.direction, -camera.near_plane));
 
   for (y = 0; y < h; ++y) {
     r_v3_t film_y = mul3(camera.up, (y * y_factor * 2.0f - 1.0f) * y_aspect);
 
     for (x = 0.0f; x < w; ++x) {
-      r_v3_t film_x =
-          mul3(camera.right, (x * x_factor * 2.0f - 1.0f) * x_aspect);
+      r_v3_t film_x = mul3(camera.right, (x * x_factor * 2.0f - 1.0f) * x_aspect);
       r_v3_t film_pos = add3(add3(film_x, film_y), film_z);
       r_ray_t ray = {camera.position, norm3(sub3(film_pos, camera.position))};
 
-      r_color_t color = r_graphics_raytracer_li(&scene, ray);
+      r_color_t color = r_gfx_raytracer_li(&scene, ray);
 
-      u8 r = round_f32_to_i32(color.r * 255.0f);
-      u8 g = round_f32_to_i32(color.g * 255.0f);
-      u8 b = round_f32_to_i32(color.b * 255.0f);
-      u8 a = round_f32_to_i32(color.a * 255.0f);
+      u8 r = round_f32_to_u8(color.r * 255.0f);
+      u8 g = round_f32_to_u8(color.g * 255.0f);
+      u8 b = round_f32_to_u8(color.b * 255.0f);
+      u8 a = round_f32_to_u8(color.a * 255.0f);
 
       *pixels++ = from_u8_to_32(a, r, g, b);
     }

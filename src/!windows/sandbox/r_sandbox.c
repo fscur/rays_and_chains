@@ -66,15 +66,6 @@ load_plugin_manager_api() {
 #define R_APP_API_UNLOAD "r_app_unload"
 #define R_APP_API_DESTROY "r_app_destroy"
 
-r_app_state_t* (*create)(r_memory_t*);
-void (*init)(r_app_state_t*);
-void (*load)(r_app_state_t*);
-void (*input)(r_app_state_t*);
-void (*update)(r_app_state_t*);
-void (*render)(r_app_state_t*);
-void (*unload)(r_app_state_t*);
-void (*destroy)(r_app_state_t*);
-
 r_app_api //
 load_app_api() {
   r_app_api api = {0};
@@ -107,7 +98,7 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
 
   app.init(app_state);
   app.load(app_state);
-
+  
   while (app_state->running) {
     app.input(app_state);
     app.update(app_state);

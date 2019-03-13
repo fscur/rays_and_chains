@@ -1,8 +1,6 @@
 #include "engine/memory/r_memory_arena.h"
 #include "r_app_window.h"
-#include "r_app_window.c"
 #include "r_app_ui.h"
-#include "r_app_ui.c"
 #include "r_app.h"
 #include "engine/media/r_media_bitmap.h"
 
@@ -35,6 +33,7 @@ r_app_create(r_memory_arena_t* memory_arena) {
 
 void
 r_app_init(r_app_state_t* state) {
+  r_app_window_create(state->window);
   r_app_ui_init(state->ui);
 }
 
