@@ -11,7 +11,6 @@ error_callback(const int error, const char* description) {
 
 void //
 r_app_window_create(r_app_window_t* window) {
-  printf("Created window.");
   // todo: how to create window with app state????
   glfwSetErrorCallback(error_callback);
 

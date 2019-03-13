@@ -5,7 +5,7 @@
 #include "engine/media/r_media_bitmap.h"
 
 r_app_state_t* //
-r_app_create(r_memory_arena_t* memory_arena) {
+r_app_create(r_memory_arena_t* memory_arena, r_app_info_t info) {
 
   r_app_state_t* state = R_MEMORY_ARENA_PUSH_STRUCT(memory_arena, r_app_state_t);
   state->window = R_MEMORY_ARENA_PUSH_STRUCT(memory_arena, r_app_window_t);
@@ -14,26 +14,26 @@ r_app_create(r_memory_arena_t* memory_arena) {
   state->running = true;
   state->dt = 0.0;
 
-  r_color_t color = (r_color_t){0.08f, 0.09f, 0.12f, 1.00f};
-
   r_app_window_t* window = state->window;
-  window->title = "rays and chains";
-  window->width = 1280;
-  window->height = 720;
-  window->back_color = color;
+  window->title = info.title;
+  window->width = info.width;
+  window->height = info.height;
+  window->back_color = info.back_color;
 
   r_app_ui_t* ui = state->ui;
-  ui->clear_color = color;
+  ui->clear_color = info.back_color;
   ui->image = r_media_create_image(400, 300);
   ui->window = state->window;
 
   r_media_clear_image(ui->image, ui->clear_color);
+
+  r_app_window_create(state->window);
+
   return state;
 }
 
 void
 r_app_init(r_app_state_t* state) {
-  r_app_window_create(state->window);
   r_app_ui_init(state->ui);
 }
 
@@ -73,4 +73,19 @@ r_app_unload(const r_app_state_t* state) {
 void
 r_app_destroy(const r_app_state_t* state) {
   r_app_window_destroy(state->window);
+}
+
+void //
+r_app_run(r_app_state_t* state) {
+  r_app_init(state);
+  r_app_load(state);
+
+  while (state->running) {
+    r_app_input(state);
+    r_app_update(state);
+    r_app_render(state);
+  }
+
+  r_app_unload(state);
+  r_app_destroy(state);
 }

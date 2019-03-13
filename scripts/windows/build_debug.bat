@@ -14,11 +14,12 @@ call log [info] "Clearing previous build"
 pushd p:\
 rmdir bin /s /q
 mkdir bin
-xcopy lib\windows\x64\debug\cimgui.dll bin 
 popd
 
-call log [info] "Building sandbox.exe"
+call log [info] "Copying dependencies"
+call log2 [info] & xcopy p:\lib\windows\x64\debug\cimgui.dll p:\bin 
 
+call log [info] "Building sandbox.exe"
 
 pushd p:\bin
 cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_memory.dll /Fmr_memory.map "..\src\!windows\engine\memory\r_memory.c" /link /DLL %COMMON_LINKER_FLAGS%

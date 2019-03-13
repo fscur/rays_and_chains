@@ -73,16 +73,6 @@ typedef struct r_plane_t {
   r_v3_t p, n;
 } r_plane_t;
 
-// typedef struct r_linked_list_node {
-//   struct r_linked_list_node* next;
-//   struct r_linked_list_node* prev;
-//   void* data;
-// } r_linked_list_node;
-
-// typedef struct r_linked_list {
-//   r_linked_list_node* first;
-// } r_linked_list;
-
 #if defined(WIN32)
 #define dll_export __declspec(dllexport)
 #endif

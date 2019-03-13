@@ -58,26 +58,28 @@ load_plugin_manager_api() {
 
 #define R_APP_API "r_app.dll"
 #define R_APP_API_CREATE "r_app_create"
-#define R_APP_API_INIT "r_app_init"
-#define R_APP_API_LOAD "r_app_load"
-#define R_APP_API_INPUT "r_app_input"
-#define R_APP_API_UPDATE "r_app_update"
-#define R_APP_API_RENDER "r_app_render"
-#define R_APP_API_UNLOAD "r_app_unload"
-#define R_APP_API_DESTROY "r_app_destroy"
+#define R_APP_API_RUN "r_app_run"
+// #define R_APP_API_INIT "r_app_init"
+// #define R_APP_API_LOAD "r_app_load"
+// #define R_APP_API_INPUT "r_app_input"
+// #define R_APP_API_UPDATE "r_app_update"
+// #define R_APP_API_RENDER "r_app_render"
+// #define R_APP_API_UNLOAD "r_app_unload"
+// #define R_APP_API_DESTROY "r_app_destroy"
 
 r_app_api //
 load_app_api() {
   r_app_api api = {0};
   api.handle = load_plugin(R_APP_API);
   api.create = (R_APP_CREATE)fn(api.handle, R_APP_API_CREATE);
-  api.init = (R_APP_INIT)fn(api.handle, R_APP_API_INIT);
-  api.load = (R_APP_LOAD)fn(api.handle, R_APP_API_LOAD);
-  api.input = (R_APP_INPUT)fn(api.handle, R_APP_API_INPUT);
-  api.update = (R_APP_UPDATE)fn(api.handle, R_APP_API_UPDATE);
-  api.render = (R_APP_INIT)fn(api.handle, R_APP_API_RENDER);
-  api.unload = (R_APP_LOAD)fn(api.handle, R_APP_API_UNLOAD);
-  api.destroy = (R_APP_INPUT)fn(api.handle, R_APP_API_DESTROY);
+  api.run = (R_APP_RUN)fn(api.handle, R_APP_API_RUN);
+  // api.init = (R_APP_INIT)fn(api.handle, R_APP_API_INIT);
+  // api.load = (R_APP_LOAD)fn(api.handle, R_APP_API_LOAD);
+  // api.input = (R_APP_INPUT)fn(api.handle, R_APP_API_INPUT);
+  // api.update = (R_APP_UPDATE)fn(api.handle, R_APP_API_UPDATE);
+  // api.render = (R_APP_INIT)fn(api.handle, R_APP_API_RENDER);
+  // api.unload = (R_APP_LOAD)fn(api.handle, R_APP_API_UNLOAD);
+  // api.destroy = (R_APP_INPUT)fn(api.handle, R_APP_API_DESTROY);
   return api;
 }
 
@@ -94,19 +96,15 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
 
   plugin_manager_api.add(plugin_manager_state, R_APP_API, &app, sizeof(r_app_state_t));
 
-  r_app_state_t* app_state = app.create(plugin_manager_state->memory_arena);
+  r_app_info_t app_info = {0};
+  sprintf(app_info.title, "rays and chains");
+  app_info.width = 1280;
+  app_info.height = 720;
+  app_info.back_color = (r_color_t){0.08f, 0.09f, 0.12f, 1.00f};
 
-  app.init(app_state);
-  app.load(app_state);
-  
-  while (app_state->running) {
-    app.input(app_state);
-    app.update(app_state);
-    app.render(app_state);
-  }
+  r_app_state_t* app_state = app.create(plugin_manager_state->memory_arena, app_info);
 
-  app.unload(app_state);
-  app.destroy(app_state);
+  app.run(app_state);
 
   return 0;
 }

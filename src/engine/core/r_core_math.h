@@ -82,8 +82,6 @@ norm3(r_v3_t v) {
   return dir_v3_t(v, len3(v));
 }
 
-// (filipe.scur@gmail.com) | important: is this correct????
-// (filipe.scur@gmail.com) | question: wouldnt comments being log better?
 bool
 ray_plane_intersection(r_ray_t ray, r_plane_t plane, f32* t_min) {
 
