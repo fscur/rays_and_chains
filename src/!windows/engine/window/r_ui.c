@@ -1,4 +1,4 @@
-#include "engine/app/r_app_ui.h"
+#include "engine/window/r_ui.h"
 #include "engine/media/r_media_bitmap.h"
 #include "engine/gfx/r_gfx_raytracer.h"
 #include "imgui_impl_opengl3.c"
@@ -93,7 +93,7 @@ render_imgui(r_app_ui_t* ui) {
 
 ImGuiContext* ctx;
 
-internal void
+internal void //
 init_imgui(r_app_ui_t* ui) {
 
   const char* glsl_version = "#version 130";
@@ -129,6 +129,8 @@ create_texture(r_media_bitmap_t* image) {
 
 void
 r_app_ui_init(r_app_ui_t* ui) {
+  ui->image = r_media_create_image(400, 300);
+  r_media_clear_image(ui->image, ui->clear_color);
   ui->texture_id = create_texture(ui->image);
 }
 

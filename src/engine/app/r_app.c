@@ -1,6 +1,6 @@
 #include "engine/memory/r_memory_arena.h"
-#include "r_app_window.h"
-#include "r_app_ui.h"
+#include "engine/window/r_window.h"
+#include "engine/window/r_ui.h"
 #include "r_app.h"
 #include "engine/media/r_media_bitmap.h"
 
@@ -8,13 +8,13 @@ r_app_state_t* //
 r_app_create(r_memory_arena_t* memory_arena, r_app_info_t info) {
 
   r_app_state_t* state = R_MEMORY_ARENA_PUSH_STRUCT(memory_arena, r_app_state_t);
-  state->window = R_MEMORY_ARENA_PUSH_STRUCT(memory_arena, r_app_window_t);
+  state->window = R_MEMORY_ARENA_PUSH_STRUCT(memory_arena, r_window_t);
   state->ui = R_MEMORY_ARENA_PUSH_STRUCT(memory_arena, r_app_ui_t);
   state->memory_arena = memory_arena;
   state->running = true;
   state->dt = 0.0;
 
-  r_app_window_t* window = state->window;
+  r_window_t* window = state->window;
   window->title = info.title;
   window->width = info.width;
   window->height = info.height;
@@ -22,12 +22,7 @@ r_app_create(r_memory_arena_t* memory_arena, r_app_info_t info) {
 
   r_app_ui_t* ui = state->ui;
   ui->clear_color = info.back_color;
-  ui->image = r_media_create_image(400, 300);
   ui->window = state->window;
-
-  r_media_clear_image(ui->image, ui->clear_color);
-
-  r_app_window_create(state->window);
 
   return state;
 }
@@ -44,7 +39,7 @@ r_app_load(r_app_state_t* state) {
 
 void
 r_app_input(r_app_state_t* state) {
-  r_app_window_input(state->window);
+  r_window_input(state->window);
 }
 
 void
@@ -55,14 +50,14 @@ r_app_update(r_app_state_t* state) {
   state->ui->clear_color = color;
   state->ui->dt = state->dt;
   state->running = !state->window->should_close;
-  r_app_window_update(state->window);
+  r_window_update(state->window);
 }
 
 void
 r_app_render(const r_app_state_t* state) {
-  r_app_window_render(state->window);
+  r_window_render(state->window);
   r_app_ui_render(state->ui);
-  r_app_window_swapbuffers(state->window);
+  r_window_swapbuffers(state->window);
 }
 
 void
@@ -72,7 +67,7 @@ r_app_unload(const r_app_state_t* state) {
 
 void
 r_app_destroy(const r_app_state_t* state) {
-  r_app_window_destroy(state->window);
+  r_window_destroy(state->window);
 }
 
 void //

@@ -21,7 +21,7 @@
 
 #pragma once
 
-struct GLFWwindow;
+typedef struct GLFWwindow GLFWwindow;
 
 CIMGUI_API bool ImGui_ImplGlfw_InitForOpenGL(GLFWwindow* window, bool install_callbacks);
 CIMGUI_API bool ImGui_ImplGlfw_InitForVulkan(GLFWwindow* window, bool install_callbacks);

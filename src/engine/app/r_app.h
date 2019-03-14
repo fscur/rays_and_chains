@@ -5,9 +5,9 @@ extern "C" {
 
 #include "engine/core/r_core_types.h"
 
-struct r_memory_arena_t;
-struct r_app_window_t;
-struct r_app_ui_t;
+typedef struct r_memory_arena_t r_memory_arena_t;
+typedef struct r_window_t r_window_t;
+typedef struct r_app_ui_t r_app_ui_t;
 
 typedef struct r_app_info_t {
   char title[256];
@@ -19,8 +19,8 @@ typedef struct r_app_info_t {
 
 typedef struct r_app_state_t {
   r_memory_arena_t* memory_arena;
-  struct r_app_window_t* window;
-  struct r_app_ui_t* ui;
+  r_window_t* window;
+  r_app_ui_t* ui;
   f32 dt;
   bool running;
 } r_app_state_t;
@@ -54,25 +54,25 @@ r_app_create(r_memory_arena_t* memory_arena, r_app_info_t app_info);
 dll_export void //
 r_app_run(r_app_state_t* state);
 
-internal void //
+dll_export void //
 r_app_init(r_app_state_t* state);
 
-internal void //
+dll_export void //
 r_app_load(r_app_state_t* state);
 
-internal void //
+dll_export void //
 r_app_input(r_app_state_t* state);
 
-internal void //
+dll_export void //
 r_app_update(r_app_state_t* state);
 
-internal void //
+dll_export void //
 r_app_render(const r_app_state_t* state);
 
-internal void //
+dll_export void //
 r_app_unload(const r_app_state_t* state);
 
-internal void //
+dll_export void //
 r_app_destroy(const r_app_state_t* state);
 
 #ifdef __cplusplus
