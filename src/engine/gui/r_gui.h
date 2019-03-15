@@ -17,16 +17,16 @@ typedef struct r_app_ui_t {
 } r_app_ui_t;
 
 dll_export void //
-r_app_ui_init(r_app_ui_t* ui);
+r_ui_init(r_app_ui_t* ui);
 
 dll_export void //
-r_app_ui_load(r_app_ui_t* ui);
+r_ui_load(r_app_ui_t* ui);
 
 dll_export void //
-r_app_ui_render(r_app_ui_t* ui);
+r_ui_render(r_app_ui_t* ui);
 
 dll_export void //
-r_app_ui_unload(r_app_ui_t* ui);
+r_ui_unload(r_app_ui_t* ui);
 
 #ifdef __cplusplus
 }

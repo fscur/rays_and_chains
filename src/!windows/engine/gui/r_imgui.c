@@ -1,4 +1,20 @@
-#include "engine/window/r_ui.h"
+// Helper Macros
+#ifndef IM_ASSERT
+#define IM_ASSERT(_EXPR)                                                                           \
+  assert(_EXPR) // You can override the default assert handler by editing imconfig.h
+#endif
+#if defined(__clang__) || defined(__GNUC__)
+#define IM_FMTARGS(FMT) __attribute__((format(printf, FMT, FMT + 1))) // Apply printf-style warnings to user functions.
+#define IM_FMTLIST(FMT) __attribute__((format(printf, FMT, 0)))
+#else
+#define IM_FMTARGS(FMT)
+#define IM_FMTLIST(FMT)
+#endif
+#define IM_ARRAYSIZE(_ARR) ((int)(sizeof(_ARR) / sizeof(*_ARR))) // Size of a static C-style array. Don't use on pointers!
+#define IM_OFFSETOF(_TYPE, _MEMBER) ((size_t) & (((_TYPE*)0)->_MEMBER)) // Offset of _MEMBER within _TYPE. Standardized as offsetof() in modern C++.
+#define IM_UNUSED(_VAR) ((void)_VAR) // Used to silence "unused variable warnings". Often useful as asserts may be stripped out from final builds.
+
+#include "engine/gui/r_ui.h"
 #include "engine/media/r_media_bitmap.h"
 #include "engine/gfx/r_gfx_raytracer.h"
 #include "imgui_impl_opengl3.c"
@@ -128,19 +144,19 @@ create_texture(r_media_bitmap_t* image) {
 }
 
 void
-r_app_ui_init(r_app_ui_t* ui) {
+r_ui_init(r_app_ui_t* ui) {
   ui->image = r_media_create_image(400, 300);
   r_media_clear_image(ui->image, ui->clear_color);
   ui->texture_id = create_texture(ui->image);
 }
 
 void
-r_app_ui_load(r_app_ui_t* ui) {
+r_ui_load(r_app_ui_t* ui) {
   init_imgui(ui);
 }
 
 void
-r_app_ui_render(r_app_ui_t* ui) {
+r_ui_render(r_app_ui_t* ui) {
   render_imgui(ui);
 }
 

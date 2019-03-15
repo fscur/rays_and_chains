@@ -15,6 +15,6 @@ r_memory_arena_push(r_memory_arena_t* arena, size_t size) {
   assert(arena->size + size <= arena->max_size);
   void* ret = arena->current_addr;
   arena->size += size;
-  arena->current_addr = (char*)arena->current_addr + size;
+  arena->current_addr = (u8*)arena->current_addr + size;
   return ret;
 }

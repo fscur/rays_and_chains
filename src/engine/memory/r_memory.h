@@ -6,22 +6,22 @@ extern "C" {
 
 #include "engine/core/r_core_types.h"
 
+#define R_MAX_MEMORY_USAGE gigabytes(2)
+
+typedef struct r_memory_arena_t r_memory_arena_t;
+
 typedef struct r_memory_t {
-  size_t permanent_size;
-  u8* permanent_addr;
-  size_t transient_size;
-  u8* transient_addr;
+  void* base_addr;
+  void* current_addr;
+  size_t size;
+  size_t capacity;
 } r_memory_t;
 
-typedef struct r_memory_api {
-  void* handle;
-  r_memory_t (*create)(size_t, size_t);
-} r_memory_api;
-
-typedef r_memory_t (*R_MEMORY_CREATE)(size_t, size_t);
-
 dll_export r_memory_t //
-r_memory_create(size_t permanent_size, size_t transient_size);
+r_memory_create(size_t capacity);
+
+dll_export r_memory_arena_t* //
+r_memory_add_arena(r_memory_t* memory, size_t arena_size);
 
 u8* //
 r_memory_virtual_alloc(void* base_addr, size_t size);
