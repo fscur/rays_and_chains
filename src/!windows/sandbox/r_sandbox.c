@@ -29,6 +29,7 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
   LARGE_INTEGER current;
 
   QueryPerformanceCounter(&start);
+  last = start;
 
   r_memory_t memory = r_memory_create(kilobytes(1));
 
@@ -51,8 +52,6 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
   r_app_init(app);
   r_app_load(app);
 
-  QueryPerformanceCounter(&last);
-
   while (app->running) {
 
     r_app_run(app);
@@ -70,13 +69,14 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
 
     last = current;
     app->dt = app_time.dt;
-    app_time.frames++;
 
     r_debug_print(                                     //
         "[frame - %010d][%4.2f][debug] elapsed: %f\n", //
         app_time.frames,
         app_time.now / 1000.0,
         app_time.dt);
+
+    app_time.frames++;
   }
 
   r_app_unload(app);
