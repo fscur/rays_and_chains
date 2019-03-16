@@ -6,7 +6,7 @@ extern "C" {
 
 #include "engine/core/r_core_types.h"
 
-extern f64 r_time_clock_frequency_in_ms;
+global f64 r_time_clock_frequency_in_ms;
 
 typedef struct r_time_t {
   f64 desired_fps;
@@ -16,10 +16,10 @@ typedef struct r_time_t {
   i64 frames;
 } r_time_t;
 
-void //
+inline void //
 r_time_init_clock_frequency();
 
-f64 //
+inline f64 //
 r_time_now();
 
 #ifdef __cplusplus

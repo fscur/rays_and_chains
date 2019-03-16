@@ -18,6 +18,7 @@ typedef struct r_app_info_t {
   i32 y;
   r_color_t back_color;
   f64 desired_fps;
+  r_time_t* time;
 } r_app_info_t;
 
 typedef struct r_app_t {

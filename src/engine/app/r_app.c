@@ -9,15 +9,14 @@ r_app_create(r_memory_t* memory, r_app_info_t* info) {
 
   size_t total_memory = sizeof(r_app_t) +    //
                         sizeof(r_window_t) + //
-                        sizeof(r_plugin_manager_t) +
-                        sizeof(r_time_t);
+                        sizeof(r_plugin_manager_t) + sizeof(r_time_t);
 
   r_memory_arena_t* memory_arena = r_memory_add_arena(memory, total_memory);
 
   r_app_t* state = R_MEMORY_ARENA_PUSH_STRUCT(memory_arena, r_app_t);
   state->window = R_MEMORY_ARENA_PUSH_STRUCT(memory_arena, r_window_t);
   state->plugin_manager = R_MEMORY_ARENA_PUSH_STRUCT(memory_arena, r_plugin_manager_t);
-  state->time = R_MEMORY_ARENA_PUSH_STRUCT(memory_arena, r_time_t);
+  state->time = info->time;
   state->memory = memory;
   state->time->desired_fps = info->desired_fps;
   state->time->desired_ms_per_frame = 1000.0 / info->desired_fps;

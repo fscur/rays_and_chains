@@ -7,7 +7,7 @@ void //
 r_time_init_clock_frequency() {
   LARGE_INTEGER clock_frequency;
   QueryPerformanceFrequency(&clock_frequency);
-  r_time_clock_frequency_in_ms = 1000.0 / (f64)clock_frequency.QuadPart;
+  r_time_clock_frequency_in_ms = 1000.0 / clock_frequency.QuadPart;
 }
 
 f64 //

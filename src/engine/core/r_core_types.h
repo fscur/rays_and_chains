@@ -11,6 +11,8 @@ extern "C" {
 
 #define local static
 #define internal static
+#define global extern
+
 #define kilobytes(Value) ((Value)*1024LL)
 #define megabytes(Value) (kilobytes(Value) * 1024LL)
 #define gigabytes(Value) (megabytes(Value) * 1024LL)
