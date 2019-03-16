@@ -7,7 +7,7 @@
 #include "engine/media/r_media_bitmap.c"
 #include "engine/gfx/r_gfx_raytracer.c"
 
-#pragma comment(lib, "../lib/windows/x64/release/glfw3.lib")
+#pragma comment(lib, "../lib/windows/x64/release/glfw3dll.lib")
 #pragma comment(lib, "../lib/windows/x64/release/cimgui.lib")
 
 #pragma comment(lib, "kernel32.lib")
