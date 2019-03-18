@@ -72,7 +72,7 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
     last = end;
     time.now = last - start;
 
-    // important:  wtf is going on here??? how does a frame jumps by more than 5.0 ms??? not cool.
+    // important:  wtf is going on here??? how does a frame jumps by more than 5.0 ms??? not cool. try to understand it...
     if (time.frames > 0 && time.dt > time.desired_ms_per_frame + 5.0) {
       r_debug_print(                                                   //
           "[%010I64d][%08.3f][debug] Frame drop? It took %5.2f ms.\n", //
