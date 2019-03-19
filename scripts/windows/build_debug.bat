@@ -9,10 +9,15 @@ set "INCLUDE_DIRS=/I..\src /I..\inc"
 set COMMON_LINKER_FLAGS="-opt:ref"
 
 set VC14_PATH="%programfiles(x86)%\Microsoft Visual Studio 14.0\VC"
-set VC17_PATH="%programfiles(x86)%\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build
+set VC17_PATH="%programfiles(x86)%\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build"
 
-if exist VC14_PATH goto vc14
-if exist VC17_PATH goto vc17
+if /I exist %VC14_PATH% (
+  goto vc14
+)
+
+if /I exist %VC17_PATH% ( 
+  goto vc17
+)
 
 :vc14
 call %VC14_PATH%\vcvarsall.bat x64
@@ -35,11 +40,18 @@ call log2 [info] & robocopy p:\lib\windows\x64\debug p:\bin *.dll /xo /njh /njs 
 
 call log [info] "Building sandbox.exe"
 pushd p:\bin
+
+cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_string.dll /Fmr_string.map "..\src\!windows\engine\string\r_string.windows.c" /link /DLL %COMMON_LINKER_FLAGS%
+cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_memory.dll /Fmr_memory.map "..\src\!windows\engine\memory\r_memory.windows.c" /link /DLL %COMMON_LINKER_FLAGS%
+cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_plugins.dll /Fmr_plugins.map "..\src\!windows\engine\plugins\r_plugins.windows.c" r_string.lib /link /DLL %COMMON_LINKER_FLAGS%
+cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Feplugin_a.dll /Fmplugin_a.map "..\src\plugins\plugin_a\plugin_a.c" r_plugins.lib r_memory.lib /link /DLL %COMMON_LINKER_FLAGS%
+cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Feplugin_b.dll /Fmplugin_b.map "..\src\plugins\plugin_b\plugin_b.c" r_plugins.lib r_memory.lib /link /DLL %COMMON_LINKER_FLAGS%
 cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fesandbox.exe /Fmsandbox.map "..\src\!windows\sandbox\r_sandbox.c" /link %COMMON_LINKER_FLAGS%
 popd
 
+
+
 ::dlls
-::cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_memory.dll /Fmr_memory.map "..\src\!windows\engine\memory\r_memory.windows.c" /link /DLL %COMMON_LINKER_FLAGS%
 ::cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_media.dll /Fmr_media.map "..\src\engine\media\r_media_bitmap.c" /link /DLL %COMMON_LINKER_FLAGS%
 ::cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_gfx.dll /Fmr_gfx.map "..\src\engine\gfx\r_gfx.c" /link /DLL %COMMON_LINKER_FLAGS%
 ::cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_plugin_loader.dll /Fmr_plugin_loader.map "..\src\!windows\engine\plugins\r_plugin_loader.windows.c" /link /DLL %COMMON_LINKER_FLAGS%

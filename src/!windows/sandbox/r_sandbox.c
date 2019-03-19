@@ -1,3 +1,4 @@
+/*
 #include <windows.h>
 #include <stdio.h>
 #include "!windows/engine/diagnostics/r_debug.windows.c"
@@ -72,8 +73,8 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
     last = end;
     time.now = last - start;
 
-    // important:  wtf is going on here??? how does a frame jumps by more than 5.0 ms??? not cool. try to understand it...
-    if (time.frames > 0 && time.dt > time.desired_ms_per_frame + 5.0) {
+    // important:  wtf is going on here??? how does a frame jumps by more than 5.0 ms??? not cool.
+try to understand it... if (time.frames > 0 && time.dt > time.desired_ms_per_frame + 5.0) {
       r_debug_print(                                                   //
           "[%010I64d][%08.3f][debug] Frame drop? It took %5.2f ms.\n", //
           time.frames,
@@ -94,4 +95,65 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
   r_app_destroy(app);
 
   return 0;
+}
+*/
+
+#include <windows.h>
+#include <stdio.h>
+#include "!windows/engine/diagnostics/r_debug.windows.c"
+#include "!windows/engine/memory/r_memory.windows.c"
+#include "!windows/engine/thread/r_thread.windows.c"
+#include "!windows/engine/time/r_time.windows.c"
+#include "!windows/engine/window/r_window.windows.c"
+#include "!windows/engine/app/r_app.windows.c"
+#include "engine/plugins/r_plugin_manager.h"
+#include "engine/plugins/r_plugin_loader.h"
+#include "engine/plugins/r_plugin.h"
+
+#pragma comment(lib, "r_plugins.lib")
+
+typedef void* (*load)(r_memory_t*, void*);
+typedef void (*init)(void* state, r_plugin_manager_t*);
+typedef void (*update)(void* state, f64 dt);
+
+int CALLBACK
+WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {
+  r_memory_t memory = r_memory_create(kilobytes(64));
+  r_plugin_manager_t manager = {0};
+  {
+    char* plugin_a_name = "plugin_a.dll";
+    void* plugin_a_handle = r_plugin_loader_load_plugin(plugin_a_name);
+
+    char* load_function_name_a = "load_plugin_a";
+    load load_function_a = (load)r_plugin_loader_fn(plugin_a_handle, load_function_name_a);
+
+    r_plugin_t* plugin_a = load_function_a(&memory, plugin_a_handle);
+    plugin_a->name = plugin_a_name;
+    plugin_a->file_name = plugin_a_name;
+
+    r_plugin_manager_add(&manager, plugin_a);
+  }
+  {
+    char* plugin_b_name = "plugin_b.dll";
+    void* plugin_b_handle = r_plugin_loader_load_plugin(plugin_b_name);
+
+    char* load_function_name_b = "load_plugin_b";
+    load load_function_b = (load)r_plugin_loader_fn(plugin_b_handle, load_function_name_b);
+
+    r_plugin_t* plugin_b = load_function_b(&memory, plugin_b_handle);
+    plugin_b->name = plugin_b_name;
+    plugin_b->file_name = plugin_b_name;
+
+    r_plugin_manager_add(&manager, plugin_b);
+  }
+  
+  for (int i = 0; i < manager.plugin_count; ++i) {
+    r_plugin_t* plugin = manager.plugins[i];
+    ((init)manager.init[i])(plugin->state_addr, &manager);
+  }
+
+  for (int i = 0; i < manager.plugin_count; ++i) {
+    r_plugin_t* plugin = manager.plugins[i];
+    ((update)manager.update[i])(plugin->state_addr, 0.1);
+  }
 }

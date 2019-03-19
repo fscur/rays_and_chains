@@ -3,6 +3,7 @@
     "files.autoSaveDelay": 500,
     "editor.formatOnSave": true,
     "editor.tabSize": 2,
+    "editor.fontSize": 15,
     "clang-format.executable": "clang-format",
     "editor.renderIndentGuides": false,
     "files.associations": {
