@@ -34,7 +34,7 @@ r_app_create(r_memory_t* memory, r_app_info_t* info) {
   return state;
 }
 
-void
+internal void //
 r_app_load_plugin(r_file_info_t file_info, r_app_t* state) {
   r_plugin_manager_t* plugin_manager = state->plugin_manager;
   r_memory_t* memory = state->memory;
@@ -59,7 +59,7 @@ r_app_init_plugin_manager(r_app_t* state) {
 
   r_plugin_manager_t* plugin_manager = state->plugin_manager;
 
-  for (int i = 0; i < plugin_manager->plugin_count; ++i) {
+  for (int i = 0; i < plugin_manager->init_count; ++i) {
     r_plugin_t* plugin = plugin_manager->plugins[i];
     ((R_PLUGIN_INIT)plugin_manager->init[i])(plugin->state_addr, plugin_manager);
   }
@@ -78,9 +78,10 @@ r_app_input(r_app_t* state) {
   r_window_input(state->window);
 
   r_plugin_manager_t* plugin_manager = state->plugin_manager;
-  for (int i = 0; i < plugin_manager->plugin_count; ++i) {
+
+  for (int i = 0; i < plugin_manager->input_count; ++i) {
     r_plugin_t* plugin = plugin_manager->plugins[i];
-    ((R_PLUGIN_UPDATE)plugin_manager->update[i])(plugin->state_addr, state->time->dt);
+    ((R_PLUGIN_INPUT)plugin_manager->input[i])(plugin->state_addr);
   }
 }
 
@@ -91,7 +92,8 @@ r_app_update(r_app_t* state) {
   r_window_update(state->window);
 
   r_plugin_manager_t* plugin_manager = state->plugin_manager;
-  for (int i = 0; i < plugin_manager->plugin_count; ++i) {
+
+  for (int i = 0; i < plugin_manager->update_count; ++i) {
     r_plugin_t* plugin = plugin_manager->plugins[i];
     ((R_PLUGIN_UPDATE)plugin_manager->update[i])(plugin->state_addr, state->time->dt);
   }
@@ -101,7 +103,8 @@ void
 r_app_render(const r_app_t* state) {
 
   r_plugin_manager_t* plugin_manager = state->plugin_manager;
-  for (int i = 0; i < plugin_manager->plugin_count; ++i) {
+
+  for (int i = 0; i < plugin_manager->render_count; ++i) {
     r_plugin_t* plugin = plugin_manager->plugins[i];
     ((R_PLUGIN_RENDER)plugin_manager->render[i])(plugin);
   }
@@ -113,7 +116,8 @@ r_app_render(const r_app_t* state) {
 void
 r_app_unload(const r_app_t* state) {
   r_plugin_manager_t* plugin_manager = state->plugin_manager;
-  for (int i = 0; i < plugin_manager->plugin_count; ++i) {
+
+  for (int i = 0; i < plugin_manager->unload_count; ++i) {
     r_plugin_t* plugin = plugin_manager->plugins[i];
     ((R_PLUGIN_UNLOAD)plugin_manager->unload[i])(plugin);
   }
@@ -124,7 +128,8 @@ r_app_destroy(const r_app_t* state) {
   r_window_destroy(state->window);
 
   r_plugin_manager_t* plugin_manager = state->plugin_manager;
-  for (int i = 0; i < plugin_manager->plugin_count; ++i) {
+
+  for (int i = 0; i < plugin_manager->destroy_count; ++i) {
     r_plugin_t* plugin = plugin_manager->plugins[i];
     ((R_PLUGIN_DESTROY)plugin_manager->destroy[i])(plugin);
   }

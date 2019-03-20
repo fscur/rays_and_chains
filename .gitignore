@@ -40,3 +40,4 @@ Mkfile.old
 dkms.conf
 
 bin/
+.vscode/ipch/

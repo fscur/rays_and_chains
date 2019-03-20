@@ -20,6 +20,12 @@ typedef struct r_plugin_manager_t {
   void* destroy[MAX_PLUGINS_COUNT];
   r_plugin_t* plugins[MAX_PLUGINS_COUNT];
   u8 plugin_count;
+  u8 init_count;
+  u8 input_count;
+  u8 update_count;
+  u8 render_count;
+  u8 unload_count;
+  u8 destroy_count;
 } r_plugin_manager_t;
 
 #define R_PLUGIN_MANAGER_API L"r_plugin_manager.dll"
