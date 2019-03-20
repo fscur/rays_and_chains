@@ -1,7 +1,7 @@
 cls
 @echo off
 
-set "DEFINES=/D_DEBUG /DWIN32 /D_CRT_SECURE_NO_WARNINGS /DGLFW_INCLUDE_NONE /DCIMGUI_DEFINE_ENUMS_AND_STRUCTS /DIMGUI_IMPL_OPENGL_LOADER_GLAD"
+set "DEFINES=/DUNICODE /D_DEBUG /DWIN32 /D_CRT_SECURE_NO_WARNINGS /DGLFW_INCLUDE_NONE /DCIMGUI_DEFINE_ENUMS_AND_STRUCTS /DIMGUI_IMPL_OPENGL_LOADER_GLAD"
 set "WARNINGS=/WX /W4 /wd4100 /wd4204 /wd4312 /wd4201 /wd4055 /wd4054"
 
 set "COMMON_COMPILER_FLAGS=/MT /nologo /Gm- /GR- /EHa- /Od /Oi %WARNINGS% /FC /Z7 %DEFINES%"
@@ -30,9 +30,13 @@ goto start
 :start
 
 call log [info] "********** DEBUG **********"
-call log [info] "Clearing previous build"
 pushd p:\
+del bin /Q
+del bin\plugins /Q
 if not exist bin mkdir bin
+cd bin
+if not exist plugins mkdir plugins
+cd ..
 popd
 
 call log [info] "Copying dependencies"
@@ -41,11 +45,12 @@ call log2 [info] & robocopy p:\lib\windows\x64\debug p:\bin *.dll /xo /njh /njs 
 call log [info] "Building sandbox.exe"
 pushd p:\bin
 
+cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_io.dll /Fmr_io.map "..\src\!windows\engine\io\r_io.windows.c" /link /DLL %COMMON_LINKER_FLAGS%
 cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_string.dll /Fmr_string.map "..\src\!windows\engine\string\r_string.windows.c" /link /DLL %COMMON_LINKER_FLAGS%
 cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_memory.dll /Fmr_memory.map "..\src\!windows\engine\memory\r_memory.windows.c" /link /DLL %COMMON_LINKER_FLAGS%
 cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_plugins.dll /Fmr_plugins.map "..\src\!windows\engine\plugins\r_plugins.windows.c" r_string.lib /link /DLL %COMMON_LINKER_FLAGS%
-cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Feplugin_a.dll /Fmplugin_a.map "..\src\plugins\plugin_a\plugin_a.c" r_plugins.lib r_memory.lib /link /DLL %COMMON_LINKER_FLAGS%
-cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Feplugin_b.dll /Fmplugin_b.map "..\src\plugins\plugin_b\plugin_b.c" r_plugins.lib r_memory.lib /link /DLL %COMMON_LINKER_FLAGS%
+cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% "..\src\plugins\plugin_a\plugin_a.c" /Fe"plugins\plugin_a.dll" /Fm"plugins\plugin_a.map" /Fo"plugins\plugin_a.obj" r_plugins.lib r_memory.lib /link /DLL %COMMON_LINKER_FLAGS%
+::cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% "..\src\plugins\plugin_b\plugin_b.c" /Fe"plugins\plugin_b.dll" /Fm"plugins\plugin_b.map" /Fo"plugins\plugin_b.obj" r_plugins.lib r_memory.lib /link /DLL %COMMON_LINKER_FLAGS%
 cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fesandbox.exe /Fmsandbox.map "..\src\!windows\sandbox\r_sandbox.c" /link %COMMON_LINKER_FLAGS%
 popd
 

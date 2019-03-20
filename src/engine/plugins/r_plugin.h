@@ -10,14 +10,28 @@ typedef struct r_plugin_manager_t r_plugin_manager_t;
 typedef struct r_plugin_t {
   void* handle;
   void (*init)(void* state, r_plugin_manager_t* plugin_manager);
-  void (*update)(void* state, double dt);
+  void (*input)(void* state);
+  void (*update)(void* state, f64 dt);
+  void (*render)(void* state);
+  void (*unload)(void* state);
+  void (*destroy)(void* state);
   void* api;
-  char* name;
-  char* file_name;
+  wchar_t* name;
+  wchar_t* file_name;
   char* version;
   void* state_addr;
+  bool active;
+  bool reload;
   size_t memory_size;
 } r_plugin_t;
+
+typedef void* (*R_PLUGIN_LOAD)(r_memory_t*, void*);
+typedef void (*R_PLUGIN_INIT)(void* state, r_plugin_manager_t*);
+typedef void (*R_PLUGIN_INPUT)(void* state);
+typedef void (*R_PLUGIN_UPDATE)(void* state, f64 dt);
+typedef void (*R_PLUGIN_RENDER)(void* state);
+typedef void (*R_PLUGIN_UNLOAD)(void* state);
+typedef void (*R_PLUGIN_DESTROY)(void* state);
 
 #ifdef __cplusplus
 }

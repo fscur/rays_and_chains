@@ -32,7 +32,7 @@ load_plugin_b(r_memory_t* memory, void* handle) {
 
 void
 plugin_b_init(plugin_b_t* plugin_b, r_plugin_manager_t* plugin_manager) {
-  plugin_b->plugin_a_api = r_plugin_manager_find(plugin_manager, PLUGIN_A_NAME)->api;
+  plugin_b->plugin_a_api = r_plugin_manager_find_plugin(plugin_manager, PLUGIN_A_NAME)->api;
 }
 
 void
