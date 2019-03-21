@@ -16,9 +16,9 @@ typedef struct r_plugin_t {
   void (*unload)(void* state);
   void (*destroy)(void* state);
   void* api;
-  wchar_t* name;
-  wchar_t* file_name;
-  char* version;
+  char name[MAX_FILE_NAME_LENGTH];
+  char file_name[MAX_FILE_NAME_LENGTH];
+  int version;
   void* state_addr;
   bool active;
   bool reload;

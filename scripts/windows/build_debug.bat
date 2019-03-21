@@ -50,7 +50,7 @@ cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_string.dll /Fmr_string.map "..\sr
 cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_memory.dll /Fmr_memory.map "..\src\!windows\engine\memory\r_memory.windows.c" /link /DLL %COMMON_LINKER_FLAGS%
 cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_plugins.dll /Fmr_plugins.map "..\src\!windows\engine\plugins\r_plugins.windows.c" r_string.lib /link /DLL %COMMON_LINKER_FLAGS%
 cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% "..\src\plugins\plugin_a\plugin_a.c" /Fe"plugins\plugin_a.dll" /Fm"plugins\plugin_a.map" /Fo"plugins\plugin_a.obj" r_plugins.lib r_memory.lib /link /DLL %COMMON_LINKER_FLAGS%
-::cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% "..\src\plugins\plugin_b\plugin_b.c" /Fe"plugins\plugin_b.dll" /Fm"plugins\plugin_b.map" /Fo"plugins\plugin_b.obj" r_plugins.lib r_memory.lib /link /DLL %COMMON_LINKER_FLAGS%
+cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% "..\src\plugins\plugin_b\plugin_b.c" /Fe"plugins\plugin_b.dll" /Fm"plugins\plugin_b.map" /Fo"plugins\plugin_b.obj" r_plugins.lib r_memory.lib /link /DLL %COMMON_LINKER_FLAGS%
 cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fesandbox.exe /Fmsandbox.map "..\src\!windows\sandbox\r_sandbox.c" /link %COMMON_LINKER_FLAGS%
 popd
 

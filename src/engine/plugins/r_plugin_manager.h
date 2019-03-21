@@ -39,13 +39,13 @@ typedef struct r_plugin_manager_api_t {
   r_plugin_manager_t* (*create)(r_memory_t* memory);
   void (*add_plugin)(r_plugin_manager_t* state, r_plugin_t* plugin);
   void (*remove_plugin)(r_plugin_manager_t* state, r_plugin_t* plugin);
-  void* (*find_plugin)(r_plugin_manager_t* state, const wchar_t* file_name);
+  void* (*find_plugin)(r_plugin_manager_t* state, const char* name);
 } r_plugin_manager_api_t;
 
 typedef r_plugin_manager_t* (*R_PLUGIN_MANAGER_CREATE)(r_memory_t*);
 typedef void (*R_PLUGIN_MANAGER_ADD_PLUGIN)(r_plugin_manager_t*, r_plugin_t*);
 typedef void (*R_PLUGIN_MANAGER_REMOVE_PLUGIN)(r_plugin_manager_t*, void*);
-typedef void* (*R_PLUGIN_MANAGER_FIND_PLUGIN)(r_plugin_manager_t*, const wchar_t*);
+typedef void* (*R_PLUGIN_MANAGER_FIND_PLUGIN)(r_plugin_manager_t*, const char*);
 
 dll_export void //
 r_plugin_manager_add_plugin(r_plugin_manager_t* state, r_plugin_t* plugin);
@@ -54,7 +54,7 @@ dll_export void //
 r_plugin_manager_remove_plugin(r_plugin_manager_t* state, r_plugin_t* plugin);
 
 dll_export r_plugin_t* //
-r_plugin_manager_find_plugin(r_plugin_manager_t* state, const wchar_t* file_name);
+r_plugin_manager_find_plugin(r_plugin_manager_t* state, const char* name);
 
 #ifdef __cplusplus
 }

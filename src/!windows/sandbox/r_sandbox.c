@@ -13,6 +13,7 @@
 
 #pragma comment(lib, "r_plugins.lib")
 #pragma comment(lib, "r_io.lib")
+#pragma comment(lib, "r_string.lib")
 
 int CALLBACK
 WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {

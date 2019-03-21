@@ -6,7 +6,7 @@ extern "C" {
 
 #include "engine/core/r_core_types.h"
 
-#define PLUGIN_A_NAME L"plugin_a.dll"
+#define PLUGIN_A_NAME "plugin_a"
 
 typedef struct r_plugin_manager_t r_plugin_manager_t;
 typedef struct r_plugin_t r_plugin_t;

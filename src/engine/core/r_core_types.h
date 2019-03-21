@@ -18,6 +18,8 @@ extern "C" {
 #define gigabytes(Value) (megabytes(Value) * 1024LL)
 #define terabytes(Value) (gigabytes(Value) * 1024LL)
 
+#define MAX_FILE_NAME_LENGTH 256
+
 #if _DEBUG
 #define assert(expression)                                                                         \
   if (!(expression)) {                                                                             \

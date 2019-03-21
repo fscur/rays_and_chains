@@ -49,13 +49,15 @@ r_plugin_manager_remove_plugin(r_plugin_manager_t* state, r_plugin_t* plugin) {
 }
 
 r_plugin_t* //
-r_plugin_manager_find_plugin(r_plugin_manager_t* state, const wchar_t* file_name) {
+r_plugin_manager_find_plugin(r_plugin_manager_t* state, const char* name) {
   r_plugin_t* plugin = NULL;
-  for (u32 i = 0; i < state->plugin_count; ++i)
-    if (!r_string_wcmp(state->plugins[i]->file_name, file_name)) {
+
+  for (u32 i = 0; i < state->plugin_count; ++i) {
+    if (!r_string_cmp(state->plugins[i]->name, name)) {
       plugin = state->plugins[i];
       break;
     }
+  }
 
   assert(plugin != NULL);
   return plugin;
