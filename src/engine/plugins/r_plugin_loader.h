@@ -5,6 +5,8 @@ extern "C" {
 
 #include "engine/core/r_core_types.h"
 
+typedef void* (*R_PLUGIN_LOADER_FN)(void*, const char*);
+
 dll_export void* //
 r_plugin_loader_load_plugin(const wchar_t* file_name);
 

@@ -7,13 +7,6 @@
 #include "!windows/engine/time/r_time.windows.c"
 #include "!windows/engine/window/r_window.windows.c"
 #include "!windows/engine/app/r_app.windows.c"
-#include "engine/plugins/r_plugin_manager.h"
-#include "engine/plugins/r_plugin_loader.h"
-#include "engine/plugins/r_plugin.h"
-
-#pragma comment(lib, "r_plugins.lib")
-#pragma comment(lib, "r_io.lib")
-#pragma comment(lib, "r_string.lib")
 
 int CALLBACK
 WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {

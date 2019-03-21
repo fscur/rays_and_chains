@@ -8,7 +8,7 @@
 #include "engine/plugins/r_plugin.h"
 
 r_plugin_t* //
-load_plugin_b(r_memory_t* memory, void* handle) {
+load_plugin_b(R_PLUGIN_LOADER_FN fn, r_memory_t* memory, void* handle) {
   local r_plugin_t plugin = {0};
 
   size_t total_memory = sizeof(plugin_b_api_t) + sizeof(plugin_b_t);
@@ -17,26 +17,29 @@ load_plugin_b(r_memory_t* memory, void* handle) {
   plugin_b_t* state = R_MEMORY_ARENA_PUSH_STRUCT(memory_arena, plugin_b_t);
 
   api->handle = handle;
-  api->init = (PLBINITFN)r_plugin_loader_fn(handle, "plugin_b_init");
-  api->update = (PLBUPDATEFN)r_plugin_loader_fn(handle, "plugin_b_update");
-  api->print_sum = (PRINTSUMFN)r_plugin_loader_fn(handle, "plugin_b_print_sum");
+  api->init = (R_PLUGIN_INIT)fn(handle, "plugin_b_init");
+  api->render = (R_PLUGIN_RENDER)fn(handle, "plugin_b_render");
+  api->print_sum = (PRINTSUMFN)fn(handle, "plugin_b_print_sum");
 
   plugin.api = api;
   plugin.state_addr = state;
   plugin.memory_size = total_memory;
-  plugin.init = (PLUGINAINITFN)api->init;
-  plugin.update = (PLUGINAUPDATEFN)api->update;
+  plugin.init = (R_PLUGIN_INIT)api->init;
+  plugin.render = (R_PLUGIN_RENDER)api->render;
 
   return &plugin;
 }
 
-void
-plugin_b_init(plugin_b_t* plugin_b, r_plugin_manager_t* plugin_manager) {
-  plugin_b->plugin_a_api = r_plugin_manager_find_plugin(plugin_manager, PLUGIN_A_NAME)->api;
+void //
+plugin_b_init(plugin_b_t* plugin_b,
+              R_PLUGIN_MANAGER_FIND_PLUGIN find_plugin_fn,
+              r_plugin_manager_t* plugin_manager) {
+  r_plugin_t* plugin_a = find_plugin_fn(plugin_manager, PLUGIN_A_NAME);
+  plugin_b->plugin_a_api = plugin_a->api;
 }
 
 void
-plugin_b_update(plugin_b_t* plugin_b, f64 dt) {
+plugin_b_render(plugin_b_t* plugin_b) {
   plugin_b_print_sum(plugin_b, 2, 4);
 }
 
