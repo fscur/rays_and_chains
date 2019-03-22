@@ -114,7 +114,9 @@ r_app_destroy(const r_app_t* state) {
 
 void //
 r_app_run(r_app_t* state) {
+
   r_app_input(state);
   r_app_update(state);
   r_app_render(state);
+  r_plugin_manager_reload_plugin(state->plugin_manager, state->plugin_manager->plugins[0]);
 }

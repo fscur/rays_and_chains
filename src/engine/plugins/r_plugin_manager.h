@@ -18,12 +18,6 @@ typedef struct r_plugin_manager_t {
   u8 render[MAX_PLUGINS_COUNT];
   u8 unload[MAX_PLUGINS_COUNT];
   u8 destroy[MAX_PLUGINS_COUNT];
-  // void* init[MAX_PLUGINS_COUNT];
-  // void* input[MAX_PLUGINS_COUNT];
-  // void* update[MAX_PLUGINS_COUNT];
-  // void* render[MAX_PLUGINS_COUNT];
-  // void* unload[MAX_PLUGINS_COUNT];
-  // void* destroy[MAX_PLUGINS_COUNT];
   r_plugin_t* plugins[MAX_PLUGINS_COUNT];
   u8 plugin_count;
   u8 init_count;
@@ -34,7 +28,7 @@ typedef struct r_plugin_manager_t {
   u8 destroy_count;
 } r_plugin_manager_t;
 
-#define R_PLUGIN_MANAGER_API L"r_plugin_manager.dll"
+#define R_PLUGIN_MANAGER_API "r_plugin_manager.dll"
 #define R_PLUGIN_MANAGER_API_CREATE "r_plugin_manager_create"
 #define R_PLUGIN_MANAGER_API_ADD_PLUGIN "r_plugin_manager_add_plugin"
 #define R_PLUGIN_MANAGER_API_REMOVE_PLUGIN "r_plugin_manager_remove_plugin"
@@ -58,6 +52,9 @@ r_plugin_manager_init(r_plugin_manager_t* this);
 
 dll_export void //
 r_plugin_manager_add_plugin(r_plugin_manager_t* this, r_plugin_t* plugin);
+
+dll_export void //
+r_plugin_manager_reload_plugin(r_plugin_manager_t* this, r_plugin_t* plugin);
 
 dll_export void //
 r_plugin_manager_remove_plugin(r_plugin_manager_t* this, r_plugin_t* plugin);
