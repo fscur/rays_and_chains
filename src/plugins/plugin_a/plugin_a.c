@@ -36,7 +36,12 @@ plugin_a_init(void* plugin_a, R_PLUGIN_MANAGER_FIND_PLUGIN find_plugin_api, r_pl
 
 void
 plugin_a_update(void* plugin_a, f64 dt) {
-  printf("update: %lf", dt);
+  int a = 1;
+  int b = 2;
+  int c = 3;
+  int d = a+b+c;
+
+  printf("update: %d", d);
 }
 
 i32

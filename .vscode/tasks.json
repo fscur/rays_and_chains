@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build:debug",
+            "label": "build sandbox : debug",
             "type": "shell",
             "windows": {
                 "options": {
@@ -12,6 +12,66 @@
             },
             "linux": {
                 "command": "./scripts/linux/build_debug.sh"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
+            "label": "build bumpver : debug",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "cwd": "p:\\scripts\\windows"
+                },
+                "command": "p:\\scripts\\windows\\build_bumpver_debug.bat"
+            },
+            "linux": {
+                "command": "./scripts/linux/build_bumpver_debug.sh"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
+            "label": "build pdb_path_fixer : debug",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "cwd": "p:\\scripts\\windows"
+                },
+                "command": "p:\\scripts\\windows\\build_pdb_path_fixer_debug.bat"
+            },
+            "linux": {
+                "command": "./scripts/linux/build_pdb_path_fixer_debug.sh"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
+            "label": "build plugin_a : debug",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "cwd": "p:\\scripts\\windows"
+                },
+                "command": "p:\\scripts\\windows\\build_plugin_a_debug.bat"
+            },
+            "linux": {
+                "command": "./scripts/linux/build_plugin_a_debug.sh"
             },
             "group": {
                 "kind": "build",
