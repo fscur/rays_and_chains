@@ -93,12 +93,10 @@ r_plugin_loader_unload_plugin(r_plugin_t* plugin) {
 
 r_plugin_t* //
 r_plugin_loader_reload_plugin(r_plugin_t* plugin) {
-  Sleep(2500);
   // todo: how to handle change in size?
   FreeLibrary(plugin->handle);
-  Sleep(250);
-  while (!DeleteFileA(plugin->tmp_file_name));
-  Sleep(250);
+  while (!DeleteFileA(plugin->tmp_file_name))
+    Sleep(1);
 
   char tmp_pdb_file_name[MAX_PATH] = {0};
   char pdb_file_name[MAX_PATH] = {0};

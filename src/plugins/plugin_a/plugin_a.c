@@ -46,9 +46,9 @@ plugin_a_init(plugin_a_t* plugin_a,
 
 void //
 plugin_a_update(plugin_a_t* plugin_a, f64 dt) {
-  int a = 8;
-  int b = 2;
-  int c = 5;
+  int a = 0;
+  int b = 0;
+  int c = 1;
   int d = a + b + c;
 
   plugin_a->debug->print("update: %d", d);

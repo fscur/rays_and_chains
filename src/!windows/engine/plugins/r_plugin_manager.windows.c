@@ -6,7 +6,7 @@
 bool //
 r_plugin_manager_should_reload(r_plugin_manager_t* this, r_plugin_t* plugin) {
   r_time_t last_modification = {0};
-  r_file_a_get_last_modification(plugin->file_name, &last_modification);
-  bool a = r_time_compare(&plugin->last_modification, &last_modification) != 0;
-  return a;
+  if (r_file_a_get_last_modification(plugin->file_name, &last_modification))
+    return r_time_compare(&plugin->last_modification, &last_modification) != 0;
+  return false;
 }
