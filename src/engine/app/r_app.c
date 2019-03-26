@@ -8,6 +8,7 @@
 #include "engine/time/r_time.h"
 #include "engine/window/r_window.h"
 #include "r_app.h"
+#include "plugins/plugin_a/plugin_a.api.h"
 
 r_app_t* //
 r_app_create(r_memory_t* memory, r_app_info_t* info) {
@@ -49,6 +50,7 @@ r_app_init(r_app_t* state) {
   debug_api.print = (R_DEBUG_PRINT)&r_debug_print;
 
   state->api_register.apis[0] = &debug_api;
+  state->api_register.find_api_function = (R_APP_FIND_API_FN)&find_api;
 
   r_plugin_manager_t* plugin_manager = state->plugin_manager;
 
@@ -61,7 +63,7 @@ r_app_init(r_app_t* state) {
     state->api_register.apis[id] = plugin->api;
     state->api_register.api_count++;
 
-    plugin->init(plugin->state_addr, (R_APP_FIND_API)&find_api, &state->api_register);
+    plugin->init(plugin->state, &state->api_register);
   }
 }
 
@@ -77,9 +79,11 @@ r_app_input(r_app_t* state) {
   for (int i = 0; i < plugin_manager->input_count; ++i) {
     u8 index = plugin_manager->input[i];
     r_plugin_t* plugin = plugin_manager->plugins[index];
-    plugin->input(plugin->state_addr);
+    plugin->input(plugin->state);
   }
 }
+
+typedef i32 (*PLUGIN_A_ADD_FN)(i32, i32);
 
 void
 r_app_update(r_app_t* state) {
@@ -92,7 +96,7 @@ r_app_update(r_app_t* state) {
   for (int i = 0; i < plugin_manager->update_count; ++i) {
     u8 index = plugin_manager->update[i];
     r_plugin_t* plugin = plugin_manager->plugins[index];
-    plugin->update(plugin->state_addr, state->time_info->dt);
+    plugin->update(plugin->state, state->time_info->dt);
   }
 }
 
@@ -104,7 +108,7 @@ r_app_render(const r_app_t* state) {
   for (int i = 0; i < plugin_manager->render_count; ++i) {
     u8 index = plugin_manager->render[i];
     r_plugin_t* plugin = plugin_manager->plugins[index];
-    plugin->render(plugin->state_addr);
+    plugin->render(plugin->state);
   }
 
   r_window_render(state->window);
@@ -118,7 +122,7 @@ r_app_unload(const r_app_t* state) {
   for (int i = 0; i < plugin_manager->unload_count; ++i) {
     u8 index = plugin_manager->unload[i];
     r_plugin_t* plugin = plugin_manager->plugins[index];
-    plugin->unload(plugin->state_addr);
+    plugin->unload(plugin->state);
   }
 }
 
@@ -131,7 +135,7 @@ r_app_destroy(const r_app_t* state) {
   for (int i = 0; i < plugin_manager->destroy_count; ++i) {
     u8 index = plugin_manager->destroy[i];
     r_plugin_t* plugin = plugin_manager->plugins[index];
-    plugin->destroy(plugin->state_addr);
+    plugin->destroy(plugin->state);
   }
 }
 

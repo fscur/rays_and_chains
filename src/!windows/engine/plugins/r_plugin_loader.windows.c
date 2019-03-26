@@ -116,7 +116,7 @@ r_plugin_loader_reload_plugin(r_plugin_t* plugin) {
     strcat(load_fn_name, plugin->name);
     R_PLUGIN_LOAD load_function = (R_PLUGIN_LOAD)r_plugin_loader_fn(plugin_handle, load_fn_name);
 
-    r_plugin_t* new_plugin = load_function(&r_plugin_loader_fn, plugin->state_addr, plugin_handle);
+    r_plugin_t* new_plugin = load_function(&r_plugin_loader_fn, plugin->state, plugin_handle);
     r_file_a_get_last_modification(new_plugin->file_name, &new_plugin->last_modification);
     return new_plugin;
   }
