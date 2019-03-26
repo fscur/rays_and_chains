@@ -7,6 +7,7 @@
 #include "!windows/engine/time/r_time.windows.c"
 #include "!windows/engine/window/r_window.windows.c"
 #include "!windows/engine/app/r_app.windows.c"
+#include "!windows/engine/plugins/r_plugins.windows.c"
 
 int CALLBACK
 WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {
@@ -17,7 +18,7 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
   r_time_init_clock_frequency();
   last = start = r_time_now();
 
-  r_time_t time = {0};
+  r_time_info_t time_info = {0};
   r_memory_t memory = r_memory_create(kilobytes(64));
 
   // todo: read from file
@@ -27,7 +28,7 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
   app_info.height = 300;
   app_info.back_color = (r_color_t){0.08f, 0.09f, 0.12f, 1.00f};
   app_info.desired_fps = 30.0;
-  app_info.time = &time;
+  app_info.time_info = &time_info;
 
   r_app_t* app = r_app_create(&memory, &app_info);
 
@@ -39,56 +40,56 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
   while (app->running) {
     r_debug_print(                                  //
         "[%010I64d][%08.3f][debug] Frame Start.\n", //
-        time.frames,
-        time.now / 1000.0);
+        time_info.frames,
+        time_info.now / 1000.0);
 
     r_app_run(app);
 
     // todo: make timings be measured in seconds
-    time.dt = r_time_now() - last;
+    time_info.dt = r_time_now() - last;
 
     // note: hold your horses, not so fast!
-    if (time.dt < time.desired_ms_per_frame) {
+    if (time_info.dt < time_info.desired_ms_per_frame) {
       if (r_thread_sleep_is_granular) {
-        i32 sleep_ms = (i32)(time.desired_ms_per_frame - time.dt) - 1;
+        i32 sleep_ms = (i32)(time_info.desired_ms_per_frame - time_info.dt) - 1;
         if (sleep_ms > 0)
           r_thread_sleep(sleep_ms);
       }
 
-      assert(time.dt < time.desired_ms_per_frame);
-      while (time.dt < time.desired_ms_per_frame) {
-        time.dt = r_time_now() - last;
+      assert(time_info.dt < time_info.desired_ms_per_frame);
+      while (time_info.dt < time_info.desired_ms_per_frame) {
+        time_info.dt = r_time_now() - last;
       }
-    } else if (time.frames > 0) {
+    } else if (time_info.frames > 0) {
       r_debug_print(                                                   //
           "[%010I64d][%08.3f][debug] Frame lost! It took %5.2f ms.\n", //
-          time.frames,
-          time.now / 1000.0f,
-          time.dt);
+          time_info.frames,
+          time_info.now / 1000.0f,
+          time_info.dt);
     }
 
     f64 end = r_time_now();
-    time.dt = end - last;
+    time_info.dt = end - last;
     last = end;
-    time.now = last - start;
+    time_info.now = last - start;
 
     // important:  wtf is going on here??? how does a frame jumps by more than 5.0 ms??? not cool.
     // try to understand it...
-    if (time.frames > 0 && time.dt > time.desired_ms_per_frame + 5.0) {
+    if (time_info.frames > 0 && time_info.dt > time_info.desired_ms_per_frame + 5.0) {
       r_debug_print(                                                   //
           "[%010I64d][%08.3f][debug] Frame drop? It took %5.2f ms.\n", //
-          time.frames,
-          time.now / 1000.0f,
-          time.dt);
+          time_info.frames,
+          time_info.now / 1000.0f,
+          time_info.dt);
     } else {
       r_debug_print(                                                  //
           "[%010I64d][%08.3f][debug] Frame End. It took %5.2f ms.\n", //
-          time.frames,
-          time.now / 1000.0f,
-          time.dt);
+          time_info.frames,
+          time_info.now / 1000.0f,
+          time_info.dt);
     }
 
-    time.frames++;
+    time_info.frames++;
   }
 
   r_app_unload(app);

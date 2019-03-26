@@ -8,19 +8,22 @@ extern "C" {
 
 global f64 r_time_clock_frequency_in_ms;
 
-typedef struct r_time_t {
+typedef struct r_time_info_t {
   f64 desired_fps;
   f64 desired_ms_per_frame;
   f64 dt;
   f64 now;
   i64 frames;
-} r_time_t;
+} r_time_info_t;
 
 inline void //
 r_time_init_clock_frequency();
 
 inline f64 //
 r_time_now();
+
+dll_export inline i32 //
+r_time_compare(r_time_t* a, r_time_t* b);
 
 #ifdef __cplusplus
 }

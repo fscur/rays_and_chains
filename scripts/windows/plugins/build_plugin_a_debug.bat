@@ -31,10 +31,13 @@ goto start
 
 call log [info] "********** DEBUG **********"
 pushd P:\
-del bin\plugins\plugin_a* /Q
+del bin\plugins\plugin_a*.* /Q
+del bin\plugins\plugin_a\plugin_a* /Q
 if not exist bin mkdir bin
 cd bin
 if not exist plugins mkdir plugins
+cd plugins
+if not exist plugin_a mkdir plugin_a
 popd
 
 call log [info] "Building plugin_a.dll"
@@ -47,10 +50,13 @@ pushd p:\
 .\tools\bumpver\bumpver.exe -b ".\src\plugins\plugin_a\version.rc"
 popd
 
+call log [info] "Compiling plugin_a.dll resources"
 pushd p:\
 rc /d DEBUG ".\src\plugins\plugin_a\version.rc"
 cd bin
-cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% "..\src\plugins\plugin_a\plugin_a.c" /Fe"plugins\plugin_a.dll" /Fm"plugins\plugin_a.map" /Fo"plugins\plugin_a.obj" /link /DLL /PDB:"plugins\plugin_a.%TAG%.pdb" %COMMON_LINKER_FLAGS% "..\src\plugins\plugin_a\version.res"
+cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% "..\src\plugins\plugin_a\plugin_a.c" /Fe"plugins\plugin_a\plugin_a.dll" /Fm"plugins\plugin_a\plugin_a.map" /Fo"plugins\plugin_a\plugin_a.obj" /link /DLL /PDB:"plugins\plugin_a\plugin_a.%TAG%.pdb" %COMMON_LINKER_FLAGS% "..\src\plugins\plugin_a\version.res"
 cd ..
-.\tools\pdb_path_fixer\pdb_path_fixer.exe ".\bin\plugins\plugin_a.dll"
+.\tools\pdb_path_fixer\pdb_path_fixer.exe ".\bin\plugins\plugin_a\plugin_a.dll"
+robocopy .\bin\plugins\plugin_a .\bin\plugins plugin_a.*.pdb /xo /njh /njs /ndl /nc /ns
+robocopy .\bin\plugins\plugin_a .\bin\plugins plugin_a.dll /xo /njh /njs /ndl /nc /ns
 popd

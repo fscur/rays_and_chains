@@ -77,6 +77,17 @@ typedef struct r_plane_t {
   r_v3_t p, n;
 } r_plane_t;
 
+typedef struct r_time_t {
+  i16 year;
+  i16 month;
+  i16 day_of_week;
+  i16 day;
+  i16 hour;
+  i16 minute;
+  i16 second;
+  i16 milli_seconds;
+} r_time_t;
+
 #if defined(WIN32)
 #define dll_export __declspec(dllexport)
 #endif

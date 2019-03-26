@@ -17,3 +17,14 @@ r_time_now() {
   QueryPerformanceCounter(&counter);
   return counter.QuadPart * r_time_clock_frequency_in_ms;
 }
+
+inline i32 //
+r_time_compare(r_time_t* a, r_time_t* b) {
+  FILETIME ft_a;
+  FILETIME ft_b;
+
+  SystemTimeToFileTime((SYSTEMTIME*)a, &ft_a);
+  SystemTimeToFileTime((SYSTEMTIME*)b, &ft_b);
+  long r = (CompareFileTime(&ft_a, &ft_b));
+  return (i32)r;
+}

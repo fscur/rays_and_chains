@@ -8,7 +8,7 @@
                 "options": {
                     "cwd": "p:\\scripts\\windows"
                 },
-                "command": "p:\\scripts\\windows\\build_debug.bat"
+                "command": "p:\\scripts\\windows\\sandbox\\build_debug.bat"
             },
             "linux": {
                 "command": "./scripts/linux/build_debug.sh"
@@ -28,7 +28,7 @@
                 "options": {
                     "cwd": "p:\\scripts\\windows"
                 },
-                "command": "p:\\scripts\\windows\\build_bumpver_debug.bat"
+                "command": "p:\\scripts\\windows\\tools\\build_bumpver_debug.bat"
             },
             "linux": {
                 "command": "./scripts/linux/build_bumpver_debug.sh"
@@ -48,7 +48,7 @@
                 "options": {
                     "cwd": "p:\\scripts\\windows"
                 },
-                "command": "p:\\scripts\\windows\\build_pdb_path_fixer_debug.bat"
+                "command": "p:\\scripts\\windows\\tools\\build_pdb_path_fixer_debug.bat"
             },
             "linux": {
                 "command": "./scripts/linux/build_pdb_path_fixer_debug.sh"
@@ -68,7 +68,7 @@
                 "options": {
                     "cwd": "p:\\scripts\\windows"
                 },
-                "command": "p:\\scripts\\windows\\build_plugin_a_debug.bat"
+                "command": "p:\\scripts\\windows\\plugins\\build_plugin_a_debug.bat"
             },
             "linux": {
                 "command": "./scripts/linux/build_plugin_a_debug.sh"

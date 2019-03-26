@@ -28,20 +28,6 @@ typedef struct r_plugin_manager_t {
   u8 destroy_count;
 } r_plugin_manager_t;
 
-#define R_PLUGIN_MANAGER_API "r_plugin_manager.dll"
-#define R_PLUGIN_MANAGER_API_CREATE "r_plugin_manager_create"
-#define R_PLUGIN_MANAGER_API_ADD_PLUGIN "r_plugin_manager_add_plugin"
-#define R_PLUGIN_MANAGER_API_REMOVE_PLUGIN "r_plugin_manager_remove_plugin"
-#define R_PLUGIN_MANAGER_API_FIND_PLUGIN "r_plugin_manager_find_plugin"
-
-typedef struct r_plugin_manager_api_t {
-  void* handle;
-  r_plugin_manager_t* (*create)(r_memory_t* memory);
-  void (*add_plugin)(r_plugin_manager_t* state, r_plugin_t* plugin);
-  void (*remove_plugin)(r_plugin_manager_t* state, r_plugin_t* plugin);
-  r_plugin_t* (*find_plugin)(r_plugin_manager_t* state, const char* name);
-} r_plugin_manager_api_t;
-
 typedef r_plugin_manager_t* (*R_PLUGIN_MANAGER_CREATE)(r_memory_t*);
 typedef void (*R_PLUGIN_MANAGER_ADD_PLUGIN)(r_plugin_manager_t*, r_plugin_t*);
 typedef void (*R_PLUGIN_MANAGER_REMOVE_PLUGIN)(r_plugin_manager_t*, void*);
@@ -51,7 +37,13 @@ dll_export void //
 r_plugin_manager_init(r_plugin_manager_t* this);
 
 dll_export void //
+r_plugin_manager_reload_plugins(r_plugin_manager_t* this);
+
+dll_export void //
 r_plugin_manager_add_plugin(r_plugin_manager_t* this, r_plugin_t* plugin);
+
+dll_export bool //
+r_plugin_manager_should_reload(r_plugin_manager_t* this, r_plugin_t* plugin);
 
 dll_export void //
 r_plugin_manager_reload_plugin(r_plugin_manager_t* this, r_plugin_t* plugin);

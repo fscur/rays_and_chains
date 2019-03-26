@@ -14,7 +14,7 @@ r_app_create(r_memory_t* memory, r_app_info_t* info) {
 
   size_t total_memory = sizeof(r_app_t) +    //
                         sizeof(r_window_t) + //
-                        sizeof(r_plugin_manager_t) + sizeof(r_time_t);
+                        sizeof(r_plugin_manager_t) + sizeof(r_time_info_t);
 
   r_memory_arena_t* memory_arena = r_memory_add_arena(memory, total_memory);
 
@@ -22,10 +22,10 @@ r_app_create(r_memory_t* memory, r_app_info_t* info) {
   state->window = R_MEMORY_ARENA_PUSH_STRUCT(memory_arena, r_window_t);
   state->plugin_manager = R_MEMORY_ARENA_PUSH_STRUCT(memory_arena, r_plugin_manager_t);
   state->plugin_manager->memory = memory;
-  state->time = info->time;
+  state->time_info = info->time_info;
   state->memory = memory;
-  state->time->desired_fps = info->desired_fps;
-  state->time->desired_ms_per_frame = 1000.0 / info->desired_fps;
+  state->time_info->desired_fps = info->desired_fps;
+  state->time_info->desired_ms_per_frame = 1000.0 / info->desired_fps;
   state->running = true;
 
   r_window_t* window = state->window;
@@ -37,9 +37,32 @@ r_app_create(r_memory_t* memory, r_app_info_t* info) {
   return state;
 }
 
+internal void* //
+find_api(r_app_api_register_t* api_register, const u32 id) {
+  return api_register->apis[id];
+}
+
 void
 r_app_init(r_app_t* state) {
-  r_plugin_manager_init(state->plugin_manager);
+
+  local r_debug_api_t debug_api = {0};
+  debug_api.print = (R_DEBUG_PRINT)&r_debug_print;
+
+  state->api_register.apis[0] = &debug_api;
+
+  r_plugin_manager_t* plugin_manager = state->plugin_manager;
+
+  r_plugin_manager_init(plugin_manager);
+
+  for (int i = 0; i < plugin_manager->init_count; ++i) {
+    u8 index = plugin_manager->init[i];
+    r_plugin_t* plugin = plugin_manager->plugins[index];
+    u32 id = plugin->id;
+    state->api_register.apis[id] = plugin->api;
+    state->api_register.api_count++;
+
+    plugin->init(plugin->state_addr, (R_APP_FIND_API)&find_api, &state->api_register);
+  }
 }
 
 void
@@ -69,7 +92,7 @@ r_app_update(r_app_t* state) {
   for (int i = 0; i < plugin_manager->update_count; ++i) {
     u8 index = plugin_manager->update[i];
     r_plugin_t* plugin = plugin_manager->plugins[index];
-    plugin->update(plugin->state_addr, state->time->dt);
+    plugin->update(plugin->state_addr, state->time_info->dt);
   }
 }
 
@@ -118,5 +141,6 @@ r_app_run(r_app_t* state) {
   r_app_input(state);
   r_app_update(state);
   r_app_render(state);
-  r_plugin_manager_reload_plugin(state->plugin_manager, state->plugin_manager->plugins[0]);
+
+  r_plugin_manager_reload_plugins(state->plugin_manager);
 }

@@ -5,10 +5,18 @@ extern "C" {
 
 #include "engine/core/r_core_types.h"
 
-typedef struct r_time_t r_time_t;
+typedef struct r_time_info_t r_time_info_t;
 typedef struct r_memory_t r_memory_t;
 typedef struct r_window_t r_window_t;
 typedef struct r_plugin_manager_t r_plugin_manager_t;
+
+
+typedef struct r_app_api_register_t {
+  void* apis[512];
+  u32 api_count;
+} r_app_api_register_t;
+
+typedef void* (*R_APP_FIND_API)(r_app_api_register_t*, const u32);
 
 typedef struct r_app_info_t {
   char title[256];
@@ -18,14 +26,15 @@ typedef struct r_app_info_t {
   i32 y;
   r_color_t back_color;
   f64 desired_fps;
-  r_time_t* time;
+  r_time_info_t* time_info;
 } r_app_info_t;
 
 typedef struct r_app_t {
   r_memory_t* memory;
   r_window_t* window;
   r_plugin_manager_t* plugin_manager;
-  r_time_t* time;
+  r_time_info_t* time_info;
+  r_app_api_register_t api_register;
   bool running;
 } r_app_t;
 
