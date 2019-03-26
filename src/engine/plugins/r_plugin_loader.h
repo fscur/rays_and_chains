@@ -8,8 +8,6 @@ extern "C" {
 typedef struct r_memory_t r_memory_t;
 typedef struct r_plugin_t r_plugin_t;
 
-typedef void* (*R_PLUGIN_LOADER_FN)(void*, const char*);
-
 dll_export r_plugin_t* //
 r_plugin_loader_load_plugin(r_memory_t* memory, const char* file_name);
 

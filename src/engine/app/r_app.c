@@ -7,8 +7,8 @@
 #include "engine/string/r_string.h"
 #include "engine/time/r_time.h"
 #include "engine/window/r_window.h"
+#include "engine/diagnostics/r_debug.h"
 #include "r_app.h"
-#include "plugins/plugin_a/plugin_a.api.h"
 
 r_app_t* //
 r_app_create(r_memory_t* memory, r_app_info_t* info) {
@@ -60,8 +60,8 @@ r_app_init(r_app_t* state) {
     u8 index = plugin_manager->init[i];
     r_plugin_t* plugin = plugin_manager->plugins[index];
     u32 id = plugin->id;
+
     state->api_register.apis[id] = plugin->api;
-    state->api_register.api_count++;
 
     plugin->init(plugin->state, &state->api_register);
   }

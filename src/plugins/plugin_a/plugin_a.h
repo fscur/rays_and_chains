@@ -11,18 +11,16 @@ extern "C" {
 #define PLUGIN_A_ID 256
 #define PLUGIN_A_NAME "plugin_a"
 
+typedef struct r_plugin_load_info_t r_plugin_load_info_t;
 typedef struct r_app_api_register_t r_app_api_register_t;
 typedef struct r_debug_api_t r_debug_api_t;
 typedef struct r_plugin_t r_plugin_t;
-
-typedef void* (*R_PLUGIN_LOADER_FN)(void*, const char*);
-typedef void* (*R_APP_FIND_API)(r_app_api_register_t*, const u32);
 
 typedef struct plugin_a_t {
   r_debug_api_t* debug;
 } plugin_a_t;
 
-dll_export r_plugin_t* load_plugin_a(R_PLUGIN_LOADER_FN fn, void* memory_addr, void* handle);
+dll_export r_plugin_t* load_plugin_a(r_plugin_load_info_t* load_info);
 dll_export size_t get_size_plugin_a();
 dll_export u32 get_id_plugin_a();
 

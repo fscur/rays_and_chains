@@ -73,7 +73,12 @@ r_plugin_loader_load_plugin(r_memory_t* memory, const char* file_name) {
     size_t memory_size = get_size_function();
     r_memory_arena_t* memory_arena = r_memory_add_arena(memory, memory_size);
     void* memory_addr = r_memory_arena_push(memory_arena, memory_size);
-    r_plugin_t* plugin = load_function(&r_plugin_loader_fn, memory_addr, plugin_handle);
+
+    r_plugin_load_info_t load_info = {0};
+    load_info.fn = &r_plugin_loader_fn;
+    load_info.handle = plugin_handle;
+    load_info.memory_addr = memory_addr;
+    r_plugin_t* plugin = load_function(&load_info);
     plugin->id = get_id_function();
 
     sprintf(plugin->name, "%s", plugin_name);
@@ -114,7 +119,11 @@ r_plugin_loader_reload_plugin(r_plugin_t* plugin) {
     strcat(load_fn_name, plugin->name);
     R_PLUGIN_LOAD load_function = (R_PLUGIN_LOAD)r_plugin_loader_fn(plugin_handle, load_fn_name);
 
-    r_plugin_t* new_plugin = load_function(&r_plugin_loader_fn, plugin->state, plugin_handle);
+    r_plugin_load_info_t load_info = {0};
+    load_info.fn = &r_plugin_loader_fn;
+    load_info.handle = plugin_handle;
+    load_info.memory_addr = plugin->state;
+    r_plugin_t* new_plugin = load_function(&load_info);
     r_file_a_get_last_modification(new_plugin->file_name, &new_plugin->last_modification);
     return new_plugin;
   }

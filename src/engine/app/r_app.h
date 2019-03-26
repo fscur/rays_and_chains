@@ -15,10 +15,7 @@ typedef void* (*R_APP_FIND_API_FN)(r_app_api_register_t*, const u32);
 typedef struct r_app_api_register_t {
   R_APP_FIND_API_FN find_api_function;
   void* apis[512];
-  u32 api_count;
 } r_app_api_register_t;
-
-typedef void* (*R_APP_FIND_API)(r_app_api_register_t*, const u32);
 
 typedef struct r_app_info_t {
   char title[256];

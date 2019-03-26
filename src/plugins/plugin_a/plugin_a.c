@@ -17,21 +17,22 @@ get_size_plugin_a() {
 }
 
 r_plugin_t* //
-load_plugin_a(R_PLUGIN_LOADER_FN fn, void* memory_addr, void* handle) {
-  plugin_a_t* state = (plugin_a_t*)memory_addr;
+load_plugin_a(r_plugin_load_info_t* load_info) {
+
+  plugin_a_t* state = (plugin_a_t*)load_info->memory_addr;
   r_plugin_t* plugin = (r_plugin_t*)((char*)state + sizeof(plugin_a_t));
   plugin_a_api_t* api = (plugin_a_api_t*)((char*)plugin + sizeof(r_plugin_t));
 
-  api->add = (PLUGIN_A_ADD_FN)fn(handle, "plugin_a_add");
-  api->sub = (PLUGIN_A_SUB_FN)fn(handle, "plugin_a_sub");
-  api->mul = (PLUGIN_A_MUL_FN)fn(handle, "plugin_a_mul");
-  api->div = (PLUGIN_A_DIV_FN)fn(handle, "plugin_a_div");
+  api->add = (PLUGIN_A_ADD_FN)load_info->fn(load_info->handle, "plugin_a_add");
+  api->sub = (PLUGIN_A_SUB_FN)load_info->fn(load_info->handle, "plugin_a_sub");
+  api->mul = (PLUGIN_A_MUL_FN)load_info->fn(load_info->handle, "plugin_a_mul");
+  api->div = (PLUGIN_A_DIV_FN)load_info->fn(load_info->handle, "plugin_a_div");
 
-  plugin->handle = handle;
+  plugin->handle = load_info->handle;
   plugin->api = api;
   plugin->state = state;
-  plugin->init = (R_PLUGIN_INIT)fn(handle, "plugin_a_init");
-  plugin->update = (R_PLUGIN_UPDATE)fn(handle, "plugin_a_update");
+  plugin->init = (R_PLUGIN_INIT)load_info->fn(load_info->handle, "plugin_a_init");
+  plugin->update = (R_PLUGIN_UPDATE)load_info->fn(load_info->handle, "plugin_a_update");
 
   return plugin;
 }
@@ -47,7 +48,7 @@ plugin_a_init(plugin_a_t* plugin_a,
 void //
 plugin_a_update(plugin_a_t* plugin_a, f64 dt) {
   int a = 0;
-  int b = 0;
+  int b = 2;
   int c = 1;
   int d = a + b + c;
 
