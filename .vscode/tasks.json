@@ -82,6 +82,26 @@
             ]
         },
         {
+            "label": "build plugin_b : debug",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "cwd": "p:\\scripts\\windows"
+                },
+                "command": "p:\\scripts\\windows\\plugins\\build_plugin_b_debug.bat"
+            },
+            "linux": {
+                "command": "./scripts/linux/build_plugin_b_debug.sh"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
             "label": "open vs debugger",
             "type": "shell",
             "windows": {

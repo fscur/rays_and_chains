@@ -1,14 +1,13 @@
 #include <stdio.h>
-#include "plugin_a.h"
-#include "engine/plugins/r_plugin_loader.h"
+#include "engine/app/r_api_db.h"
+#include "engine/diagnostics/r_debug_api.h"
 #include "engine/plugins/r_plugin.h"
-#include "engine/diagnostics/r_debug.h"
-#include "plugin_a.api.c"
-#include "engine/app/r_app.h"
+#include "plugin_a_api.h"
+#include "plugin_a.h"
 
 u32 //
 get_id_plugin_a() {
-  return PLUGIN_A_ID; 
+  return PLUGIN_A_API_ID; 
 }
 
 size_t //
@@ -38,19 +37,39 @@ load_plugin_a(r_plugin_load_info_t* load_info) {
 }
 
 void //
-plugin_a_init(plugin_a_t* plugin_a,
-              r_app_api_register_t* api_register) {
+plugin_a_init(plugin_a_t* this,
+              r_api_db_t* api_db) {
 
-  plugin_a->debug = api_register->find_api_function(api_register, 0);
-  plugin_a->debug->print("CARALEEEEOOO");
+  this->debug_api = api_db->apis[R_DEBUG_API_ID];
+  this->debug_api->print("CARALEEEEOOO");
 }
 
 void //
-plugin_a_update(plugin_a_t* plugin_a, f64 dt) {
+plugin_a_update(plugin_a_t* this, f64 dt) {
   int a = 0;
   int b = 2;
   int c = 1;
   int d = a + b + c;
 
-  plugin_a->debug->print("update: %d", d);
+  this->debug_api->print("update: %d\n", d);
+}
+
+i32 //
+plugin_a_add(i32 a, i32 b) {
+  return a + b;
+}
+
+i32 //
+plugin_a_sub(i32 a, i32 b) {
+  return a - b;
+}
+
+i32
+plugin_a_mul(i32 a, i32 b) {
+  return a * b;
+}
+
+i32 //
+plugin_a_div(i32 a, i32 b) {
+  return a / b;
 }

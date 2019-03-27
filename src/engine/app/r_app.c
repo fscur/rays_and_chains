@@ -8,20 +8,25 @@
 #include "engine/time/r_time.h"
 #include "engine/window/r_window.h"
 #include "engine/diagnostics/r_debug.h"
+#include "engine/diagnostics/r_debug_api.h"
+#include "r_api_db.c"
 #include "r_app.h"
 
 r_app_t* //
 r_app_create(r_memory_t* memory, r_app_info_t* info) {
 
-  size_t total_memory = sizeof(r_app_t) +    //
+  size_t total_memory = sizeof(r_app_t) + //
                         sizeof(r_window_t) + //
-                        sizeof(r_plugin_manager_t) + sizeof(r_time_info_t);
+                        sizeof(r_time_info_t) + //
+                        sizeof(r_plugin_manager_t) + //
+                        sizeof(r_api_db_t);
 
   r_memory_arena_t* memory_arena = r_memory_add_arena(memory, total_memory);
 
   r_app_t* state = R_MEMORY_ARENA_PUSH_STRUCT(memory_arena, r_app_t);
   state->window = R_MEMORY_ARENA_PUSH_STRUCT(memory_arena, r_window_t);
   state->plugin_manager = R_MEMORY_ARENA_PUSH_STRUCT(memory_arena, r_plugin_manager_t);
+  state->api_db = R_MEMORY_ARENA_PUSH_STRUCT(memory_arena, r_api_db_t);
   state->plugin_manager->memory = memory;
   state->time_info = info->time_info;
   state->memory = memory;
@@ -38,22 +43,16 @@ r_app_create(r_memory_t* memory, r_app_info_t* info) {
   return state;
 }
 
-internal void* //
-find_api(r_app_api_register_t* api_register, const u32 id) {
-  return api_register->apis[id];
-}
-
 void
 r_app_init(r_app_t* state) {
 
-  local r_debug_api_t debug_api = {0};
-  debug_api.print = (R_DEBUG_PRINT)&r_debug_print;
+  local r_debug_api_t r_debug_api = {0};
+  r_debug_api.print = (R_DEBUG_PRINT)&r_debug_print;
 
-  state->api_register.apis[0] = &debug_api;
-  state->api_register.find_api_function = (R_APP_FIND_API_FN)&find_api;
+  state->api_db->apis[R_DEBUG_API_ID] = &r_debug_api;
+  state->api_db->find = (R_API_DB_FIND_API_FN)&r_api_db_find_api;
 
   r_plugin_manager_t* plugin_manager = state->plugin_manager;
-
   r_plugin_manager_init(plugin_manager);
 
   for (int i = 0; i < plugin_manager->init_count; ++i) {
@@ -61,9 +60,9 @@ r_app_init(r_app_t* state) {
     r_plugin_t* plugin = plugin_manager->plugins[index];
     u32 id = plugin->id;
 
-    state->api_register.apis[id] = plugin->api;
+    state->api_db->apis[id] = plugin->api;
 
-    plugin->init(plugin->state, &state->api_register);
+    plugin->init(plugin->state, state->api_db);
   }
 }
 

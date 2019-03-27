@@ -13,7 +13,8 @@
         "r_core_types.h": "c",
         "r_app_window.h": "c",
         "glfw3.h": "c",
-        "string": "c"
+        "string": "c",
+        "r_app.h": "c"
     },
     "editor.wordWrapColumn": 100,
     "files.exclude": {
