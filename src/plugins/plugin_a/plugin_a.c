@@ -31,6 +31,7 @@ load_plugin_a(r_plugin_load_info_t* load_info) {
   plugin->handle = load_info->handle;
   plugin->api = api;
   plugin->state = state;
+  
   plugin->init = (R_PLUGIN_INIT)load_info->fn(load_info->handle, "plugin_a_init");
   plugin->update = (R_PLUGIN_UPDATE)load_info->fn(load_info->handle, "plugin_a_update");
 

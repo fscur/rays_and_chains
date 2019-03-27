@@ -16,9 +16,9 @@
 r_app_t* //
 r_app_create(r_memory_t* memory, r_app_info_t* info) {
 
-  size_t total_memory = sizeof(r_app_t) + //
-                        sizeof(r_window_t) + //
-                        sizeof(r_time_info_t) + //
+  size_t total_memory = sizeof(r_app_t) +            //
+                        sizeof(r_window_t) +         //
+                        sizeof(r_time_info_t) +      //
                         sizeof(r_plugin_manager_t) + //
                         sizeof(r_api_db_t);
 
@@ -59,7 +59,7 @@ r_app_init_apis(r_app_t* this) {
   this->api_db->find = (R_API_DB_FIND_API_FN)&r_api_db_find_api;
 }
 
-void
+void //
 r_app_init(r_app_t* this) {
 
   r_app_init_apis(this);
@@ -70,18 +70,30 @@ r_app_init(r_app_t* this) {
   for (int i = 0; i < plugin_manager->init_count; ++i) {
     u8 index = plugin_manager->init[i];
     r_plugin_t* plugin = plugin_manager->plugins[index];
-    u32 id = plugin->id;
-
-    this->api_db->apis[id] = plugin->api;
-
+    this->api_db->apis[plugin->id] = plugin->api;
     plugin->init(plugin->state, this->api_db);
   }
 }
 
-void
+void //
+r_app_reload(r_app_t* this) {
+  r_plugin_manager_t* plugin_manager = this->plugin_manager;
+
+  r_plugin_manager_reload_plugins(plugin_manager);
+
+  for (int i = 0; i < plugin_manager->reloaded_count; ++i) {
+    u8 index = plugin_manager->reloaded_plugins[i];
+    r_plugin_t* plugin = plugin_manager->plugins[index];
+    this->api_db->apis[plugin->id] = plugin->api;
+  }
+
+  plugin_manager->reloaded_count = 0;
+}
+
+void //
 r_app_load(r_app_t* this) {}
 
-void
+void //
 r_app_input(r_app_t* this) {
   r_window_input(this->window);
 
@@ -96,7 +108,7 @@ r_app_input(r_app_t* this) {
 
 typedef i32 (*PLUGIN_A_ADD_FN)(i32, i32);
 
-void
+void //
 r_app_update(r_app_t* this) {
 
   this->running = !this->window->should_close;
@@ -111,7 +123,7 @@ r_app_update(r_app_t* this) {
   }
 }
 
-void
+void //
 r_app_render(const r_app_t* this) {
 
   r_plugin_manager_t* plugin_manager = this->plugin_manager;
@@ -126,7 +138,7 @@ r_app_render(const r_app_t* this) {
   r_window_swapbuffers(this->window);
 }
 
-void
+void //
 r_app_unload(const r_app_t* this) {
   r_plugin_manager_t* plugin_manager = this->plugin_manager;
 
@@ -137,7 +149,7 @@ r_app_unload(const r_app_t* this) {
   }
 }
 
-void
+void //
 r_app_destroy(const r_app_t* this) {
   r_window_destroy(this->window);
 
@@ -156,6 +168,5 @@ r_app_run(r_app_t* this) {
   r_app_input(this);
   r_app_update(this);
   r_app_render(this);
-
-  r_plugin_manager_reload_plugins(this->plugin_manager);
+  r_app_reload(this);
 }

@@ -18,6 +18,7 @@ typedef struct r_plugin_manager_t {
   u8 render[MAX_PLUGINS_COUNT];
   u8 unload[MAX_PLUGINS_COUNT];
   u8 destroy[MAX_PLUGINS_COUNT];
+  u8 reloaded_plugins[MAX_PLUGINS_COUNT];
   r_plugin_t* plugins[MAX_PLUGINS_COUNT];
   u8 plugin_count;
   u8 init_count;
@@ -26,6 +27,7 @@ typedef struct r_plugin_manager_t {
   u8 render_count;
   u8 unload_count;
   u8 destroy_count;
+  u8 reloaded_count;
 } r_plugin_manager_t;
 
 typedef r_plugin_manager_t* (*R_PLUGIN_MANAGER_CREATE)(r_memory_t*);

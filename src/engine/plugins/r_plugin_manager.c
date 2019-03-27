@@ -21,9 +21,12 @@ r_plugin_manager_init(r_plugin_manager_t* this) {
 
 void //
 r_plugin_manager_reload_plugins(r_plugin_manager_t* this) {
-    if (r_plugin_manager_should_reload(this, this->plugins[0])) {
-      r_plugin_manager_reload_plugin(this, this->plugins[0]);
+  for (u8 i = 0; i < this->plugin_count; ++i) {
+    if (r_plugin_manager_should_reload(this, this->plugins[i])) {
+      r_plugin_manager_reload_plugin(this, this->plugins[i]);
+      this->reloaded_plugins[this->reloaded_count++] = i;
     }
+  }
 }
 
 void //

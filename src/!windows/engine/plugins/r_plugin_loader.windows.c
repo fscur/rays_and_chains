@@ -54,12 +54,11 @@ r_plugin_loader_load_plugin(r_memory_t* memory, const char* file_name) {
     PathRemoveExtensionA(plugin_name);
 
     char load_fn_name[MAX_FILE_NAME_LENGTH] = {"load_"};
-    strcat(load_fn_name, plugin_name);
-
     char get_size_fn_name[MAX_FILE_NAME_LENGTH] = {"get_size_"};
-    strcat(get_size_fn_name, plugin_name);
-
     char get_id_fn_name[MAX_FILE_NAME_LENGTH] = {"get_id_"};
+
+    strcat(load_fn_name, plugin_name);
+    strcat(get_size_fn_name, plugin_name);
     strcat(get_id_fn_name, plugin_name);
 
     R_PLUGIN_LOAD load_function = (R_PLUGIN_LOAD)r_plugin_loader_fn(plugin_handle, load_fn_name);
@@ -116,8 +115,16 @@ r_plugin_loader_reload_plugin(r_plugin_t* plugin) {
     assert(plugin_handle != NULL);
 
     char load_fn_name[MAX_FILE_NAME_LENGTH] = {"load_"};
+    char get_size_fn_name[MAX_FILE_NAME_LENGTH] = {"get_size_"};
+
     strcat(load_fn_name, plugin->name);
-    R_PLUGIN_LOAD load_function = (R_PLUGIN_LOAD)r_plugin_loader_fn(plugin_handle, load_fn_name);
+    strcat(get_size_fn_name, plugin->name);
+
+    R_PLUGIN_LOAD load_function = //
+        (R_PLUGIN_LOAD)r_plugin_loader_fn(plugin_handle, load_fn_name);
+
+    R_PLUGIN_GET_SIZE get_size_function = //
+        (R_PLUGIN_GET_SIZE)r_plugin_loader_fn(plugin_handle, get_size_fn_name);
 
     r_plugin_load_info_t load_info = {0};
     load_info.fn = &r_plugin_loader_fn;
@@ -125,6 +132,7 @@ r_plugin_loader_reload_plugin(r_plugin_t* plugin) {
     load_info.memory_addr = plugin->state;
     r_plugin_t* new_plugin = load_function(&load_info);
     r_file_a_get_last_modification(new_plugin->file_name, &new_plugin->last_modification);
+    new_plugin->memory_size = get_size_function();
     return new_plugin;
   }
   return NULL;

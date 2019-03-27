@@ -30,6 +30,13 @@ goto start
 :start
 
 call log [info] "********** DEBUG **********"
+call log [info] "Clearing previous build"
+
+pushd %temp%
+del *.pdb /Q /F
+del *.dll /Q /F
+popd
+
 pushd p:\
 ::del bin /Q
 ::del bin\plugins /Q
@@ -53,20 +60,5 @@ cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_io.dll /Fmr_io.map "..\src\!windo
 cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_string.dll /Fmr_string.map "..\src\!windows\engine\string\r_string.windows.c" /link /DLL %COMMON_LINKER_FLAGS%
 cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_memory.dll /Fmr_memory.map "..\src\!windows\engine\memory\r_memory.windows.c" /link /DLL %COMMON_LINKER_FLAGS%
 cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_plugins.dll /Fmr_plugins.map "..\src\!windows\engine\plugins\r_plugins.windows.c" /link /DLL %COMMON_LINKER_FLAGS%
-::cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% "..\src\plugins\plugin_a\plugin_a.c" /Fe"plugins\plugin_a\plugin_a.dll" /Fm"plugins\plugin_a\plugin_a.map" /Fo"plugins\plugin_a\plugin_a.obj" /link /DLL /PDB:"plugins\plugin_a\plugin_a_%TAG%.pdb" %COMMON_LINKER_FLAGS% "..\src\plugins\plugin_a\version.res"
-
-::cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% "..\src\plugins\plugin_b\plugin_b.c" /Fe"plugins\plugin_b.dll" /Fm"plugins\plugin_b.map" /Fo"plugins\plugin_b.obj" r_memory.lib /link /DLL %COMMON_LINKER_FLAGS%
-
 cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fesandbox.exe /Fmsandbox.map "..\src\!windows\sandbox\r_sandbox.windows.c" /link %COMMON_LINKER_FLAGS%
 popd
-
-
-
-::dlls
-::cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_media.dll /Fmr_media.map "..\src\engine\media\r_media_bitmap.c" /link /DLL %COMMON_LINKER_FLAGS%
-::cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_gfx.dll /Fmr_gfx.map "..\src\engine\gfx\r_gfx.c" /link /DLL %COMMON_LINKER_FLAGS%
-::cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_plugin_loader.dll /Fmr_plugin_loader.map "..\src\!windows\engine\plugins\r_plugin_loader.windows.c" /link /DLL %COMMON_LINKER_FLAGS%
-::cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_plugin_manager.dll /Fmr_plugin_manager.map "..\src\engine\plugins\r_plugin_manager.c" r_memory.lib /link /DLL %COMMON_LINKER_FLAGS%
-::cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_window.dll /Fmr_window.map "..\src\!windows\engine\window\r_window.c" r_media.lib r_gfx.lib "../lib/windows/x64/release/glfw3.lib" kernel32.lib user32.lib gdi32.lib shell32.lib opengl32.lib /link /DLL %COMMON_LINKER_FLAGS%
-::cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_window.dll /Fmr_window.map "..\src\!windows\engine\window\r_window.windows.c" /link /DLL %COMMON_LINKER_FLAGS%
-::cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_app.dll /Fmr_app.map "..\src\!windows\engine\app\r_app.c" r_memory.lib r_window.lib /link /DLL %COMMON_LINKER_FLAGS%
