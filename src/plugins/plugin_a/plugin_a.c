@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include "engine/app/r_api_db.h"
 #include "engine/diagnostics/r_debug_api.h"
+#include "engine/window/r_window_api.h"
 #include "engine/plugins/r_plugin.h"
 #include "plugin_a_api.h"
 #include "plugin_a.h"
 
 u32 //
 get_id_plugin_a() {
-  return PLUGIN_A_API_ID; 
+  return PLUGIN_A_API_ID;
 }
 
 size_t //
@@ -37,11 +38,10 @@ load_plugin_a(r_plugin_load_info_t* load_info) {
 }
 
 void //
-plugin_a_init(plugin_a_t* this,
-              r_api_db_t* api_db) {
+plugin_a_init(plugin_a_t* this, r_api_db_t* api_db) {
 
   this->debug_api = api_db->apis[R_DEBUG_API_ID];
-  this->debug_api->print("CARALEEEEOOO");
+  this->window_api = api_db->apis[R_WINDOW_API_ID];
 }
 
 void //
@@ -52,6 +52,9 @@ plugin_a_update(plugin_a_t* this, f64 dt) {
   int d = a + b + c;
 
   this->debug_api->print("update: %d\n", d);
+  
+  this->window_api->set_title(this->window_api->window, L"filipe");
+  this->window_api->set_back_color(this->window_api->window, (r_color_t){0.0f, 0.8f, 1.0f, 1.0f});
 }
 
 i32 //

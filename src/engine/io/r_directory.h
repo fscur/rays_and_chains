@@ -8,13 +8,13 @@ extern "C" {
 
 typedef struct r_file_info_w_t {
   wchar_t name[MAX_FILE_NAME_LENGTH];
-  wchar_t full_name[MAX_PATH];
+  wchar_t full_name[MAX_FILE_NAME_LENGTH];
   size_t size;
 } r_file_info_w_t;
 
 typedef struct r_file_info_a_t {
   char name[MAX_FILE_NAME_LENGTH];
-  char full_name[MAX_PATH];
+  char full_name[MAX_FILE_NAME_LENGTH];
   size_t size;
 } r_file_info_a_t;
 

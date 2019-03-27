@@ -27,7 +27,7 @@ dll_export r_plugin_t* //
 load_plugin_b(r_plugin_load_info_t* load_info);
 
 dll_export void //
-plugin_b_init(plugin_b_t* this, r_api_db_t* api_register);
+plugin_b_init(plugin_b_t* this, r_api_db_t* api_db);
 
 dll_export void //
 plugin_b_render(plugin_b_t* this);

@@ -39,7 +39,7 @@ getopt(int argc, char* const argv[], const char* optstring) {
 version //
 bump_version(const char* file_name, int bump) {
 
-  char tmp_file_name[MAX_PATH] = {0};
+  char tmp_file_name[MAX_FILE_NAME_LENGTH] = {0};
   GetTempFileNameA(".", "\0", 0, tmp_file_name);
   FILE* read_file = fopen(file_name, "r");
   FILE* write_file = fopen(tmp_file_name, "w");

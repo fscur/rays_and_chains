@@ -57,8 +57,8 @@ void DumpGuid(GUID Guid);
 int
 main(int argc, char* argv[]) {
 
-  wchar_t FileName[MAX_PATH] = {0};
-  mbstowcs(FileName, argv[1],  MAX_PATH);
+  wchar_t FileName[MAX_FILE_NAME_LENGTH] = {0};
+  mbstowcs(FileName, argv[1],  MAX_FILE_NAME_LENGTH);
 
   if (FileName == 0)
     return 0;
@@ -414,7 +414,7 @@ DumpCodeViewDebugInfo(LPBYTE pDebugInfo, DWORD DebugInfoSize) {
     if (IsBadStringPtrA((CHAR*)pCvInfo->PdbFileName, UINT_MAX))
       return;
 
-    char file_name[MAX_PATH - 4] = {0};
+    char file_name[MAX_FILE_NAME_LENGTH - 4] = {0};
     size_t len_before = strlen(pCvInfo->PdbFileName);
     sprintf(file_name, "%s", PathFindFileNameA(pCvInfo->PdbFileName));
     PathRemoveExtensionA(file_name);

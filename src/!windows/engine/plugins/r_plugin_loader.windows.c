@@ -9,10 +9,10 @@
 
 void //
 get_temp_file_name(const char* file_name, char* tmp_file_name) {
-  char tmp_path[MAX_PATH] = {0};
-  char name[MAX_PATH] = {0};
+  char tmp_path[MAX_FILE_NAME_LENGTH] = {0};
+  char name[MAX_FILE_NAME_LENGTH] = {0};
 
-  GetTempPathA(MAX_PATH, tmp_path);
+  GetTempPathA(MAX_FILE_NAME_LENGTH, tmp_path);
   sprintf(name, "%s", PathFindFileNameA(file_name));
   sprintf(tmp_file_name, "%s%s", tmp_path, name);
 }
@@ -34,9 +34,9 @@ get_pdb_file_name(const char* file_name, char* pdb_file_name) {
 r_plugin_t* //
 r_plugin_loader_load_plugin(r_memory_t* memory, const char* file_name) {
 
-  char tmp_dll_file_name[MAX_PATH] = {0};
-  char tmp_pdb_file_name[MAX_PATH] = {0};
-  char pdb_file_name[MAX_PATH] = {0};
+  char tmp_dll_file_name[MAX_FILE_NAME_LENGTH] = {0};
+  char tmp_pdb_file_name[MAX_FILE_NAME_LENGTH] = {0};
+  char pdb_file_name[MAX_FILE_NAME_LENGTH] = {0};
 
   get_temp_file_name(file_name, tmp_dll_file_name);
   get_pdb_file_name(file_name, pdb_file_name);
@@ -103,8 +103,8 @@ r_plugin_loader_reload_plugin(r_plugin_t* plugin) {
   while (!DeleteFileA(plugin->tmp_file_name))
     Sleep(1);
 
-  char tmp_pdb_file_name[MAX_PATH] = {0};
-  char pdb_file_name[MAX_PATH] = {0};
+  char tmp_pdb_file_name[MAX_FILE_NAME_LENGTH] = {0};
+  char pdb_file_name[MAX_FILE_NAME_LENGTH] = {0};
   get_pdb_file_name(plugin->file_name, pdb_file_name);
   get_temp_file_name(pdb_file_name, tmp_pdb_file_name);
 

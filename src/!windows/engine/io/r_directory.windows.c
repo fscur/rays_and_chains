@@ -14,7 +14,7 @@ r_directory_w_foreach_file(wchar_t* path, wchar_t* filter, void* callback, void*
   HANDLE hFind = INVALID_HANDLE_VALUE;
   DWORD dwError = 0;
   LARGE_INTEGER filesize;
-  wchar_t query[MAX_PATH] = {0};
+  wchar_t query[MAX_FILE_NAME_LENGTH] = {0};
   wsprintf(query, L"%ls\\%ls", path, filter);
 
   hFind = FindFirstFile(query, &ffd);
@@ -28,7 +28,7 @@ r_directory_w_foreach_file(wchar_t* path, wchar_t* filter, void* callback, void*
     if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
 
     } else {
-      
+
       r_file_info_w_t file_info = {0};
       wsprintf(file_info.name, L"%ls", ffd.cFileName);
       wsprintf(file_info.full_name, L"%ls\\%ls", path, ffd.cFileName);
@@ -54,7 +54,7 @@ r_directory_a_foreach_file(char* path, char* filter, void* callback, void* data)
   HANDLE hFind = INVALID_HANDLE_VALUE;
   DWORD dwError = 0;
   LARGE_INTEGER filesize;
-  char query[MAX_PATH] = {0};
+  char query[MAX_FILE_NAME_LENGTH] = {0};
   sprintf(query, "%s\\%s", path, filter);
 
   hFind = FindFirstFileA(query, &ffd);
@@ -68,7 +68,7 @@ r_directory_a_foreach_file(char* path, char* filter, void* callback, void* data)
     if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
 
     } else {
-      
+
       r_file_info_a_t file_info = {0};
       sprintf(file_info.name, "%s", ffd.cFileName);
       sprintf(file_info.full_name, "%s\\%s", path, ffd.cFileName);

@@ -23,7 +23,7 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
 
   // todo: read from file
   r_app_info_t app_info = {0};
-  sprintf(app_info.title, "rays and chains");
+  wsprintf(app_info.title, L"rays and chains");
   app_info.width = 400;
   app_info.height = 300;
   app_info.back_color = (r_color_t){0.08f, 0.09f, 0.12f, 1.00f};

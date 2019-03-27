@@ -6,6 +6,7 @@
 
 #include "engine/media/r_media_bitmap.c"
 #include "engine/gfx/r_gfx_raytracer.c"
+#include "!windows/engine/string/r_string.windows.c"
 
 #pragma comment(lib, "../lib/windows/x64/release/glfw3dll.lib")
 #pragma comment(lib, "../lib/windows/x64/release/cimgui.lib")
@@ -22,7 +23,7 @@ error_callback(const int error, const char* description) {
 }
 
 void //
-r_window_create(r_window_t* window) {
+r_window_create(r_window_t* this) {
   // todo: how to create window with app state????
   glfwSetErrorCallback(error_callback);
 
@@ -33,10 +34,13 @@ r_window_create(r_window_t* window) {
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  window->handle =
-      (void*)glfwCreateWindow(window->width, window->height, window->title, NULL, NULL);
+  char title[MAX_FILE_NAME_LENGTH] = {0};
 
-  glfwMakeContextCurrent(window->handle);
+  r_string_to_ansi(this->title, title, MAX_FILE_NAME_LENGTH);
+
+  this->handle = (void*)glfwCreateWindow(this->width, this->height, title, NULL, NULL);
+
+  glfwMakeContextCurrent(this->handle);
 
   i32 success = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
@@ -47,32 +51,42 @@ r_window_create(r_window_t* window) {
 }
 
 void
-r_window_input(r_window_t* window) {
+r_window_input(r_window_t* this) {
   glfwPollEvents();
 }
 
 void
-r_window_update(r_window_t* window) {
-  window->should_close = glfwWindowShouldClose(window->handle);
-  glfwGetFramebufferSize(window->handle, &window->width, &window->height);
+r_window_update(r_window_t* this) {
+  this->should_close = glfwWindowShouldClose(this->handle);
+  glfwGetFramebufferSize(this->handle, &this->width, &this->height);
 }
 
 void
-r_window_render(r_window_t* window) {
-  glViewport(0, 0, window->width, window->height);
-
-  r_color_t clear_color = window->back_color;
-  // glClearColor(clear_color.r, clear_color.g, clear_color.b, clear_color.a);
-  glClearColor(1.0f, clear_color.g, clear_color.b, clear_color.a);
+r_window_render(r_window_t* this) {
+  glViewport(0, 0, this->width, this->height);
+  glClearColor(this->back_color.r, this->back_color.g, this->back_color.b, this->back_color.a);
   glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void
-r_window_swapbuffers(r_window_t* window) {
-  glfwSwapBuffers(window->handle);
+r_window_swapbuffers(r_window_t* this) {
+  glfwSwapBuffers(this->handle);
 }
 
 void //
-r_window_destroy(r_window_t* window) {
+r_window_destroy(r_window_t* this) {
   glfwTerminate();
+}
+
+void //
+r_window_set_title(r_window_t* this, const wchar_t* title) {
+  wsprintf(this->title, title);
+  char ansi_title[MAX_FILE_NAME_LENGTH] = {0};
+  r_string_to_ansi(this->title, ansi_title, MAX_FILE_NAME_LENGTH);
+  glfwSetWindowTitle(this->handle, ansi_title);
+}
+
+void //
+r_window_set_back_color(r_window_t* this, const r_color_t color) {
+  this->back_color = color;
 }
