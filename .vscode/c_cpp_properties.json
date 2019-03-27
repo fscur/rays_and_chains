@@ -67,6 +67,7 @@
             "name": "Win32",
             "includePath": [
                 "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include",
+                "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Tools/MSVC/14.16.27023/include/*",
                 "${workspaceFolder}",
                 "${workspaceFolder}/src",
                 "${workspaceFolder}/inc"
@@ -85,9 +86,9 @@
             "browse": {
                 "path": [
                     "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*",
+                    "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Tools/MSVC/14.16.27023/include/*",
                     "${workspaceFolder}/src/!windows",
-                    "${workspaceFolder}/src/engine",
-                    "${workspaceFolder}/src/sandbox"
+                    "${workspaceFolder}/src/engine"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
