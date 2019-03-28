@@ -19,7 +19,8 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
   last = start = r_time_now();
 
   r_time_info_t time_info = {0};
-  r_memory_t memory = r_memory_create(kilobytes(64));
+  size_t total_app_memory = r_app_get_size();
+  r_memory_t memory = r_memory_create(total_app_memory + kilobytes(64));
 
   // todo: read from file
   r_app_info_t app_info = {0};

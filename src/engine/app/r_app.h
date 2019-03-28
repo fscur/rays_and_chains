@@ -26,10 +26,13 @@ typedef struct r_app_t {
   r_memory_t* memory;
   r_window_t* window;
   r_time_info_t* time_info;
-  r_plugin_manager_t* plugin_manager;
   r_api_db_t* api_db;
+  r_plugin_manager_t* plugin_manager;
   bool running;
 } r_app_t;
+
+dll_export inline size_t //
+r_app_get_size();
 
 dll_export r_app_t* //
 r_app_create(r_memory_t* memory, r_app_info_t* app_info);

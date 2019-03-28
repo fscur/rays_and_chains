@@ -7,11 +7,13 @@ extern "C" {
 
 typedef struct r_api_db_t r_api_db_t;
 typedef struct r_plugin_t r_plugin_t;
+typedef struct r_memory_block_t r_memory_block_t;
 typedef void* (*R_PLUGIN_LOADER_FN)(void*, const char*);
 
 typedef struct r_plugin_load_info_t {
   R_PLUGIN_LOADER_FN fn;
   void* handle;
+  void* plugin_addr;
   void* memory_addr;
 } r_plugin_load_info_t;
 
@@ -34,17 +36,18 @@ typedef struct r_plugin_t {
   R_PLUGIN_RENDER render;
   R_PLUGIN_UNLOAD unload;
   R_PLUGIN_DESTROY destroy;
-  void* api;
   u32 id;
+  int version;
   char name[MAX_FILE_NAME_LENGTH];
   char file_name[MAX_FILE_NAME_LENGTH];
   char tmp_file_name[MAX_FILE_NAME_LENGTH];
   r_time_t last_modification;
-  int version;
   void* state;
+  void* api;
+  size_t memory_size;
+  r_memory_block_t* memory_block;
   bool active;
   bool reload;
-  size_t memory_size;
 } r_plugin_t;
 
 #ifdef __cplusplus

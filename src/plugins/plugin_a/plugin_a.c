@@ -13,15 +13,15 @@ get_id_plugin_a() {
 
 size_t //
 get_size_plugin_a() {
-  return sizeof(plugin_a_api_t) + sizeof(r_plugin_t) + sizeof(plugin_a_t);
+  return sizeof(plugin_a_api_t) + sizeof(plugin_a_t);
 }
 
 r_plugin_t* //
 load_plugin_a(r_plugin_load_info_t* load_info) {
 
+  r_plugin_t* plugin = (r_plugin_t*)load_info->plugin_addr;
   plugin_a_t* state = (plugin_a_t*)load_info->memory_addr;
-  r_plugin_t* plugin = (r_plugin_t*)((char*)state + sizeof(plugin_a_t));
-  plugin_a_api_t* api = (plugin_a_api_t*)((char*)plugin + sizeof(r_plugin_t));
+  plugin_a_api_t* api = (plugin_a_api_t*)((u8*)state + sizeof(plugin_a_t));
 
   api->add = (PLUGIN_A_ADD_FN)load_info->fn(load_info->handle, "plugin_a_add");
   api->sub = (PLUGIN_A_SUB_FN)load_info->fn(load_info->handle, "plugin_a_sub");
@@ -31,7 +31,7 @@ load_plugin_a(r_plugin_load_info_t* load_info) {
   plugin->handle = load_info->handle;
   plugin->api = api;
   plugin->state = state;
-  
+
   plugin->init = (R_PLUGIN_INIT)load_info->fn(load_info->handle, "plugin_a_init");
   plugin->update = (R_PLUGIN_UPDATE)load_info->fn(load_info->handle, "plugin_a_update");
 
@@ -53,9 +53,9 @@ plugin_a_update(plugin_a_t* this, f64 dt) {
   int d = a + b + c;
 
   this->debug_api->print("update: %d\n", d);
-  
-  this->window_api->set_title(this->window_api->window, L"filipe");
-  this->window_api->set_back_color(this->window_api->window, (r_color_t){0.0f, 0.8f, 1.0f, 1.0f});
+
+  this->window_api->set_title(this->window_api->window, L"noice!");
+  this->window_api->set_back_color(this->window_api->window, (r_color_t){0.8f, 0.2f, 0.5f, 1.0f});
 }
 
 i32 //

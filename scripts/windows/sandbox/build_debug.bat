@@ -32,10 +32,10 @@ goto start
 call log [info] "********** DEBUG **********"
 call log [info] "Clearing previous build"
 
-pushd %temp%
-del *.pdb /Q /F
-del *.dll /Q /F
-popd
+REM pushd %temp%
+REM REM del *.pdb /Q /F
+REM REM del *.dll /Q /F
+REM popd
 
 pushd p:\
 ::del bin /Q

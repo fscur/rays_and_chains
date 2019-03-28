@@ -5,9 +5,10 @@ extern "C" {
 
 #include "engine/core/r_core_types.h"
 
-#define MAX_PLUGINS_COUNT 100
+#define MAX_PLUGINS_COUNT 256
 
 typedef struct r_memory_t r_memory_t;
+typedef struct r_memory_block_t r_memory_block_t;
 typedef struct r_plugin_t r_plugin_t;
 
 typedef struct r_plugin_manager_t {
@@ -19,7 +20,7 @@ typedef struct r_plugin_manager_t {
   u8 unload[MAX_PLUGINS_COUNT];
   u8 destroy[MAX_PLUGINS_COUNT];
   u8 reloaded_plugins[MAX_PLUGINS_COUNT];
-  r_plugin_t* plugins[MAX_PLUGINS_COUNT];
+  r_plugin_t* plugins;
   u8 plugin_count;
   u8 init_count;
   u8 input_count;

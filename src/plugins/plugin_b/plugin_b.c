@@ -14,14 +14,14 @@ get_id_plugin_b() {
 
 size_t //
 get_size_plugin_b() {
-  return sizeof(plugin_b_api_t) + sizeof(r_plugin_t) + sizeof(plugin_b_t);
+  return sizeof(plugin_b_api_t) + sizeof(plugin_b_t);
 }
 
 r_plugin_t* //
 load_plugin_b(r_plugin_load_info_t* load_info) {
+  r_plugin_t* plugin = (r_plugin_t*)load_info->plugin_addr;
   plugin_b_t* state = (plugin_b_t*)load_info->memory_addr;
-  r_plugin_t* plugin = (r_plugin_t*)((char*)state + sizeof(plugin_b_t));
-  plugin_b_api_t* api = (plugin_b_api_t*)((char*)plugin + sizeof(r_plugin_t));
+  plugin_b_api_t* api = (plugin_b_api_t*)((u8*)state + sizeof(plugin_b_t));
 
   api->print_sum = (PLUGIN_B_PRINT_SUM_PN)load_info->fn(load_info->handle, "plugin_b_print_sum");
 
