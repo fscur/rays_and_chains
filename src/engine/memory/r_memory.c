@@ -58,7 +58,8 @@ r_memory_delete_block(r_memory_t* memory, r_memory_block_t* block) {
   }
 
   // note: (filipe.scur) now, the good thing is we can move the memory to the right all at once!
-  r_memory_move(block->base_addr, block->current_addr, block_size);
+  size_t move_size = (u8*)memory->current_addr-(u8*)block->current_addr;
+  r_memory_move(block->base_addr, block->current_addr, move_size);
   memory->current_addr = (u8*)memory->current_addr - block_size;
   memory->size -= block_size;
 }

@@ -105,7 +105,7 @@ r_plugin_loader_unload_plugin(r_plugin_t* plugin) {
 
 r_plugin_t* //
 r_plugin_loader_reload_plugin(r_memory_t* memory, r_plugin_t* plugin) {
-  // todo: how to handle change in size?
+  
   FreeLibrary(plugin->handle);
   while (!DeleteFileA(plugin->tmp_file_name))
     Sleep(1);
@@ -137,12 +137,12 @@ r_plugin_loader_reload_plugin(r_memory_t* memory, r_plugin_t* plugin) {
     r_memory_block_t* plugin_memory_block = plugin->memory_block;
     void* state_memory_addr = plugin->state;
 
-    size_t memory_size = get_size_function();
-    if (memory_size != plugin->memory_size) {
+     size_t memory_size = get_size_function();
+    // if (memory_size != plugin->memory_size) {
       r_memory_delete_block(memory, plugin->memory_block);
       plugin_memory_block = r_memory_add_block(memory, memory_size);
       state_memory_addr = r_memory_block_push(plugin_memory_block, memory_size);
-    }
+    //}
 
     r_plugin_load_info_t load_info = {0};
     load_info.fn = &r_plugin_loader_fn;
@@ -154,6 +154,7 @@ r_plugin_loader_reload_plugin(r_memory_t* memory, r_plugin_t* plugin) {
     r_file_a_get_last_modification(new_plugin->file_name, &new_plugin->last_modification);
     new_plugin->memory_size = get_size_function();
     new_plugin->memory_block = plugin_memory_block;
+
     return new_plugin;
   }
   return NULL;

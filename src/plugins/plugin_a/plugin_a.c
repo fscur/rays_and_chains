@@ -47,15 +47,7 @@ plugin_a_init(plugin_a_t* this, r_api_db_t* api_db) {
 
 void //
 plugin_a_update(plugin_a_t* this, f64 dt) {
-  int a = 0;
-  int b = 2;
-  int c = 1;
-  int d = a + b + c;
-
-  this->debug_api->print("update: %d\n", d);
-
-  this->window_api->set_title(this->window_api->window, L"noice!");
-  this->window_api->set_back_color(this->window_api->window, (r_color_t){0.8f, 0.2f, 0.5f, 1.0f});
+  this->debug_api->print("update plugin a: %d\n", 6);
 }
 
 i32 //

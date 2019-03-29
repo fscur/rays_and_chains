@@ -68,10 +68,10 @@
                 "options": {
                     "cwd": "p:\\scripts\\windows"
                 },
-                "command": "p:\\scripts\\windows\\plugins\\build_plugin_a_debug.bat"
+                "command": "p:\\scripts\\windows\\plugins\\build_plugin_debug.bat plugin_a"
             },
             "linux": {
-                "command": "./scripts/linux/build_plugin_a_debug.sh"
+                "command": "./scripts/linux/build_plugin_debug.sh plugin_a"
             },
             "group": {
                 "kind": "build",
@@ -88,10 +88,30 @@
                 "options": {
                     "cwd": "p:\\scripts\\windows"
                 },
-                "command": "p:\\scripts\\windows\\plugins\\build_plugin_b_debug.bat"
+                "command": "p:\\scripts\\windows\\plugins\\build_plugin_debug.bat plugin_b"
             },
             "linux": {
-                "command": "./scripts/linux/build_plugin_b_debug.sh"
+                "command": "./scripts/linux/build_plugin_debug.sh plugin_b"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
+            "label": "build plugin_c : debug",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "cwd": "p:\\scripts\\windows"
+                },
+                "command": "p:\\scripts\\windows\\plugins\\build_plugin_debug.bat plugin_c"
+            },
+            "linux": {
+                "command": "./scripts/linux/build_plugin_debug.sh plugin_c"
             },
             "group": {
                 "kind": "build",
