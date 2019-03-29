@@ -37,10 +37,8 @@ load_plugin_b(r_plugin_load_info_t* load_info) {
 
 void //
 plugin_b_init(plugin_b_t* this, r_api_db_t* api_db) {
-  // this->debug_api = api_db->find_api_function(api_db, R_DEBUG_API_ID);
-  // this->plugin_a_api = api_db->find_api_function(api_db, PLUGIN_A_API_ID);
-  this->debug_api = api_db->apis[R_DEBUG_API_ID];
-  this->plugin_a_api = api_db->apis[PLUGIN_A_API_ID];
+  this->debug_api = api_db->find_api(api_db, R_DEBUG_API_ID, PLUGIN_B_API_ID);
+  this->plugin_a_api = api_db->find_api(api_db, PLUGIN_A_API_ID, PLUGIN_B_API_ID);
 }
 
 void

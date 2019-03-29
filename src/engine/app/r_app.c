@@ -62,7 +62,7 @@ r_app_init_apis(r_app_t* this) {
 
   this->api_db->apis[R_DEBUG_API_ID] = &r_debug_api;
   this->api_db->apis[R_WINDOW_API_ID] = &r_window_api;
-  this->api_db->find = (R_API_DB_FIND_API_FN)&r_api_db_find_api;
+  this->api_db->find_api = (R_API_DB_FIND_API_FN)&r_api_db_find_api;
 }
 
 void //
@@ -88,15 +88,29 @@ r_app_reload(r_app_t* this) {
   r_plugin_manager_reload_plugins(plugin_manager);
 
   if (plugin_manager->reloaded_count > 0) {
-    for (int i = 0; i < plugin_manager->init_count; ++i) {
-      u8 index = plugin_manager->init[i];
-      r_plugin_t plugin = plugin_manager->plugins[index];
+    u32 order[MAX_PLUGIN_APIS] = {0};
+    u32 count = 0;
+    u8 index = plugin_manager->reloaded_plugins[0];
+    r_plugin_t plugin = plugin_manager->plugins[index];
+    
+    r_api_db_get_dependency_reload_order(
+        this->api_db, plugin.id, order, &count);
+
+    // for (int i = 0; i < plugin_manager->init_count; ++i) {
+    //   u8 index = plugin_manager->init[i];
+    //   r_plugin_t plugin = plugin_manager->plugins[index];
+    //   this->api_db->apis[plugin.id] = plugin.api;
+    //   plugin.init(plugin.state, this->api_db);
+    // }
+
+    for (u32 i = 0; i < count; ++i) {
+      plugin = plugin_manager->plugins[(u8)order[i]];
       this->api_db->apis[plugin.id] = plugin.api;
       plugin.init(plugin.state, this->api_db);
     }
   }
 
-  for (int i = 0; i < plugin_manager->reloaded_count; ++i) {
+  for (u32 i = 0; i < plugin_manager->reloaded_count; ++i) {
     u8 index = plugin_manager->reloaded_plugins[i];
     r_plugin_t plugin = plugin_manager->plugins[index];
     this->api_db->apis[plugin.id] = plugin.api;

@@ -40,14 +40,13 @@ load_plugin_a(r_plugin_load_info_t* load_info) {
 
 void //
 plugin_a_init(plugin_a_t* this, r_api_db_t* api_db) {
-
-  this->debug_api = api_db->apis[R_DEBUG_API_ID];
-  this->window_api = api_db->apis[R_WINDOW_API_ID];
+  this->debug_api = api_db->find_api(api_db, R_DEBUG_API_ID, PLUGIN_A_API_ID);
+  this->window_api = api_db->find_api(api_db, R_WINDOW_API_ID, PLUGIN_A_API_ID);
 }
 
 void //
 plugin_a_update(plugin_a_t* this, f64 dt) {
-  this->debug_api->print("update plugin a: %d\n", 6);
+  this->debug_api->print("update plugin a: %d\n", 0);
 }
 
 i32 //
