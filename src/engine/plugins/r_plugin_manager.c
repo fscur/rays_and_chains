@@ -42,8 +42,6 @@ void //
 r_plugin_manager_add_plugin(r_plugin_manager_t* this, r_plugin_t* plugin) {
   assert(this != NULL && plugin != NULL);
 
-  //this->plugins[this->plugin_count] = *plugin;
-
   if (plugin->init)
     this->init[this->init_count++] = this->plugin_count;
 

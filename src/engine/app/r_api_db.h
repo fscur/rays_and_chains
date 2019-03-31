@@ -20,8 +20,6 @@ typedef void* (*R_API_DB_FIND_API_FN)(r_api_db_t*, const u32, const u32);
 
 typedef struct r_api_db_t {
   R_API_DB_FIND_API_FN find_api;
-  // important: NEVER, EVER A PLUGIN SHOULD USE THIS FIELD (apis) WHEN DEBUGGING... THE WORLD WILL
-  // COLLAPSE! we'll have to changed this!!! soon!
   void* apis[MAX_APIS];
   u32 dependency_graph[MAX_PLUGIN_APIS][MAX_PLUGIN_APIS];
 } r_api_db_t;

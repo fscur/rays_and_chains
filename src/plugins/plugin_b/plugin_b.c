@@ -43,7 +43,7 @@ plugin_b_init(plugin_b_t* this, r_api_db_t* api_db) {
 
 void
 plugin_b_render(plugin_b_t* this) {
-  plugin_b_print_sum(this, 0, 0);
+  plugin_b_print_sum(this, 2, 0);
 }
 
 void

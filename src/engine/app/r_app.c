@@ -32,8 +32,10 @@ r_app_create(r_memory_t* memory, r_app_info_t* info) {
   this->window = r_memory_block_push_struct(memory_block, r_window_t);
   this->plugin_manager = r_memory_block_push_struct(memory_block, r_plugin_manager_t);
   this->api_db = r_memory_block_push_struct(memory_block, r_api_db_t);
+
   this->plugin_manager->plugins =
       (r_plugin_t*)r_memory_block_push_array(memory_block, r_plugin_t, MAX_PLUGINS_COUNT);
+
   this->plugin_manager->memory = memory;
   this->time_info = info->time_info;
   this->memory = memory;
@@ -87,29 +89,6 @@ r_app_reload(r_app_t* this) {
 
   r_plugin_manager_reload_plugins(plugin_manager);
 
-  if (plugin_manager->reloaded_count > 0) {
-    u32 order[MAX_PLUGIN_APIS] = {0};
-    u32 count = 0;
-    u8 index = plugin_manager->reloaded_plugins[0];
-    r_plugin_t plugin = plugin_manager->plugins[index];
-    
-    r_api_db_get_dependency_reload_order(
-        this->api_db, plugin.id, order, &count);
-
-    // for (int i = 0; i < plugin_manager->init_count; ++i) {
-    //   u8 index = plugin_manager->init[i];
-    //   r_plugin_t plugin = plugin_manager->plugins[index];
-    //   this->api_db->apis[plugin.id] = plugin.api;
-    //   plugin.init(plugin.state, this->api_db);
-    // }
-
-    for (u32 i = 0; i < count; ++i) {
-      plugin = plugin_manager->plugins[(u8)order[i]];
-      this->api_db->apis[plugin.id] = plugin.api;
-      plugin.init(plugin.state, this->api_db);
-    }
-  }
-
   for (u32 i = 0; i < plugin_manager->reloaded_count; ++i) {
     u8 index = plugin_manager->reloaded_plugins[i];
     r_plugin_t plugin = plugin_manager->plugins[index];
@@ -134,8 +113,6 @@ r_app_input(r_app_t* this) {
     plugin->input(plugin->state);
   }
 }
-
-typedef i32 (*PLUGIN_A_ADD_FN)(i32, i32);
 
 void //
 r_app_update(r_app_t* this) {
