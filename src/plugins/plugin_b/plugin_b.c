@@ -37,8 +37,8 @@ load_plugin_b(r_plugin_load_info_t* load_info) {
 
 void //
 plugin_b_init(plugin_b_t* this, r_api_db_t* api_db) {
-  this->debug_api = api_db->find_api(api_db, R_DEBUG_API_ID, PLUGIN_B_API_ID);
-  this->plugin_a_api = api_db->find_api(api_db, PLUGIN_A_API_ID, PLUGIN_B_API_ID);
+  // this->debug_api = api_db->find_api(api_db, R_DEBUG_API_ID, PLUGIN_B_API_ID);
+  // this->plugin_a_api = api_db->find_api(api_db, PLUGIN_A_API_ID, PLUGIN_B_API_ID);
 }
 
 void
@@ -49,5 +49,5 @@ plugin_b_render(plugin_b_t* this) {
 void
 plugin_b_print_sum(plugin_b_t* this, i32 a, i32 b) {
   plugin_a_api_t* api = this->plugin_a_api;
-  this->debug_api->print("%d + %d = %d", a, b, api->add(a, b));
+  //this->debug_api->print("%d + %d = %d", a, b, api->add(a, b));
 }

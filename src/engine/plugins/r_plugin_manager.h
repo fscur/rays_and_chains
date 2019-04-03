@@ -49,6 +49,9 @@ dll_export bool //
 r_plugin_manager_should_reload(r_plugin_manager_t* this, r_plugin_t* plugin);
 
 dll_export void //
+r_plugin_manager_unload_plugin(r_plugin_manager_t* this, r_plugin_t* plugin);
+
+dll_export void //
 r_plugin_manager_reload_plugin(r_plugin_manager_t* this, r_plugin_t* plugin);
 
 dll_export void //

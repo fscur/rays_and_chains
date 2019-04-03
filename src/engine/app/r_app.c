@@ -6,9 +6,10 @@
 #include "engine/plugins/r_plugin.h"
 #include "engine/string/r_string.h"
 #include "engine/time/r_time.h"
-#include "engine/window/r_window.h"
+#include "engine/window/r_window.c"
 #include "engine/diagnostics/r_debug.h"
 #include "engine/diagnostics/r_debug_api.h"
+#include "engine/string/r_string_api.h"
 #include "engine/window/r_window_api.h"
 #include "r_api_db.c"
 #include "r_app.h"
@@ -62,8 +63,12 @@ r_app_init_apis(r_app_t* this) {
   r_window_api.set_back_color = (R_WINDOW_SET_BACK_COLOR)&r_window_set_back_color;
   r_window_api.set_title = (R_WINDOW_SET_TITLE)&r_window_set_title;
 
+  local r_string_api_t r_string_api = {0};
+  r_string_api.to_ansi = (R_STRING_TO_ANSI)&r_string_to_ansi;
+
   this->api_db->apis[R_DEBUG_API_ID] = &r_debug_api;
   this->api_db->apis[R_WINDOW_API_ID] = &r_window_api;
+  this->api_db->apis[R_STRING_API_ID] = &r_string_api;
   this->api_db->find_api = (R_API_DB_FIND_API_FN)&r_api_db_find_api;
 }
 
@@ -93,6 +98,7 @@ r_app_reload(r_app_t* this) {
     u8 index = plugin_manager->reloaded_plugins[i];
     r_plugin_t plugin = plugin_manager->plugins[index];
     this->api_db->apis[plugin.id] = plugin.api;
+    plugin.init(plugin.state, this->api_db);
   }
 
   plugin_manager->reloaded_count = 0;
@@ -103,14 +109,12 @@ r_app_load(r_app_t* this) {}
 
 void //
 r_app_input(r_app_t* this) {
-  r_window_input(this->window);
-
   r_plugin_manager_t* plugin_manager = this->plugin_manager;
 
   for (int i = 0; i < plugin_manager->input_count; ++i) {
     u8 index = plugin_manager->input[i];
-    r_plugin_t* plugin = &plugin_manager->plugins[index];
-    plugin->input(plugin->state);
+    r_plugin_t plugin = plugin_manager->plugins[index];
+    plugin.input(plugin.state);
   }
 }
 
@@ -118,7 +122,7 @@ void //
 r_app_update(r_app_t* this) {
 
   this->running = !this->window->should_close;
-  r_window_update(this->window);
+  // r_window_update(this->window);
 
   r_plugin_manager_t* plugin_manager = this->plugin_manager;
 
@@ -140,8 +144,8 @@ r_app_render(const r_app_t* this) {
     plugin.render(plugin.state);
   }
 
-  r_window_render(this->window);
-  r_window_swapbuffers(this->window);
+  // r_window_render(this->window);
+  // r_window_swapbuffers(this->window);
 }
 
 void //
@@ -157,7 +161,7 @@ r_app_unload(const r_app_t* this) {
 
 void //
 r_app_destroy(const r_app_t* this) {
-  r_window_destroy(this->window);
+  // r_window_destroy(this->window);
 
   r_plugin_manager_t* plugin_manager = this->plugin_manager;
 

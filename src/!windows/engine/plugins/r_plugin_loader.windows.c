@@ -95,16 +95,14 @@ r_plugin_loader_load_plugin(r_memory_t* memory, r_plugin_t* plugins, const char*
 
 void //
 r_plugin_loader_unload_plugin(r_plugin_t* plugin) {
+  if (plugin->unload)
+    plugin->unload(plugin->state);
   FreeLibrary(plugin->handle);
 }
-
-// | memory_block | plugin a state | plugin a api || memory_block | plugin a state | plugin a api |
-// | ------------ | -------------- | ------------ || ------------ | -------------- | ------------ |
 
 r_plugin_t* //
 r_plugin_loader_reload_plugin(r_memory_t* memory, r_plugin_t* plugin) {
 
-  FreeLibrary(plugin->handle);
   while (!DeleteFileA(plugin->tmp_file_name))
     Sleep(1);
 

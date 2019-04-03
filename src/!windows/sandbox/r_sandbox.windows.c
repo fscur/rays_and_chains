@@ -5,9 +5,10 @@
 #include "!windows/engine/memory/r_memory.windows.c"
 #include "!windows/engine/thread/r_thread.windows.c"
 #include "!windows/engine/time/r_time.windows.c"
-#include "!windows/engine/window/r_window.windows.c"
 #include "!windows/engine/app/r_app.windows.c"
 #include "!windows/engine/plugins/r_plugins.windows.c"
+
+#pragma comment(lib, "user32")
 
 int CALLBACK
 WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {
@@ -32,8 +33,6 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
   app_info.time_info = &time_info;
 
   r_app_t* app = r_app_create(&memory, &app_info);
-
-  r_window_create(app->window);
 
   r_app_init(app);
   r_app_load(app);

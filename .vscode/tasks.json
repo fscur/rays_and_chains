@@ -62,6 +62,26 @@
             ]
         },
         {
+            "label": "build glfw plugin : debug",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "cwd": "p:\\scripts\\windows"
+                },
+                "command": "p:\\scripts\\windows\\plugins\\build_glfw_debug.bat glfw"
+            },
+            "linux": {
+                "command": "./scripts/linux/build_glfw_debug.sh glfw"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
             "label": "build plugin_a : debug",
             "type": "shell",
             "windows": {

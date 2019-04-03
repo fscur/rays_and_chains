@@ -47,7 +47,9 @@ plugin_a_init(plugin_a_t* this, r_api_db_t* api_db) {
 void //
 plugin_a_update(plugin_a_t* this, f64 dt) {
   this->debug_api->print("update plugin a: %d\n", 1);
-  this->window_api->set_back_color(this->window_api->window, (r_color_t){1.0f, 0.0f, 0.0f, 1.0f});
+  //this->window_api->set_back_color(this->window_api->window, (r_color_t){0.0f, 0.0f, 0.0f, 1.0f});
+  //this->window_api->set_back_color(this->window_api->window, (r_color_t){0.0f, 0.0f, 1.0f, 1.0f});
+  this->window_api->set_title(this->window_api->window, L"çhálala");
 }
 
 i32 //
