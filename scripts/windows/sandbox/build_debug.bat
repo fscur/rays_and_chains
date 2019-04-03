@@ -48,7 +48,7 @@ popd
 
 call log [info] "Copying dependencies"
 call log2 [info] & robocopy p:\lib\windows\x64\debug p:\bin *.dll /xo /njh /njs /ndl /nc /ns
-
+::call log2 [info] & robocopy p:\res p:\bin *.dll /xo /njh /njs /ndl /nc /ns
 call log [info] "Building sandbox.exe"
 
 call utctag

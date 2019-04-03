@@ -1,7 +1,7 @@
 cls
 @echo off
 set "PLUGIN_NAME=%1"
-set "DEFINES=/DUNICODE /D_DEBUG /DWIN32 /D_CRT_SECURE_NO_WARNINGS"
+set "DEFINES=/DUNICODE /D_DEBUG /DWIN32 /D_CRT_SECURE_NO_WARNINGS /DGLFW_INCLUDE_NONE /DCIMGUI_DEFINE_ENUMS_AND_STRUCTS /DIMGUI_IMPL_OPENGL_LOADER_GLAD"
 set "WARNINGS=/WX /W4 /wd4100 /wd4204 /wd4312 /wd4201 /wd4055 /wd4054"
 
 set "COMMON_COMPILER_FLAGS=/MT /nologo /Gm- /GR- /EHa- /Od /Oi %WARNINGS% /FC /Z7 %DEFINES%"
@@ -54,7 +54,7 @@ call log [info] "Compiling %PLUGIN_NAME%.dll resources"
 pushd p:\
 rc /d DEBUG ".\src\plugins\%PLUGIN_NAME%\version.rc"
 cd bin
-cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% "..\src\plugins\%PLUGIN_NAME%\%PLUGIN_NAME%.c" /Fe"plugins\%PLUGIN_NAME%\%PLUGIN_NAME%.dll" /Fm"plugins\%PLUGIN_NAME%\%PLUGIN_NAME%.map" /Fo"plugins\%PLUGIN_NAME%\%PLUGIN_NAME%.obj" /link /DLL /PDB:"plugins\%PLUGIN_NAME%\%PLUGIN_NAME%.%TAG%.pdb" %COMMON_LINKER_FLAGS% "..\src\plugins\%PLUGIN_NAME%\version.res"
+cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% "..\src\!windows\plugins\%PLUGIN_NAME%\%PLUGIN_NAME%.windows.c" /Fe"plugins\%PLUGIN_NAME%\%PLUGIN_NAME%.dll" /Fm"plugins\%PLUGIN_NAME%\%PLUGIN_NAME%.map" /Fo"plugins\%PLUGIN_NAME%\%PLUGIN_NAME%.obj" /link /DLL /PDB:"plugins\%PLUGIN_NAME%\%PLUGIN_NAME%.%TAG%.pdb" %COMMON_LINKER_FLAGS% "..\src\plugins\%PLUGIN_NAME%\version.res"
 cd ..
 .\tools\pdb_path_fixer\pdb_path_fixer.exe ".\bin\plugins\%PLUGIN_NAME%\%PLUGIN_NAME%.dll"
 robocopy .\bin\plugins\%PLUGIN_NAME% .\bin\plugins %PLUGIN_NAME%.*.pdb /xo /njh /njs /ndl /nc /ns

@@ -96,7 +96,7 @@ r_plugin_loader_load_plugin(r_memory_t* memory, r_plugin_t* plugins, const char*
 void //
 r_plugin_loader_unload_plugin(r_plugin_t* plugin) {
   if (plugin->unload)
-    plugin->unload(plugin->state);
+    plugin->destroy(plugin->state);
   FreeLibrary(plugin->handle);
 }
 

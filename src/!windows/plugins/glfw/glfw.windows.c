@@ -80,15 +80,10 @@ glfw_update(glfw_t* this, f64 dt) {
 void //
 glfw_render(glfw_t* this) {
   r_window_t* window = this->window;
+  glfwSwapBuffers(window->handle);
   glViewport(0, 0, window->width, window->height);
   glClearColor(window->back_color.r, window->back_color.g, window->back_color.b, window->back_color.a);
   glClear(GL_COLOR_BUFFER_BIT);
-  glfwSwapBuffers(window->handle);
-}
-
-void //
-glfw_unload(glfw_t* this) {
-  glfwTerminate();
 }
 
 void //
