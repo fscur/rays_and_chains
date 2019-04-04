@@ -17,7 +17,6 @@ typedef struct r_plugin_manager_t {
   u8 input[MAX_PLUGINS_COUNT];
   u8 update[MAX_PLUGINS_COUNT];
   u8 render[MAX_PLUGINS_COUNT];
-  u8 unload[MAX_PLUGINS_COUNT];
   u8 destroy[MAX_PLUGINS_COUNT];
   u8 reloaded_plugins[MAX_PLUGINS_COUNT];
   r_plugin_t* plugins;
@@ -26,7 +25,6 @@ typedef struct r_plugin_manager_t {
   u8 input_count;
   u8 update_count;
   u8 render_count;
-  u8 unload_count;
   u8 destroy_count;
   u8 reloaded_count;
 } r_plugin_manager_t;
@@ -49,7 +47,7 @@ dll_export bool //
 r_plugin_manager_should_reload(r_plugin_manager_t* this, r_plugin_t* plugin);
 
 dll_export void //
-r_plugin_manager_unload_plugin(r_plugin_manager_t* this, r_plugin_t* plugin);
+r_plugin_manager_destroy_plugin(r_plugin_manager_t* this, r_plugin_t* plugin);
 
 dll_export void //
 r_plugin_manager_reload_plugin(r_plugin_manager_t* this, r_plugin_t* plugin);

@@ -5,61 +5,42 @@ extern "C" {
 
 #include "engine/core/r_core_types.h"
 
-typedef struct r_time_info_t r_time_info_t;
-typedef struct r_memory_t r_memory_t;
-typedef struct r_window_t r_window_t;
-typedef struct r_plugin_manager_t r_plugin_manager_t;
 typedef struct r_api_db_t r_api_db_t;
+typedef struct r_app_t r_app_t;
+typedef struct r_memory_block_t r_memory_block_t;
+typedef void* (*R_APP_LOADER_FN)(void*, const char*);
 
-typedef struct r_app_info_t {
-  wchar_t title[MAX_FILE_NAME_LENGTH];
-  i32 width;
-  i32 height;
-  i32 x;
-  i32 y;
-  r_color_t back_color;
-  f64 desired_fps;
-  r_time_info_t* time_info;
-} r_app_info_t;
+typedef struct r_app_load_info_t {
+  R_APP_LOADER_FN fn;
+  void* handle;
+  void* app_addr;
+  void* memory_addr;
+} r_app_load_info_t;
+
+typedef u32 (*R_APP_GET_ID)();
+typedef size_t (*R_APP_GET_SIZE)();
+typedef void* (*R_APP_LOAD)(r_app_load_info_t* load_info);
+
+typedef void (*R_APP_INIT)(void* state, r_api_db_t* api_db);
+typedef void (*R_APP_RUN)(void* state);
+typedef void (*R_APP_DESTROY)(void* state);
 
 typedef struct r_app_t {
-  r_memory_t* memory;
-  r_window_t* window;
-  r_time_info_t* time_info;
-  r_api_db_t* api_db;
-  r_plugin_manager_t* plugin_manager;
-  bool running;
+  void* handle;
+  R_APP_INIT init;
+  R_APP_RUN run;
+  R_APP_DESTROY destroy;
+  u32 id;
+  int version;
+  char name[MAX_FILE_NAME_LENGTH];
+  char file_name[MAX_FILE_NAME_LENGTH];
+  char tmp_file_name[MAX_FILE_NAME_LENGTH];
+  r_datetime_t last_modification;
+  void* state;
+  void* api;
+  size_t memory_size;
+  r_memory_block_t* memory_block;
 } r_app_t;
-
-dll_export inline size_t //
-r_app_get_size();
-
-dll_export r_app_t* //
-r_app_create(r_memory_t* memory, r_app_info_t* app_info);
-
-dll_export void //
-r_app_run(r_app_t* this);
-
-dll_export void //
-r_app_init(r_app_t* this);
-
-dll_export void //
-r_app_load(r_app_t* this);
-
-dll_export void //
-r_app_input(r_app_t* this);
-
-dll_export void //
-r_app_update(r_app_t* this);
-
-dll_export void //
-r_app_render(const r_app_t* this);
-
-dll_export void //
-r_app_unload(const r_app_t* this);
-
-dll_export void //
-r_app_destroy(const r_app_t* this);
 
 #ifdef __cplusplus
 }

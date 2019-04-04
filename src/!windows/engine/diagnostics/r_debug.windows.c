@@ -1,3 +1,5 @@
+#include <windows.h>
+#include <stdio.h>
 #include "engine/diagnostics/r_debug.h"
 
 void //

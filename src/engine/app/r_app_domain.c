@@ -5,31 +5,31 @@
 #include "engine/plugins/r_plugin_loader.h"
 #include "engine/plugins/r_plugin.h"
 #include "engine/string/r_string.h"
-#include "engine/time/r_time.h"
+#include "engine/time/r_datetime.h"
 #include "engine/window/r_window.c"
 #include "engine/diagnostics/r_debug.h"
 #include "engine/diagnostics/r_debug_api.h"
 #include "engine/string/r_string_api.h"
 #include "engine/window/r_window_api.h"
 #include "r_api_db.c"
-#include "r_app.h"
+#include "r_app_domain.h"
 
 size_t
 r_app_get_size() {
-  return sizeof(r_app_t) +            //
+  return sizeof(r_app_domain_t) +     //
          sizeof(r_window_t) +         //
-         sizeof(r_time_info_t) +      //
+         sizeof(r_frame_info_t) +     //
          sizeof(r_plugin_manager_t) + //
          sizeof(r_api_db_t) + sizeof(r_plugin_t) * MAX_PLUGINS_COUNT;
 }
 
-r_app_t* //
-r_app_create(r_memory_t* memory, r_app_info_t* info) {
+r_app_domain_t* //
+r_app_domain_create(r_memory_t* memory, r_app_info_t* info) {
 
   size_t total_memory = r_app_get_size();
   r_memory_block_t* memory_block = r_memory_add_block(memory, total_memory);
 
-  r_app_t* this = r_memory_block_push_struct(memory_block, r_app_t);
+  r_app_domain_t* this = r_memory_block_push_struct(memory_block, r_app_domain_t);
   this->window = r_memory_block_push_struct(memory_block, r_window_t);
   this->plugin_manager = r_memory_block_push_struct(memory_block, r_plugin_manager_t);
   this->api_db = r_memory_block_push_struct(memory_block, r_api_db_t);
@@ -38,10 +38,10 @@ r_app_create(r_memory_t* memory, r_app_info_t* info) {
       (r_plugin_t*)r_memory_block_push_array(memory_block, r_plugin_t, MAX_PLUGINS_COUNT);
 
   this->plugin_manager->memory = memory;
-  this->time_info = info->time_info;
+  this->frame_info = info->frame_info;
   this->memory = memory;
-  this->time_info->desired_fps = info->desired_fps;
-  this->time_info->desired_ms_per_frame = 1000.0 / info->desired_fps;
+  this->frame_info->desired_fps = info->desired_fps;
+  this->frame_info->desired_ms_per_frame = 1000.0 / info->desired_fps;
   this->running = true;
 
   r_window_t* window = this->window;
@@ -54,7 +54,7 @@ r_app_create(r_memory_t* memory, r_app_info_t* info) {
 }
 
 void //
-r_app_init_apis(r_app_t* this) {
+r_app_domain_init_apis(r_app_domain_t* this) {
   local r_debug_api_t r_debug_api = {0};
   r_debug_api.print = (R_DEBUG_PRINT)&r_debug_print;
 
@@ -73,9 +73,9 @@ r_app_init_apis(r_app_t* this) {
 }
 
 void //
-r_app_init(r_app_t* this) {
+r_app_domain_init(r_app_domain_t* this) {
 
-  r_app_init_apis(this);
+  r_app_domain_init_apis(this);
 
   r_plugin_manager_t* plugin_manager = this->plugin_manager;
   r_plugin_manager_init(plugin_manager);
@@ -89,7 +89,7 @@ r_app_init(r_app_t* this) {
 }
 
 void //
-r_app_reload(r_app_t* this) {
+r_app_domain_reload(r_app_domain_t* this) {
   r_plugin_manager_t* plugin_manager = this->plugin_manager;
 
   r_plugin_manager_reload_plugins(plugin_manager);
@@ -105,10 +105,7 @@ r_app_reload(r_app_t* this) {
 }
 
 void //
-r_app_load(r_app_t* this) {}
-
-void //
-r_app_input(r_app_t* this) {
+r_app_domain_input(r_app_domain_t* this) {
   r_plugin_manager_t* plugin_manager = this->plugin_manager;
 
   for (int i = 0; i < plugin_manager->input_count; ++i) {
@@ -119,22 +116,21 @@ r_app_input(r_app_t* this) {
 }
 
 void //
-r_app_update(r_app_t* this) {
+r_app_domain_update(r_app_domain_t* this) {
 
   this->running = !this->window->should_close;
-  // r_window_update(this->window);
 
   r_plugin_manager_t* plugin_manager = this->plugin_manager;
 
   for (int i = 0; i < plugin_manager->update_count; ++i) {
     u8 index = plugin_manager->update[i];
     r_plugin_t plugin = plugin_manager->plugins[index];
-    plugin.update(plugin.state, this->time_info->dt);
+    plugin.update(plugin.state, this->frame_info->dt);
   }
 }
 
 void //
-r_app_render(const r_app_t* this) {
+r_app_domain_render(const r_app_domain_t* this) {
 
   r_plugin_manager_t* plugin_manager = this->plugin_manager;
 
@@ -143,25 +139,10 @@ r_app_render(const r_app_t* this) {
     r_plugin_t plugin = plugin_manager->plugins[index];
     plugin.render(plugin.state);
   }
-
-  // r_window_render(this->window);
-  // r_window_swapbuffers(this->window);
 }
 
 void //
-r_app_unload(const r_app_t* this) {
-  r_plugin_manager_t* plugin_manager = this->plugin_manager;
-
-  for (int i = 0; i < plugin_manager->unload_count; ++i) {
-    u8 index = plugin_manager->unload[i];
-    r_plugin_t plugin = plugin_manager->plugins[index];
-    plugin.unload(plugin.state);
-  }
-}
-
-void //
-r_app_destroy(const r_app_t* this) {
-  // r_window_destroy(this->window);
+r_app_domain_destroy(const r_app_domain_t* this) {
 
   r_plugin_manager_t* plugin_manager = this->plugin_manager;
 
@@ -173,10 +154,10 @@ r_app_destroy(const r_app_t* this) {
 }
 
 void //
-r_app_run(r_app_t* this) {
+r_app_domain_run(r_app_domain_t* this) {
 
-  r_app_input(this);
-  r_app_update(this);
-  r_app_render(this);
-  r_app_reload(this);
+  r_app_domain_input(this);
+  r_app_domain_update(this);
+  r_app_domain_render(this);
+  r_app_domain_reload(this);
 }

@@ -14,7 +14,8 @@
         "r_app_window.h": "c",
         "glfw3.h": "c",
         "string": "c",
-        "r_app.h": "c"
+        "r_app.h": "c",
+        "r_plugin.h": "c"
     },
     "editor.wordWrapColumn": 100,
     "files.exclude": {

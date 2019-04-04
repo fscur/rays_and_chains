@@ -12,7 +12,7 @@ dll_export r_plugin_t* //
 r_plugin_loader_load_plugin(r_memory_t* memory, r_plugin_t* plugins, const char* file_name);
 
 dll_export void //
-r_plugin_loader_unload_plugin(r_plugin_t* plugin);
+r_plugin_loader_destroy_plugin(r_plugin_t* plugin);
 
 dll_export r_plugin_t* //
 r_plugin_loader_reload_plugin(r_memory_t* memory, r_plugin_t* plugin);

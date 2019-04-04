@@ -41,7 +41,7 @@ typedef struct r_plugin_t {
   char name[MAX_FILE_NAME_LENGTH];
   char file_name[MAX_FILE_NAME_LENGTH];
   char tmp_file_name[MAX_FILE_NAME_LENGTH];
-  r_time_t last_modification;
+  r_datetime_t last_modification;
   void* state;
   void* api;
   size_t memory_size;

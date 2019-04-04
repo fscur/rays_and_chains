@@ -38,7 +38,7 @@ REM REM del *.dll /Q /F
 REM popd
 
 pushd p:\
-::del bin /Q
+del bin /Q
 ::del bin\plugins /Q
 if not exist bin mkdir bin
 cd bin
@@ -49,7 +49,7 @@ popd
 call log [info] "Copying dependencies"
 call log2 [info] & robocopy p:\lib\windows\x64\debug p:\bin *.dll /xo /njh /njs /ndl /nc /ns
 ::call log2 [info] & robocopy p:\res p:\bin *.dll /xo /njh /njs /ndl /nc /ns
-call log [info] "Building sandbox.exe"
+call log [info] "Building r_engine.exe"
 
 call utctag
 set TAG=%_utctag%
@@ -60,6 +60,5 @@ cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_io.dll /Fmr_io.map "..\src\!windo
 cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_string.dll /Fmr_string.map "..\src\!windows\engine\string\r_string.windows.c" /link /DLL %COMMON_LINKER_FLAGS%
 cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_memory.dll /Fmr_memory.map "..\src\!windows\engine\memory\r_memory.windows.c" /link /DLL %COMMON_LINKER_FLAGS%
 cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_plugins.dll /Fmr_plugins.map "..\src\!windows\engine\plugins\r_plugins.windows.c" /link /DLL %COMMON_LINKER_FLAGS%
-cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fesandbox.exe /Fmsandbox.map "..\src\!windows\sandbox\r_sandbox.windows.c" /link %COMMON_LINKER_FLAGS%
-::cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fesandbox.exe "..\src\!windows\sandbox\dfs.c" /link %COMMON_LINKER_FLAGS% /subsystem:console
+cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_engine.exe /Fmr_engine.map "..\src\!windows\engine\main\r_main.windows.c" /link %COMMON_LINKER_FLAGS%
 popd
