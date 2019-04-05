@@ -27,8 +27,8 @@
 #include "engine/string/r_string.h"
 #include "plugins/imgui/imgui.c"
 
-#pragma comment(lib, "../lib/windows/x64/release/cimgui.lib")
-#pragma comment(lib, "../lib/windows/x64/release/glfw3dll.lib")
+#pragma comment(lib, "cimgui.lib")
+#pragma comment(lib, "glfw3dll.lib")
 #pragma comment(lib, "kernel32.lib")
 #pragma comment(lib, "user32.lib")
 #pragma comment(lib, "gdi32.lib")

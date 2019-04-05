@@ -10,13 +10,13 @@
 #include "engine/string/r_string.h"
 #include "plugins/glfw/glfw.c"
 
-#pragma comment(lib, "../lib/windows/x64/release/glfw3dll.lib")
+#pragma comment(lib, "glfw3dll.lib")
 #pragma comment(lib, "kernel32.lib")
 #pragma comment(lib, "user32.lib")
 #pragma comment(lib, "gdi32.lib")
 #pragma comment(lib, "shell32.lib")
 #pragma comment(lib, "opengl32.lib")
-#pragma comment(lib, "../bin/r_string.lib")
+#pragma comment(lib, "r_string.lib")
 
 internal void //
 error_callback(const int error, const char* description) {
