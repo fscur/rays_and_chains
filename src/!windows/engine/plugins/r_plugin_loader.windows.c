@@ -9,10 +9,10 @@
 
 void //
 get_temp_file_name(const char* file_name, char* tmp_file_name) {
-  char tmp_path[MAX_FILE_NAME_LENGTH] = {0};
-  char name[MAX_FILE_NAME_LENGTH] = {0};
+  char tmp_path[SHORT_STRING_LENGTH] = {0};
+  char name[SHORT_STRING_LENGTH] = {0};
 
-  GetTempPathA(MAX_FILE_NAME_LENGTH, tmp_path);
+  GetTempPathA(SHORT_STRING_LENGTH, tmp_path);
   sprintf(name, "%s", PathFindFileNameA(file_name));
   sprintf(tmp_file_name, "%s%s", tmp_path, name);
 }
@@ -34,9 +34,9 @@ get_pdb_file_name(const char* file_name, char* pdb_file_name) {
 r_plugin_t* //
 r_plugin_loader_load_plugin(r_memory_t* memory, r_plugin_t* plugins, const char* file_name) {
 
-  char tmp_dll_file_name[MAX_FILE_NAME_LENGTH] = {0};
-  char tmp_pdb_file_name[MAX_FILE_NAME_LENGTH] = {0};
-  char pdb_file_name[MAX_FILE_NAME_LENGTH] = {0};
+  char tmp_dll_file_name[SHORT_STRING_LENGTH] = {0};
+  char tmp_pdb_file_name[SHORT_STRING_LENGTH] = {0};
+  char pdb_file_name[SHORT_STRING_LENGTH] = {0};
 
   get_temp_file_name(file_name, tmp_dll_file_name);
   get_pdb_file_name(file_name, pdb_file_name);
@@ -48,14 +48,14 @@ r_plugin_loader_load_plugin(r_memory_t* memory, r_plugin_t* plugins, const char*
     HMODULE plugin_handle = LoadLibraryA(tmp_dll_file_name);
     assert(plugin_handle != NULL);
 
-    char plugin_name[MAX_FILE_NAME_LENGTH - 4] = {0};
+    char plugin_name[SHORT_STRING_LENGTH - 4] = {0};
 
     sprintf(plugin_name, "%s", PathFindFileNameA(file_name));
     PathRemoveExtensionA(plugin_name);
 
-    char load_fn_name[MAX_FILE_NAME_LENGTH] = {"load_"};
-    char get_size_fn_name[MAX_FILE_NAME_LENGTH] = {"get_size_"};
-    char get_id_fn_name[MAX_FILE_NAME_LENGTH] = {"get_id_"};
+    char load_fn_name[SHORT_STRING_LENGTH] = {"load_"};
+    char get_size_fn_name[SHORT_STRING_LENGTH] = {"get_size_"};
+    char get_id_fn_name[SHORT_STRING_LENGTH] = {"get_id_"};
 
     strcat(load_fn_name, plugin_name);
     strcat(get_size_fn_name, plugin_name);
@@ -77,8 +77,8 @@ r_plugin_loader_load_plugin(r_memory_t* memory, r_plugin_t* plugins, const char*
     r_plugin_load_info_t load_info = {0};
     load_info.fn = &r_plugin_loader_fn;
     load_info.handle = plugin_handle;
-    load_info.plugin_addr = (r_plugin_t*)&plugins[id - 256];
-    load_info.memory_addr = state_memory_addr;
+    load_info.plugin_memory_addr = (r_plugin_t*)&plugins[id - 256];
+    load_info.state_memory_addr = state_memory_addr;
 
     r_plugin_t* plugin = load_function(&load_info);
     plugin->id = id;
@@ -106,8 +106,8 @@ r_plugin_loader_reload_plugin(r_memory_t* memory, r_plugin_t* plugin) {
   while (!DeleteFileA(plugin->tmp_file_name))
     Sleep(1);
 
-  char tmp_pdb_file_name[MAX_FILE_NAME_LENGTH] = {0};
-  char pdb_file_name[MAX_FILE_NAME_LENGTH] = {0};
+  char tmp_pdb_file_name[SHORT_STRING_LENGTH] = {0};
+  char pdb_file_name[SHORT_STRING_LENGTH] = {0};
   get_pdb_file_name(plugin->file_name, pdb_file_name);
   get_temp_file_name(pdb_file_name, tmp_pdb_file_name);
 
@@ -118,8 +118,8 @@ r_plugin_loader_reload_plugin(r_memory_t* memory, r_plugin_t* plugin) {
     HMODULE plugin_handle = LoadLibraryA(plugin->tmp_file_name);
     assert(plugin_handle != NULL);
 
-    char load_fn_name[MAX_FILE_NAME_LENGTH] = {"load_"};
-    char get_size_fn_name[MAX_FILE_NAME_LENGTH] = {"get_size_"};
+    char load_fn_name[SHORT_STRING_LENGTH] = {"load_"};
+    char get_size_fn_name[SHORT_STRING_LENGTH] = {"get_size_"};
 
     strcat(load_fn_name, plugin->name);
     strcat(get_size_fn_name, plugin->name);
@@ -133,8 +133,8 @@ r_plugin_loader_reload_plugin(r_memory_t* memory, r_plugin_t* plugin) {
     r_plugin_load_info_t load_info = {0};
     load_info.fn = &r_plugin_loader_fn;
     load_info.handle = plugin_handle;
-    load_info.plugin_addr = plugin;
-    load_info.memory_addr = plugin->state;
+    load_info.plugin_memory_addr = plugin;
+    load_info.state_memory_addr = plugin->state;
 
     r_plugin_t* new_plugin = load_function(&load_info);
     r_file_a_get_last_modification(new_plugin->file_name, &new_plugin->last_modification);

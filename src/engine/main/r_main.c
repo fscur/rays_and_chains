@@ -1,11 +1,12 @@
 #include "r_main.h"
 #include "engine/memory/r_memory.h"
 #include "engine/time/r_datetime.h"
-#include "engine/app/r_app_domain.h"
+#include "engine/app/r_app_context.h"
 #include "engine/thread/r_thread.h"
+#include "engine/lib_loader/r_lib_loader.h"
 
 void                                   //
-r_main(r_main_info_t* info,            //
+r_main(r_main_info_t* main_info,       //
        R_RESULT_ON_SUCCESS on_success, //
        R_RESULT_ON_ERROR on_error) {
 
@@ -22,24 +23,24 @@ r_main(r_main_info_t* info,            //
 
   // todo: read from config file
   r_app_info_t app_info = {0};
-  wsprintf(app_info.title, L"rays and chains");
+  r_string_w_copy(L"rays and chains", app_info.title);
   app_info.width = 400;
   app_info.height = 300;
   app_info.back_color = (r_color_t){0.08f, 0.09f, 0.12f, 1.00f};
   app_info.desired_fps = 30.0;
   app_info.frame_info = &frame_info;
+  r_string_a_copy(main_info->app_filename, app_info.filename);
 
-  r_app_domain_t* app = r_app_domain_create(&memory, &app_info);
+  r_app_context_t* app_ctx = r_app_context_create(&memory, &app_info);
+  r_app_context_init(app_ctx);
 
-  r_app_domain_init(app);
-
-  while (app->running) {
+  while (app_ctx->running) {
     r_debug_print(                                  //
         "[%010I64d][%08.3f][debug] Frame Start.\n", //
         frame_info.frame_count,
         frame_info.now / 1000.0);
 
-    r_app_domain_run(app);
+    r_app_context_run(app_ctx);
 
     // todo: make timings be measured in seconds
     frame_info.dt = r_datetime_now() - last;
@@ -87,6 +88,6 @@ r_main(r_main_info_t* info,            //
 
     frame_info.frame_count++;
   }
-  
-  r_app_domain_destroy(app);
+
+  r_app_context_destroy(app_ctx);
 }

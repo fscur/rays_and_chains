@@ -2,12 +2,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#include <math.h>
 
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdint.h>
-
-#include <math.h>
 
 #define local static
 #define internal static
@@ -18,7 +17,8 @@ extern "C" {
 #define gigabytes(Value) (megabytes(Value) * 1024LL)
 #define terabytes(Value) (gigabytes(Value) * 1024LL)
 
-#define MAX_FILE_NAME_LENGTH 256
+#define SHORT_STRING_LENGTH 256
+#define MAX_FUNCTION_COUNT 64
 
 #if _DEBUG
 #define assert(expression)                                                                         \
@@ -28,6 +28,8 @@ extern "C" {
 #else
 #define assert(expression)
 #endif
+
+// cache line = 64 bytes = 64 * 8 bits = 512 bits = 16 i32 = 8 i64;
 
 typedef int8_t i8;
 typedef int16_t i16;
@@ -40,42 +42,7 @@ typedef uint64_t u64;
 typedef float f32;
 typedef double f64;
 
-typedef struct r_v2_t {
-  f32 x, y;
-} r_v2_t;
-
-typedef struct r_v3_t {
-  f32 x, y, z;
-} r_v3_t;
-
-typedef struct r_v4_t {
-  f32 x, y, z, w;
-} r_v4_t;
-
-typedef struct r_m33_t {
-  f32 xx, xy, xz;
-  f32 yx, yy, yz;
-  f32 zx, zy, zz;
-} r_m33_t;
-
-typedef struct r_m44_t {
-  f32 xx, xy, xz, xw;
-  f32 yx, yy, yz, yw;
-  f32 zx, zy, zz, zw;
-  f32 wx, wy, wz, ww;
-} r_m44_t;
-
-typedef struct r_color_t {
-  f32 r, g, b, a;
-} r_color_t;
-
-typedef struct r_ray_t {
-  r_v3_t o, d;
-} r_ray_t;
-
-typedef struct r_plane_t {
-  r_v3_t p, n;
-} r_plane_t;
+#include "r_core_math_types.h"
 
 typedef struct r_datetime_t {
   i16 year;
@@ -101,8 +68,8 @@ typedef struct r_success_t {
 } r_success_t;
 
 typedef struct r_error_t {
+  u8 message[SHORT_STRING_LENGTH];
   u64 code;
-  u8 message[256];
   void* data;
 } r_error_t;
 
@@ -113,6 +80,36 @@ typedef struct r_result_t {
   R_RESULT_ON_SUCCESS on_success;
   R_RESULT_ON_ERROR on_error;
 } r_result_t;
+
+typedef struct r_memory_block_t r_memory_block_t;
+typedef struct r_lib_load_info_t r_lib_load_info_t;
+
+typedef void* (*R_LIB_LOADER_FN)(void*, const char*);
+
+typedef u32 (*R_LIB_GET_ID)();
+typedef u32 (*R_LIB_GET_FN_COUNT)();
+typedef size_t (*R_LIB_GET_SIZE)();
+typedef void* (*R_LIB_LOAD)(r_lib_load_info_t* load_info);
+
+typedef struct r_lib_load_info_t {
+  R_LIB_LOADER_FN fn;
+  void* handle;
+  void* lib_memory_addr;
+  void* state_memory_addr;
+} r_lib_load_info_t;
+
+typedef struct r_lib_t {
+  void* functions[MAX_FUNCTION_COUNT];     // 512
+  char name[SHORT_STRING_LENGTH];          // 256
+  char file_name[SHORT_STRING_LENGTH];     // 256
+  char tmp_file_name[SHORT_STRING_LENGTH]; // 256
+  r_datetime_t last_modification;          // 16
+  void* handle;                            // 8
+  r_memory_block_t* memory_block;          // 8
+  i32 version;                             // 4
+  u32 id;                                  // 4
+  u32 fn_count;                            // 4
+} r_lib_t;                                 // 1324
 
 #if defined(WIN32)
 #define dll_export __declspec(dllexport)

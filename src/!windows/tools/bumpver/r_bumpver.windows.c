@@ -39,7 +39,7 @@ getopt(int argc, char* const argv[], const char* optstring) {
 version //
 bump_version(const char* file_name, int bump) {
 
-  char tmp_file_name[MAX_FILE_NAME_LENGTH] = {0};
+  char tmp_file_name[SHORT_STRING_LENGTH] = {0};
   GetTempFileNameA(".", "\0", 0, tmp_file_name);
   FILE* read_file = fopen(file_name, "r");
   FILE* write_file = fopen(tmp_file_name, "w");
@@ -75,9 +75,15 @@ bump_version(const char* file_name, int bump) {
   }
 
   fprintf(write_file, "#define VER_FILEVERSION %d,%d,%d,%d\n", major, minor, patch, build);
-  fprintf(write_file, "#define VER_FILEVERSION_STR \"%d.%d.%d.%d\\0\"\n", major, minor, patch, build);
+  fprintf(
+      write_file, "#define VER_FILEVERSION_STR \"%d.%d.%d.%d\\0\"\n", major, minor, patch, build);
   fprintf(write_file, "#define VER_PRODUCTVERSION %d,%d,%d,%d\n", major, minor, patch, build);
-  fprintf(write_file, "#define VER_PRODUCTVERSION_STR \"%d.%d.%d.%d\\0\"\n\n", major, minor, patch, build);
+  fprintf(write_file,
+          "#define VER_PRODUCTVERSION_STR \"%d.%d.%d.%d\\0\"\n\n",
+          major,
+          minor,
+          patch,
+          build);
 
   int a;
   fscanf(read_file, "#define VER_FILEVERSION_STR \"%d.%d.%d.%d\\0\"\n", &a, &a, &a, &a);
@@ -97,7 +103,7 @@ bump_version(const char* file_name, int bump) {
   DeleteFileA(file_name);
   CopyFileA(tmp_file_name, file_name, FALSE);
   DeleteFileA(tmp_file_name);
-  return (version){ major, minor, patch, build };
+  return (version){major, minor, patch, build};
 }
 
 int
@@ -108,25 +114,21 @@ main(int argc, char* argv[]) {
     opt = getopt(argc, argv, "Mnpb");
     switch (opt) {
     case 'M': {
-        version v = bump_version(argv[optind], 0);
-        printf("bumped major version: %d.%d.%d.%d\n", v.major, v.minor, v.patch, v.build);
-      }
-      break;
+      version v = bump_version(argv[optind], 0);
+      printf("bumped major version: %d.%d.%d.%d\n", v.major, v.minor, v.patch, v.build);
+    } break;
     case 'm': {
-        version v = bump_version(argv[optind], 1);
-        printf("bumped minor version: %d.%d.%d.%d\n", v.major, v.minor, v.patch, v.build);
-      }
-      break;
-    case 'p': { 
-        version v = bump_version(argv[optind], 2);
-        printf("bumped patch version: %d.%d.%d.%d\n", v.major, v.minor, v.patch, v.build);
-      }
-      break;
+      version v = bump_version(argv[optind], 1);
+      printf("bumped minor version: %d.%d.%d.%d\n", v.major, v.minor, v.patch, v.build);
+    } break;
+    case 'p': {
+      version v = bump_version(argv[optind], 2);
+      printf("bumped patch version: %d.%d.%d.%d\n", v.major, v.minor, v.patch, v.build);
+    } break;
     case 'b': {
-        version v = bump_version(argv[optind], 3);
-        printf("bumped build version: %d.%d.%d.%d\n", v.major, v.minor, v.patch, v.build);
-      }
-      break;
+      version v = bump_version(argv[optind], 3);
+      printf("bumped build version: %d.%d.%d.%d\n", v.major, v.minor, v.patch, v.build);
+    } break;
     case '?':
       printf("help\n");
       exit(0);

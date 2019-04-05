@@ -25,15 +25,15 @@ struct CV_HEADER {
 struct CV_INFO_PDB20 {
   struct CV_HEADER Header;
   DWORD Signature;
-  DWORD Age;      
+  DWORD Age;
   BYTE PdbFileName[1];
 };
 
 struct CV_INFO_PDB70 {
   DWORD CvSignature;
   GUID Signature;
-  DWORD Age;           
-  BYTE PdbFileName[1]; 
+  DWORD Age;
+  BYTE PdbFileName[1];
 };
 
 LPCTSTR ProcessCmdLine(int argc, TCHAR* argv[]);
@@ -57,8 +57,8 @@ void DumpGuid(GUID Guid);
 int
 main(int argc, char* argv[]) {
 
-  wchar_t FileName[MAX_FILE_NAME_LENGTH] = {0};
-  mbstowcs(FileName, argv[1],  MAX_FILE_NAME_LENGTH);
+  wchar_t FileName[SHORT_STRING_LENGTH] = {0};
+  mbstowcs(FileName, argv[1], SHORT_STRING_LENGTH);
 
   if (FileName == 0)
     return 0;
@@ -68,9 +68,14 @@ main(int argc, char* argv[]) {
   LPVOID lpFileMem = 0;
 
   do {
-    
-    hFile = CreateFile(
-        FileName, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+    hFile = CreateFile(FileName,
+                       GENERIC_READ | GENERIC_WRITE,
+                       FILE_SHARE_READ,
+                       NULL,
+                       OPEN_EXISTING,
+                       FILE_ATTRIBUTE_NORMAL,
+                       NULL);
 
     if ((hFile == INVALID_HANDLE_VALUE) || (hFile == NULL)) {
       _tprintf(_T("Error: Cannot open the file. Error code: %u \n"), GetLastError());
@@ -405,7 +410,7 @@ DumpCodeViewDebugInfo(LPBYTE pDebugInfo, DWORD DebugInfoSize) {
     if (IsBadStringPtrA((CHAR*)pCvInfo->PdbFileName, UINT_MAX))
       return;
   } else if (CvSignature == CV_SIGNATURE_RSDS) {
-    
+
     struct CV_INFO_PDB70* pCvInfo = (struct CV_INFO_PDB70*)pDebugInfo;
 
     if (IsBadReadPtr(pDebugInfo, sizeof(struct CV_INFO_PDB70)))
@@ -414,17 +419,17 @@ DumpCodeViewDebugInfo(LPBYTE pDebugInfo, DWORD DebugInfoSize) {
     if (IsBadStringPtrA((CHAR*)pCvInfo->PdbFileName, UINT_MAX))
       return;
 
-    char file_name[MAX_FILE_NAME_LENGTH - 4] = {0};
+    char file_name[SHORT_STRING_LENGTH - 4] = {0};
     size_t len_before = strlen(pCvInfo->PdbFileName);
     sprintf(file_name, "%s", PathFindFileNameA(pCvInfo->PdbFileName));
     PathRemoveExtensionA(file_name);
     sprintf(pCvInfo->PdbFileName, ".\\%s.pdb\0", file_name);
     size_t len_after = strlen(pCvInfo->PdbFileName);
 
-    int offset = len_before-len_after;
+    int offset = len_before - len_after;
     int i = 1;
     while (i < offset) {
-      pCvInfo->PdbFileName[len_after+i++] = '0';
+      pCvInfo->PdbFileName[len_after + i++] = '0';
     }
 
   } else {

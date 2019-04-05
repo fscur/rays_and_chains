@@ -1,9 +1,9 @@
-#include "engine/plugins/r_plugin.h"
 #include "sandbox.h"
+#include "engine/app/r_app.h"
 
 u32 //
 get_id_sandbox() {
-  return SANDBOX_API_ID;
+  return 0;
 }
 
 size_t //
@@ -11,21 +11,10 @@ get_size_sandbox() {
   return sizeof(sandbox_t);
 }
 
-r_plugin_t* //
-load_sandbox(r_plugin_load_info_t* load_info) {
-
-  r_plugin_t* plugin = (r_plugin_t*)load_info->plugin_addr;
-  sandbox_t* state = (sandbox_t*)load_info->memory_addr;
-
-  plugin->handle = load_info->handle;
-  plugin->api = NULL;
-  plugin->state = state;
-
-  plugin->init = (R_PLUGIN_INIT)load_info->fn(load_info->handle, "sandbox_init");
-  plugin->input = (R_PLUGIN_INPUT)load_info->fn(load_info->handle, "sandbox_input");
-  plugin->update = (R_PLUGIN_UPDATE)load_info->fn(load_info->handle, "sandbox_update");
-  plugin->render = (R_PLUGIN_RENDER)load_info->fn(load_info->handle, "sandbox_render");
-  plugin->destroy = (R_PLUGIN_DESTROY)load_info->fn(load_info->handle, "sandbox_destroy");
-
-  return plugin;
+void //
+load_sandbox(r_lib_load_info_t* load_info) {
+  r_lib_t* lib = (r_lib_t*)load_info->lib_memory_addr;
+  lib->functions[lib->fn_count++] = load_info->fn(load_info->handle, "sandbox_init");
+  lib->functions[lib->fn_count++] = load_info->fn(load_info->handle, "sandbox_run");
+  lib->functions[lib->fn_count++] = load_info->fn(load_info->handle, "sandbox_destroy");
 }

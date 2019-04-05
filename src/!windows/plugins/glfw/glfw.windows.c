@@ -25,8 +25,8 @@ error_callback(const int error, const char* description) {
 
 internal void //
 set_glfw_window_title(r_window_t* window) {
-  char ansi_title[MAX_FILE_NAME_LENGTH] = {0};
-  r_string_to_ansi(window->title, ansi_title, MAX_FILE_NAME_LENGTH);
+  char ansi_title[SHORT_STRING_LENGTH] = {0};
+  r_string_to_ansi(window->title, ansi_title, SHORT_STRING_LENGTH);
   glfwSetWindowTitle(window->handle, ansi_title);
 }
 
@@ -47,9 +47,9 @@ glfw_init(glfw_t* this, r_api_db_t* api_db) {
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  char title[MAX_FILE_NAME_LENGTH] = {0};
+  char title[SHORT_STRING_LENGTH] = {0};
 
-  r_string_to_ansi(window->title, title, MAX_FILE_NAME_LENGTH);
+  r_string_to_ansi(window->title, title, SHORT_STRING_LENGTH);
 
   window->handle = (void*)glfwCreateWindow(window->width, window->height, title, NULL, NULL);
 
@@ -82,7 +82,8 @@ glfw_render(glfw_t* this) {
   r_window_t* window = this->window;
   glfwSwapBuffers(window->handle);
   glViewport(0, 0, window->width, window->height);
-  glClearColor(window->back_color.r, window->back_color.g, window->back_color.b, window->back_color.a);
+  glClearColor(
+      window->back_color.r, window->back_color.g, window->back_color.b, window->back_color.a);
   glClear(GL_COLOR_BUFFER_BIT);
 }
 

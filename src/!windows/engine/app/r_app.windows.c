@@ -3,4 +3,6 @@
 #pragma comment(lib, "r_string.lib")
 #pragma comment(lib, "r_time.lib")
 
-#include "engine/app/r_app_domain.c"
+#pragma comment(lib, "user32.lib")
+
+#include "engine/app/r_app_context.c"

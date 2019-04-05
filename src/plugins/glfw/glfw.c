@@ -14,8 +14,8 @@ get_size_glfw() {
 r_plugin_t* //
 load_glfw(r_plugin_load_info_t* load_info) {
 
-  r_plugin_t* plugin = (r_plugin_t*)load_info->plugin_addr;
-  glfw_t* state = (glfw_t*)load_info->memory_addr;
+  r_plugin_t* plugin = (r_plugin_t*)load_info->plugin_memory_addr;
+  glfw_t* state = (glfw_t*)load_info->state_memory_addr;
 
   plugin->handle = load_info->handle;
   plugin->api = NULL;

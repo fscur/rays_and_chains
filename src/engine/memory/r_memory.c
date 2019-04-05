@@ -1,9 +1,5 @@
 #include "r_memory.h"
 #include "r_memory_block.c"
-#include "plugins/plugin_a/plugin_a.h"
-#include "plugins/plugin_a/plugin_a_api.h"
-#include "plugins/plugin_b/plugin_b.h"
-#include "plugins/plugin_b/plugin_b_api.h"
 
 r_memory_t
 r_memory_create(size_t capacity) {
