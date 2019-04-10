@@ -3,6 +3,7 @@
 
 #include "!windows/engine/diagnostics/r_debug.windows.c"
 #include "!windows/engine/window/r_window.windows.c"
+#include "!windows/engine/ui/r_ui.windows.c"
 #include "!windows/engine/memory/r_memory.windows.c"
 #include "!windows/engine/thread/r_thread.windows.c"
 #include "!windows/engine/time/r_time.windows.c"

@@ -22,6 +22,7 @@
 #include "engine/app/r_api_db.h"
 #include "engine/diagnostics/r_debug_api.h"
 #include "engine/window/r_window_api.h"
+#include "engine/ui/r_ui_api.h"
 #include "engine/window/r_window.h"
 #include "engine/plugins/r_plugin.h"
 #include "engine/string/r_string.h"
@@ -35,11 +36,24 @@
 #pragma comment(lib, "shell32.lib")
 #pragma comment(lib, "opengl32.lib")
 
+internal void //
+imgui_render(const r_ui_t* this) {
+  ImGui_ImplOpenGL3_NewFrame();
+  ImGui_ImplGlfw_NewFrame();
+  igNewFrame();
+
+  local bool open = true;
+  igShowDemoWindow(&open);
+
+  igRender();
+  ImGui_ImplOpenGL3_RenderDrawData(igGetDrawData());
+}
+
 void //
 imgui_init(imgui_t* this, r_api_db_t* api_db) {
   this->debug_api = api_db->apis[R_DEBUG_API_ID];
   this->window_api = api_db->apis[R_WINDOW_API_ID];
-
+  this->ui_api = api_db->apis[R_UI_API_ID];
   r_window_t* window = this->window_api->window;
   assert(window->handle);
 
@@ -61,19 +75,8 @@ imgui_init(imgui_t* this, r_api_db_t* api_db) {
   // todo: embed the default font into the dll
   ImFontAtlas_AddFontFromFileTTF(
       this->io->Fonts, "../res/fonts/UbuntuMono-Regular.ttf", 16.0f, 0, 0);
-}
 
-void //
-imgui_render(imgui_t* this) {
-  ImGui_ImplOpenGL3_NewFrame();
-  ImGui_ImplGlfw_NewFrame();
-  igNewFrame();
-
-  local bool open = true;
-  igShowDemoWindow(&open);
-
-  igRender();
-  ImGui_ImplOpenGL3_RenderDrawData(igGetDrawData());
+  this->ui_api->render = &imgui_render;
 }
 
 void //

@@ -22,7 +22,6 @@ load_imgui(r_plugin_load_info_t* load_info) {
   plugin->state = state;
 
   plugin->init = (R_PLUGIN_INIT)load_info->fn(load_info->handle, "imgui_init");
-  plugin->render = (R_PLUGIN_RENDER)load_info->fn(load_info->handle, "imgui_render");
   plugin->destroy = (R_PLUGIN_DESTROY)load_info->fn(load_info->handle, "imgui_destroy");
 
   return plugin;

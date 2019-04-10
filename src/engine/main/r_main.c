@@ -24,10 +24,10 @@ r_main(r_main_info_t* main_info,       //
   // todo: read from config file
   r_app_info_t app_info = {0};
   r_string_w_copy(L"rays and chains", app_info.title);
-  app_info.width = 400;
-  app_info.height = 300;
+  app_info.width = 1280;
+  app_info.height = 720;
   app_info.back_color = (r_color_t){0.08f, 0.09f, 0.12f, 1.00f};
-  app_info.desired_fps = 30.0;
+  app_info.desired_fps = 60.0;
   app_info.frame_info = &frame_info;
   r_string_a_copy(main_info->app_filename, app_info.filename);
 

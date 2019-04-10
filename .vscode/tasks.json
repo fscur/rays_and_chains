@@ -42,6 +42,26 @@
             ]
         },
         {
+            "label": "build hammer : debug",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "cwd": "p:\\scripts\\windows"
+                },
+                "command": "p:\\scripts\\windows\\apps\\build_apps_debug.bat hammer"
+            },
+            "linux": {
+                "command": "./scripts/linux/apps/build_apps_debug.sh"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
             "label": "build bumpver : debug",
             "type": "shell",
             "windows": {

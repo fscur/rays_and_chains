@@ -1,20 +1,29 @@
 #include "engine/app/r_api_db.h"
 #include "engine/diagnostics/r_debug_api.h"
+#include "engine/window/r_window_api.h"
+#include "engine/ui/r_ui_api.h"
+#include "engine/string/r_string_api.h"
 #include "apps/sandbox/sandbox.c"
 
 void //
 sandbox_init(sandbox_t* this, r_api_db_t* api_db) {
-
-  // this->app_api->init = (R_APP_INIT)load_info->fn(load_info->handle, "sandbox_init");
-  // this->app_api->run = (R_APP_RUN)load_info->fn(load_info->handle, "sandbox_run");
-  // this->app_api->destroy = (R_APP_DESTROY)load_info->fn(load_info->handle, "sandbox_destroy");
-
   this->debug_api = api_db->apis[R_DEBUG_API_ID];
+  this->window_api = api_db->apis[R_WINDOW_API_ID];
+  this->ui_api = api_db->apis[R_UI_API_ID];
+  this->string_api = api_db->apis[R_STRING_API_ID];
 }
 
 void //
 sandbox_run(sandbox_t* this, r_frame_info_t* frame_info) {
-  this->debug_api->print("Running.");
+  r_window_t* window = this->window_api->window;
+  this->window_api->clear_color(window);
+  this->window_api->input(window);
+  this->window_api->update(window);
+
+  r_ui_t* ui = this->ui_api->ui;
+  this->ui_api->render(ui);
+
+  this->window_api->swap_buffers(window);
 }
 
 void //

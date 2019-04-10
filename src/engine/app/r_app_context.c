@@ -13,6 +13,7 @@
 #include "engine/diagnostics/r_debug_api.h"
 #include "engine/string/r_string_api.h"
 #include "engine/window/r_window_api.h"
+#include "engine/ui/r_ui_api.h"
 
 #include "r_app.h"
 #include "r_api_db.c"
@@ -21,8 +22,9 @@
 size_t
 r_app_get_size() {
   return sizeof(r_app_context_t) +    //
-         sizeof(r_app_t) +
-         sizeof(r_api_db_t) + 
+         sizeof(r_app_t) +            //
+         sizeof(r_api_db_t) +         //
+         sizeof(r_ui_t) +             //
          sizeof(r_window_t) +         //
          sizeof(r_frame_info_t) +     //
          sizeof(r_plugin_manager_t) + //
@@ -38,6 +40,7 @@ r_app_context_create(r_memory_t* memory, r_app_info_t* info) {
   r_app_context_t* this = r_memory_block_push_struct(memory_block, r_app_context_t);
   this->app = r_memory_block_push_struct(memory_block, r_app_t);
   this->window = r_memory_block_push_struct(memory_block, r_window_t);
+  this->ui = r_memory_block_push_struct(memory_block, r_ui_t);
   this->plugin_manager = r_memory_block_push_struct(memory_block, r_plugin_manager_t);
   this->api_db = r_memory_block_push_struct(memory_block, r_api_db_t);
 
@@ -77,9 +80,13 @@ r_app_context_init_apis(r_app_context_t* this) {
   local r_string_api_t r_string_api = {0};
   r_string_api.to_ansi = (R_STRING_TO_ANSI)&r_string_to_ansi;
 
+  local r_ui_api_t r_ui_api = {0};
+  r_ui_api.ui = this->ui;
+
   this->api_db->apis[R_DEBUG_API_ID] = &r_debug_api;
   this->api_db->apis[R_WINDOW_API_ID] = &r_window_api;
   this->api_db->apis[R_STRING_API_ID] = &r_string_api;
+  this->api_db->apis[R_UI_API_ID] = &r_ui_api;
   this->api_db->find_api = (R_API_DB_FIND_API_FN)&r_api_db_find_api;
 }
 
@@ -118,43 +125,6 @@ r_app_context_reload(r_app_context_t* this) {
   plugin_manager->reloaded_count = 0;
 }
 
-// void //
-// r_app_context_input(r_app_context_t* this) {
-//   r_plugin_manager_t* plugin_manager = this->plugin_manager;
-
-//   for (int i = 0; i < plugin_manager->input_count; ++i) {
-//     u8 index = plugin_manager->input[i];
-//     r_plugin_t plugin = plugin_manager->plugins[index];
-//     plugin.input(plugin.state);
-//   }
-// }
-
-// void //
-// r_app_context_update(r_app_context_t* this) {
-
-//   this->running = !this->window->should_close;
-
-//   r_plugin_manager_t* plugin_manager = this->plugin_manager;
-
-//   for (int i = 0; i < plugin_manager->update_count; ++i) {
-//     u8 index = plugin_manager->update[i];
-//     r_plugin_t plugin = plugin_manager->plugins[index];
-//     plugin.update(plugin.state, this->frame_info->dt);
-//   }
-// }
-
-// void //
-// r_app_context_render(const r_app_context_t* this) {
-
-//   r_plugin_manager_t* plugin_manager = this->plugin_manager;
-
-//   for (int i = 0; i < plugin_manager->render_count; ++i) {
-//     u8 index = plugin_manager->render[i];
-//     r_plugin_t plugin = plugin_manager->plugins[index];
-//     plugin.render(plugin.state);
-//   }
-// }
-
 void //
 r_app_context_destroy(const r_app_context_t* this) {
 
@@ -172,8 +142,6 @@ r_app_context_destroy(const r_app_context_t* this) {
 void //
 r_app_context_run(r_app_context_t* this) {
   this->app->api.run(this->app->state, this->frame_info);
-  // r_app_context_input(this);
-  // r_app_context_update(this);
-  // r_app_context_render(this);
   r_app_context_reload(this);
+  this->running = !this->window->should_close;
 }

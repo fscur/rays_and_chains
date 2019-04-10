@@ -10,6 +10,7 @@ typedef struct r_plugin_load_info_t r_plugin_load_info_t;
 typedef struct r_api_db_t r_api_db_t;
 typedef struct r_debug_api_t r_debug_api_t;
 typedef struct r_window_api_t r_window_api_t;
+typedef struct r_ui_api_t r_ui_api_t;
 typedef struct r_string_api_t r_string_api_t;
 typedef struct r_window_t r_window_t;
 typedef struct r_plugin_t r_plugin_t;
@@ -22,6 +23,7 @@ typedef struct ImGuiIO ImGuiIO;
 typedef struct imgui_t {
   r_debug_api_t* debug_api;
   r_window_api_t* window_api;
+  r_ui_api_t* ui_api;
   r_string_api_t* string_api;
   r_window_t* window;
   ImGuiContext* context;
@@ -39,9 +41,6 @@ get_id_imgui();
 
 dll_export void //
 imgui_init(imgui_t* this, r_api_db_t* api_db);
-
-dll_export void //
-imgui_render(imgui_t* this);
 
 dll_export void //
 imgui_destroy(imgui_t* this);
