@@ -49,12 +49,7 @@ call utctag
 set TAG=%_utctag%
 
 pushd %ROOT%\build\engine
-cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_time.dll /Fmr_time.map "%ROOT%\src\!windows\engine\time\r_time.windows.c" /link /DLL %COMMON_LINKER_FLAGS%
-cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_io.dll /Fmr_io.map "%ROOT%\src\!windows\engine\io\r_io.windows.c" /link /DLL %COMMON_LINKER_FLAGS%
-cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_string.dll /Fmr_string.map "%ROOT%\src\!windows\engine\string\r_string.windows.c" /link /DLL %COMMON_LINKER_FLAGS%
-cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_memory.dll /Fmr_memory.map "%ROOT%\src\!windows\engine\memory\r_memory.windows.c" /link /DLL %COMMON_LINKER_FLAGS%
-cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_plugins.dll /Fmr_plugins.map "%ROOT%\src\!windows\engine\plugins\r_plugins.windows.c" /link /DLL %COMMON_LINKER_FLAGS%
-cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_engine.exe /Fmr_engine.map "%ROOT%\src\!windows\engine\main\r_main.windows.c" /link %COMMON_LINKER_FLAGS%
+cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_engine.exe /Fmr_engine.map /For_engine.obj "%ROOT%\src\!windows\engine\main\r_main.windows.c" /link %COMMON_LINKER_FLAGS%
 popd
 echo.
 

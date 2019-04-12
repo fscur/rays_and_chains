@@ -1,7 +1,7 @@
 #include "r_main.h"
 #include "engine/memory/r_memory.h"
 #include "engine/time/r_datetime.h"
-#include "engine/app/r_app_context.h"
+#include "engine/app/r_app_host.h"
 #include "engine/thread/r_thread.h"
 #include "engine/lib_loader/r_lib_loader.h"
 
@@ -31,16 +31,16 @@ r_main(r_main_info_t* main_info,       //
   app_info.frame_info = &frame_info;
   r_string_a_copy(main_info->app_filename, app_info.filename);
 
-  r_app_context_t* app_ctx = r_app_context_create(&memory, &app_info);
-  r_app_context_init(app_ctx);
+  r_app_host_t* app_host = r_app_host_create(&memory, &app_info);
+  r_app_host_init(app_host);
 
-  while (app_ctx->running) {
+  while (app_host->running) {
     r_debug_print(                                  //
         "[%010I64d][%08.3f][debug] Frame Start.\n", //
         frame_info.frame_count,
         frame_info.now / 1000.0);
 
-    r_app_context_run(app_ctx);
+    r_app_host_run(app_host);
 
     // todo: make timings be measured in seconds
     frame_info.dt = r_datetime_now() - last;
@@ -89,5 +89,5 @@ r_main(r_main_info_t* main_info,       //
     frame_info.frame_count++;
   }
 
-  r_app_context_destroy(app_ctx);
+  r_app_host_destroy(app_host);
 }

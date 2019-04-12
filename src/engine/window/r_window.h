@@ -16,6 +16,7 @@ typedef struct r_window_t {
   i32 height;
   r_color_t back_color;
   bool should_close;
+  void* impl_state;
   R_WINDOW_TITLE_CHANGED_CALLBACK title_changed_callback;
   R_WINDOW_BACK_COLOR_CHANGED_CALLBACK back_color_changed_callback;
 } r_window_t;

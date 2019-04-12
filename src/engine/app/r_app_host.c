@@ -8,41 +8,46 @@
 #include "engine/string/r_string.h"
 #include "engine/time/r_datetime.h"
 #include "engine/window/r_window.h"
+#include "engine/ui/r_ui.h"
 #include "engine/diagnostics/r_debug.h"
+#include "engine/gfx/r_gfx_renderer.h"
 
 #include "engine/diagnostics/r_debug_api.h"
 #include "engine/string/r_string_api.h"
 #include "engine/window/r_window_api.h"
 #include "engine/ui/r_ui_api.h"
+#include "engine/gfx/r_gfx_renderer_api.h"
 
 #include "r_app.h"
 #include "r_api_db.c"
-#include "r_app_context.h"
+#include "r_app_host.h"
 
 size_t
 r_app_get_size() {
-  return sizeof(r_app_context_t) +    //
+  return sizeof(r_app_host_t) +    //
          sizeof(r_app_t) +            //
          sizeof(r_api_db_t) +         //
          sizeof(r_ui_t) +             //
          sizeof(r_window_t) +         //
          sizeof(r_frame_info_t) +     //
          sizeof(r_plugin_manager_t) + //
+         sizeof(r_gfx_renderer_t) + //
          sizeof(r_plugin_t) * MAX_PLUGINS_COUNT;
 }
 
-r_app_context_t* //
-r_app_context_create(r_memory_t* memory, r_app_info_t* info) {
+r_app_host_t* //
+r_app_host_create(r_memory_t* memory, r_app_info_t* info) {
 
   size_t total_memory = r_app_get_size();
   r_memory_block_t* memory_block = r_memory_add_block(memory, total_memory);
 
-  r_app_context_t* this = r_memory_block_push_struct(memory_block, r_app_context_t);
+  r_app_host_t* this = r_memory_block_push_struct(memory_block, r_app_host_t);
   this->app = r_memory_block_push_struct(memory_block, r_app_t);
   this->window = r_memory_block_push_struct(memory_block, r_window_t);
   this->ui = r_memory_block_push_struct(memory_block, r_ui_t);
   this->plugin_manager = r_memory_block_push_struct(memory_block, r_plugin_manager_t);
   this->api_db = r_memory_block_push_struct(memory_block, r_api_db_t);
+  this->renderer = r_memory_block_push_struct(memory_block, r_gfx_renderer_t);
 
   this->plugin_manager->plugins =
       (r_plugin_t*)r_memory_block_push_array(memory_block, r_plugin_t, MAX_PLUGINS_COUNT);
@@ -68,7 +73,7 @@ r_app_context_create(r_memory_t* memory, r_app_info_t* info) {
 }
 
 void //
-r_app_context_init_apis(r_app_context_t* this) {
+r_app_host_init_apis(r_app_host_t* this) {
   local r_debug_api_t r_debug_api = {0};
   r_debug_api.print = (R_DEBUG_PRINT)&r_debug_print;
 
@@ -83,17 +88,21 @@ r_app_context_init_apis(r_app_context_t* this) {
   local r_ui_api_t r_ui_api = {0};
   r_ui_api.ui = this->ui;
 
+  local r_gfx_renderer_api_t r_gfx_renderer_api = {0};
+  r_gfx_renderer_api.renderer = this->renderer;
+
   this->api_db->apis[R_DEBUG_API_ID] = &r_debug_api;
   this->api_db->apis[R_WINDOW_API_ID] = &r_window_api;
   this->api_db->apis[R_STRING_API_ID] = &r_string_api;
   this->api_db->apis[R_UI_API_ID] = &r_ui_api;
+  this->api_db->apis[R_GFX_RENDERER_API_ID] = &r_gfx_renderer_api;
   this->api_db->find_api = (R_API_DB_FIND_API_FN)&r_api_db_find_api;
 }
 
 void //
-r_app_context_init(r_app_context_t* this) {
+r_app_host_init(r_app_host_t* this) {
 
-  r_app_context_init_apis(this);
+  r_app_host_init_apis(this);
 
   r_plugin_manager_t* plugin_manager = this->plugin_manager;
   r_plugin_manager_init(plugin_manager);
@@ -109,7 +118,7 @@ r_app_context_init(r_app_context_t* this) {
 }
 
 void //
-r_app_context_reload(r_app_context_t* this) {
+r_app_host_reload(r_app_host_t* this) {
 
   r_plugin_manager_t* plugin_manager = this->plugin_manager;
 
@@ -126,7 +135,7 @@ r_app_context_reload(r_app_context_t* this) {
 }
 
 void //
-r_app_context_destroy(const r_app_context_t* this) {
+r_app_host_destroy(const r_app_host_t* this) {
 
   r_plugin_manager_t* plugin_manager = this->plugin_manager;
 
@@ -140,8 +149,8 @@ r_app_context_destroy(const r_app_context_t* this) {
 }
 
 void //
-r_app_context_run(r_app_context_t* this) {
+r_app_host_run(r_app_host_t* this) {
   this->app->api.run(this->app->state, this->frame_info);
-  r_app_context_reload(this);
+  r_app_host_reload(this);
   this->running = !this->window->should_close;
 }

@@ -23,7 +23,7 @@ typedef struct r_app_info_t {
   r_frame_info_t* frame_info;
 } r_app_info_t;
 
-typedef struct r_app_context_t {
+typedef struct r_app_host_t {
   r_memory_t* memory;
   r_window_t* window;
   r_ui_t* ui;
@@ -31,23 +31,24 @@ typedef struct r_app_context_t {
   r_app_t* app;
   r_api_db_t* api_db;
   r_plugin_manager_t* plugin_manager;
+  r_gfx_renderer_t* renderer;
   bool running;
-} r_app_context_t;
+} r_app_host_t;
 
 dll_export inline size_t //
-r_app_context_get_size();
+r_app_host_get_size();
 
-dll_export r_app_context_t* //
-r_app_context_create(r_memory_t* memory, r_app_info_t* app_info);
-
-dll_export void //
-r_app_context_run(r_app_context_t* this);
+dll_export r_app_host_t* //
+r_app_host_create(r_memory_t* memory, r_app_info_t* app_info);
 
 dll_export void //
-r_app_context_init(r_app_context_t* this);
+r_app_host_run(r_app_host_t* this);
 
 dll_export void //
-r_app_context_destroy(const r_app_context_t* this);
+r_app_host_init(r_app_host_t* this);
+
+dll_export void //
+r_app_host_destroy(const r_app_host_t* this);
 
 #ifdef __cplusplus
 }

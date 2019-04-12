@@ -130,9 +130,9 @@ ImGui_ImplGlfw_CharCallback(GLFWwindow* window, unsigned int c) {
   if (g_PrevUserCallbackChar != NULL)
     g_PrevUserCallbackChar(window, c);
 
-  // struct ImGuiIO* io = igGetIO();
-  // if (c > 0 && c < 0x10000)
-  //   io->AddInputCharacter((unsigned short)c);
+  struct ImGuiIO* io = igGetIO();
+  if (c > 0 && c < 0x10000)
+    ImGuiIO_AddInputCharacter(io, (unsigned short)c);
 }
 
 static bool
