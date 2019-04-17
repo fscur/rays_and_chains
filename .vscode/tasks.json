@@ -142,56 +142,16 @@
             ]
         },
         {
-            "label": "build plugin_a : debug",
+            "label": "build opengl plugin : debug",
             "type": "shell",
             "windows": {
                 "options": {
                     "cwd": "p:\\scripts\\windows"
                 },
-                "command": "p:\\scripts\\windows\\plugins\\build_plugin_debug.bat plugin_a"
+                "command": "p:\\scripts\\windows\\plugins\\build_plugin_debug.bat opengl"
             },
             "linux": {
-                "command": "./scripts/linux/plugins/build_plugin_debug.sh plugin_a"
-            },
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": [
-                "$msCompile"
-            ]
-        },
-        {
-            "label": "build plugin_b : debug",
-            "type": "shell",
-            "windows": {
-                "options": {
-                    "cwd": "p:\\scripts\\windows"
-                },
-                "command": "p:\\scripts\\windows\\plugins\\build_plugin_debug.bat plugin_b"
-            },
-            "linux": {
-                "command": "./scripts/linux/plugins/build_plugin_debug.sh plugin_b"
-            },
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": [
-                "$msCompile"
-            ]
-        },
-        {
-            "label": "build plugin_c : debug",
-            "type": "shell",
-            "windows": {
-                "options": {
-                    "cwd": "p:\\scripts\\windows"
-                },
-                "command": "p:\\scripts\\windows\\plugins\\build_plugin_debug.bat plugin_c"
-            },
-            "linux": {
-                "command": "./scripts/linux/plugins/build_plugin_debug.sh plugin_c"
+                "command": "./scripts/linux/plugins/build_plugin_debug.sh opengl"
             },
             "group": {
                 "kind": "build",

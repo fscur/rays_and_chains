@@ -10,6 +10,7 @@
 #include "!windows/engine/app/r_app.windows.c"
 #include "!windows/engine/string/r_string.windows.c"
 #include "!windows/engine/io/r_io.windows.c"
+#include "!windows/engine/gfx/r_gfx.windows.c"
 #include "!windows/engine/plugins/r_plugins.windows.c"
 #include "!windows/engine/lib_loader/r_lib_loader.windows.c"
 #include "engine/main/r_main.c"

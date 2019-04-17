@@ -28,7 +28,6 @@ set_glfw_window_title(r_window_t* window) {
   glfw_t* state = (glfw_t*)window->impl_state;
   char ansi_title[SHORT_STRING_LENGTH] = {0};
   state->string_api->to_ansi(window->title, ansi_title, SHORT_STRING_LENGTH);
-  //r_string_to_ansi(window->title, ansi_title, SHORT_STRING_LENGTH);
   glfwSetWindowTitle(window->handle, ansi_title);
 }
 

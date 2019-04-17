@@ -15,12 +15,16 @@ typedef struct r_ui_api_t r_ui_api_t;
 typedef struct r_string_api_t r_string_api_t;
 typedef struct r_window_t r_window_t;
 typedef struct r_lib_t r_lib_t;
+typedef struct r_gfx_renderer_api_t r_gfx_renderer_api_t;
+typedef struct r_gfx_renderer_t r_gfx_renderer_t;
 
 typedef struct sandbox_t {
   r_debug_api_t* debug_api;
   r_window_api_t* window_api;
   r_ui_api_t* ui_api;
   r_string_api_t* string_api;
+  r_gfx_renderer_api_t* renderer_api;
+  r_gfx_renderer_t* renderer;
 } sandbox_t;
 
 dll_export void //
