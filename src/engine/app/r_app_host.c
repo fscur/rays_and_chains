@@ -90,6 +90,11 @@ r_app_host_init_apis(r_app_host_t* this) {
 
   local r_gfx_renderer_api_t r_gfx_renderer_api = {0};
   r_gfx_renderer_api.renderer = this->renderer;
+  r_gfx_renderer_api.add_cmd = (R_GFX_RENDERER_ADD_CMD)&r_gfx_renderer_add_cmd;
+  r_gfx_renderer_api.sort = (R_GFX_RENDERER_SORT)&r_gfx_renderer_sort;
+  r_gfx_renderer_api.submit = (R_GFX_RENDERER_SUBMIT)&r_gfx_renderer_submit;
+  r_gfx_renderer_api.clear = (R_GFX_RENDERER_CLEAR)&r_gfx_renderer_clear;
+  r_gfx_renderer_api.create_clear_color_cmd = (R_GFX_RENDERER_CREATE_CLEAR_COLOR_CMD)&r_gfx_renderer_create_clear_color_buffer_cmd;
 
   this->api_db->apis[R_DEBUG_API_ID] = &r_debug_api;
   this->api_db->apis[R_WINDOW_API_ID] = &r_window_api;

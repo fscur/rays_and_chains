@@ -10,13 +10,13 @@ typedef struct r_plugin_load_info_t r_plugin_load_info_t;
 typedef struct r_api_db_t r_api_db_t;
 typedef struct r_debug_api_t r_debug_api_t;
 typedef struct r_plugin_t r_plugin_t;
-typedef struct r_renderer_api_t r_renderer_api_t;
+typedef struct r_gfx_renderer_api_t r_gfx_renderer_api_t;
 
-#define OPENGL_API_ID 256
+#define OPENGL_API_ID 258
 
 typedef struct opengl_t {
   r_debug_api_t* debug_api;
-  r_renderer_api_t* renderer_api;
+  r_gfx_renderer_api_t* renderer_api;
 } opengl_t;
 
 dll_export r_plugin_t* //

@@ -24,7 +24,6 @@ typedef struct sandbox_t {
   r_ui_api_t* ui_api;
   r_string_api_t* string_api;
   r_gfx_renderer_api_t* renderer_api;
-  r_gfx_renderer_t* renderer;
 } sandbox_t;
 
 dll_export void //

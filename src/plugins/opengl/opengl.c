@@ -2,8 +2,8 @@
 #include "engine/app/r_api_db.h"
 #include "engine/plugins/r_plugin.h"
 #include "engine/gfx/r_gfx_renderer.h"
-#include "engine/diagnostics/r_debug_api.h"
 #include "engine/gfx/r_gfx_renderer_api.h"
+#include "engine/diagnostics/r_debug_api.h"
 #include "opengl.h"
 
 #pragma comment(lib, "opengl32.lib")
@@ -35,15 +35,15 @@ load_opengl(r_plugin_load_info_t* load_info) {
 }
 
 internal void //
-opengl_clear_color_dispatcher(const void* data) {
-  r_gfx_clear_color_cmd_t* cmd = (r_gfx_clear_color_cmd_t*)data;
-  opengl_clear_color(cmd->color);  
-}
-
-internal void //
 opengl_clear_color(r_color_t color) {
   glClearColor(color.r, color.g, color.b, color.a);
   glClear(GL_COLOR_BUFFER_BIT);
+}
+
+internal void //
+opengl_clear_color_dispatcher(const void* data) {
+  r_gfx_clear_color_cmd_t* cmd = (r_gfx_clear_color_cmd_t*)data;
+  opengl_clear_color(cmd->color);  
 }
 
 void //
