@@ -41,5 +41,5 @@ popd
 
 call log [info] "Building bumpver.exe"
 pushd p:\tools\bumpver
-cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Febumpver.exe "..\..\src\!windows\tools\bumpver\r_bumpver.windows.c" /link /subsystem:console %COMMON_LINKER_FLAGS%
+cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Febumpver.exe "..\..\src\tools\bumpver\r_bumpver.windows.c" /link /subsystem:console %COMMON_LINKER_FLAGS%
 popd

@@ -1,5 +1,5 @@
-// this tool fixes the path of the pdb inside the dll
-// this code was copied and adapted from http://www.debuginfo.com/examples/debugdir.html
+// note: this tool fixes the path of the pdb inside the dll
+// important: this code was copied and adapted from http://www.debuginfo.com/examples/debugdir.html
 
 #include <windows.h>
 #include <tchar.h>
@@ -16,6 +16,7 @@
 #define MakePtr(cast, ptr, addValue) (cast)((DWORD_PTR)(ptr) + (DWORD_PTR)(addValue))
 #define CV_SIGNATURE_NB10 '01BN'
 #define CV_SIGNATURE_RSDS 'SDSR'
+#define SHORT_STRING_LENGTH 256
 
 struct CV_HEADER {
   DWORD CvSignature;
@@ -57,7 +58,7 @@ void DumpGuid(GUID Guid);
 int
 main(int argc, char* argv[]) {
 
-  wchar_t FileName[SHORT_STRING_LENGTH] = {0};
+  wchar_t FileName[MAX_PATH] = {0};
   mbstowcs(FileName, argv[1], SHORT_STRING_LENGTH);
 
   if (FileName == 0)

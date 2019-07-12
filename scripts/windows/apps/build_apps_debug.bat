@@ -62,7 +62,7 @@ popd
 
 call log [info] "Compiling %APP_NAME%"
 pushd %ROOT%\build\apps
-cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% "%ROOT%\src\!windows\apps\%APP_NAME%\%APP_NAME%.windows.c" /Fe"%APP_NAME%\%APP_NAME%.dll" /Fm"%APP_NAME%\%APP_NAME%.map" /Fo"%APP_NAME%\%APP_NAME%.obj" /link /DLL /PDB:"%APP_NAME%\%APP_NAME%.%TAG%.pdb" %COMMON_LINKER_FLAGS% "%ROOT%\src\apps\%APP_NAME%\version.res"
+cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% "%ROOT%\src\apps\%APP_NAME%\%APP_NAME%.windows.c" /Fe"%APP_NAME%\%APP_NAME%.dll" /Fm"%APP_NAME%\%APP_NAME%.map" /Fo"%APP_NAME%\%APP_NAME%.obj" /link /DLL /PDB:"%APP_NAME%\%APP_NAME%.%TAG%.pdb" %COMMON_LINKER_FLAGS% "%ROOT%\src\apps\%APP_NAME%\version.res"
 popd
 echo.
 

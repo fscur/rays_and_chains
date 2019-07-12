@@ -41,5 +41,5 @@ popd
 
 call log [info] "Building pdb_path_fixer.exe"
 pushd p:\tools\pdb_path_fixer
-cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fepdb_path_fixer.exe "..\..\src\!windows\tools\pdb_path_fixer\r_pdb_path_fixer.windows.c" /link /subsystem:console %COMMON_LINKER_FLAGS%
+cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fepdb_path_fixer.exe "..\..\src\tools\pdb_path_fixer\r_pdb_path_fixer.windows.c" /link /subsystem:console %COMMON_LINKER_FLAGS%
 popd

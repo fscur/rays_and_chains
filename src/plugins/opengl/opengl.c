@@ -41,7 +41,7 @@ opengl_clear_color(r_color_t color) {
 }
 
 internal void //
-opengl_clear_color_dispatcher(const void* data) {
+opengl_clear_color_dispatcher(void* data) {
   r_gfx_clear_color_cmd_t* cmd = (r_gfx_clear_color_cmd_t*)data;
   opengl_clear_color(cmd->color);  
 }

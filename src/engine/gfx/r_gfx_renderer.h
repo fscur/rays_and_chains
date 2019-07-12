@@ -9,7 +9,7 @@ extern "C" {
 
 typedef u64 r_gfx_cmd_key_t;
 typedef void* r_gfx_cmd_data_t;
-typedef void (*R_GFX_CMD_DISPATCHER)(const void* data);
+typedef void (*R_GFX_CMD_DISPATCHER)(void* data);
 
 typedef struct r_gfx_cmd_buffer_t {
   r_gfx_cmd_key_t keys[MAX_CMD_COUNT];

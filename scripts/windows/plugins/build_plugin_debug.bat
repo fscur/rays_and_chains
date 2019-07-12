@@ -63,7 +63,7 @@ echo.
 
 call log [info] "Compiling %PLUGIN_NAME%"
 pushd %ROOT%\build\plugins
-cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% "%ROOT%\src\!windows\plugins\%PLUGIN_NAME%\%PLUGIN_NAME%.windows.c" /Fe"%PLUGIN_NAME%\%PLUGIN_NAME%.dll" /Fm"%PLUGIN_NAME%\%PLUGIN_NAME%.map" /Fo"%PLUGIN_NAME%\%PLUGIN_NAME%.obj" /link /DLL /PDB:"%PLUGIN_NAME%\%PLUGIN_NAME%.%TAG%.pdb" %COMMON_LINKER_FLAGS% "%ROOT%\src\plugins\%PLUGIN_NAME%\version.res"
+cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% "%ROOT%\src\plugins\%PLUGIN_NAME%\%PLUGIN_NAME%.windows.c" /Fe"%PLUGIN_NAME%\%PLUGIN_NAME%.dll" /Fm"%PLUGIN_NAME%\%PLUGIN_NAME%.map" /Fo"%PLUGIN_NAME%\%PLUGIN_NAME%.obj" /link /DLL /PDB:"%PLUGIN_NAME%\%PLUGIN_NAME%.%TAG%.pdb" %COMMON_LINKER_FLAGS% "%ROOT%\src\plugins\%PLUGIN_NAME%\version.res"
 popd
 echo. 
 
