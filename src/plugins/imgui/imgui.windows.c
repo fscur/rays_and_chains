@@ -37,14 +37,20 @@
 #pragma comment(lib, "opengl32.lib")
 
 internal void //
-imgui_render(const r_ui_t* this) {
+imgui_begin(r_ui_t* ui) {
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
   igNewFrame();
+}
 
+internal void //
+imgui_render(r_ui_t* ui) {
   local bool open = true;
   igShowDemoWindow(&open);
+}
 
+internal void //
+imgui_end(r_ui_t* ui) {
   igRender();
   ImGui_ImplOpenGL3_RenderDrawData(igGetDrawData());
 }
@@ -60,7 +66,7 @@ imgui_init(imgui_t* this, r_api_db_t* api_db) {
   i32 success = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
   if (!success)
     this->debug_api->print("[ERROR]");
-    
+
   const char* glsl_version = "#version 130";
   this->context = igCreateContext(NULL);
 
@@ -76,7 +82,15 @@ imgui_init(imgui_t* this, r_api_db_t* api_db) {
   ImFontAtlas_AddFontFromFileTTF(
       this->io->Fonts, "../res/fonts/UbuntuMono-Regular.ttf", 16.0f, 0, 0);
 
+  ImFontAtlas_AddFontFromFileTTF(
+      this->io->Fonts, "../res/fonts/UbuntuMono-Regular.ttf", 14.0f, 0, 0);
+
+  ImFontAtlas_AddFontFromFileTTF(
+      this->io->Fonts, "../res/fonts/UbuntuMono-Regular.ttf", 12.0f, 0, 0);
+
+  this->ui_api->begin = &imgui_begin;
   this->ui_api->render = &imgui_render;
+  this->ui_api->end = &imgui_end;
 }
 
 void //

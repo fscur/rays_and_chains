@@ -12,10 +12,10 @@ extern "C" {
 #define internal static
 #define global extern
 
-#define kilobytes(Value) ((Value)*1024LL)
-#define megabytes(Value) (kilobytes(Value) * 1024LL)
-#define gigabytes(Value) (megabytes(Value) * 1024LL)
-#define terabytes(Value) (gigabytes(Value) * 1024LL)
+#define kilobytes(value) ((value)*1024LL)
+#define megabytes(value) (kilobytes(value) * 1024LL)
+#define gigabytes(value) (megabytes(value) * 1024LL)
+#define terabytes(value) (gigabytes(value) * 1024LL)
 
 #define SHORT_STRING_LENGTH 256
 #define MAX_FUNCTION_COUNT 64

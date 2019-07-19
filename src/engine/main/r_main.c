@@ -3,7 +3,6 @@
 #include "engine/time/r_datetime.h"
 #include "engine/app/r_app_host.h"
 #include "engine/thread/r_thread.h"
-#include "engine/lib_loader/r_lib_loader.h"
 
 void                                   //
 r_main(r_main_info_t* main_info,       //
@@ -18,7 +17,7 @@ r_main(r_main_info_t* main_info,       //
   last = start = r_datetime_now();
 
   r_frame_info_t frame_info = {0};
-  size_t total_app_memory = r_app_get_size();
+  size_t total_app_memory = r_app_host_get_size();
   r_memory_t memory = r_memory_create(total_app_memory + kilobytes(128));
 
   // todo: read from config file

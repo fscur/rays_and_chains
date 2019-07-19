@@ -23,7 +23,7 @@
 #include "r_app_host.h"
 
 size_t
-r_app_get_size() {
+r_app_host_get_size() {
   return sizeof(r_app_host_t) +    //
          sizeof(r_app_t) +            //
          sizeof(r_api_db_t) +         //
@@ -38,7 +38,7 @@ r_app_get_size() {
 r_app_host_t* //
 r_app_host_create(r_memory_t* memory, r_app_info_t* info) {
 
-  size_t total_memory = r_app_get_size();
+  size_t total_memory = r_app_host_get_size();
   r_memory_block_t* memory_block = r_memory_add_block(memory, total_memory);
 
   r_app_host_t* this = r_memory_block_push_struct(memory_block, r_app_host_t);

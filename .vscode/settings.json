@@ -16,7 +16,8 @@
         "string": "c",
         "r_app.h": "c",
         "r_plugin.h": "c",
-        "r_debug_api.h": "c"
+        "r_debug_api.h": "c",
+        "r_api_db.h": "c"
     },
     "editor.wordWrapColumn": 100,
     "files.exclude": {

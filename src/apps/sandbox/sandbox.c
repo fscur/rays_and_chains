@@ -8,6 +8,9 @@
 #include "engine/string/r_string_api.h"
 #include "engine/gfx/r_gfx_renderer.h"
 #include "engine/gfx/r_gfx_renderer_api.h"
+#include "cimgui/cimgui.h"
+
+#pragma comment(lib, "cimgui.lib")
 
 u32 //
 get_id_sandbox() {
@@ -34,28 +37,60 @@ sandbox_init(sandbox_t* this, r_api_db_t* api_db) {
   this->ui_api = api_db->apis[R_UI_API_ID];
   this->string_api = api_db->apis[R_STRING_API_ID];
   this->renderer_api = api_db->apis[R_GFX_RENDERER_API_ID];
+
+  // note: ui api prototype
+  // r_ui_t* ui = this->ui_api->ui;
+  // r_ui_canvas_t* canvas = this->ui_api->create_canvas(ui, 800, 600);
+  // r_ui_menu_t* menu = this->ui_api->create_menu(canvas);
+
+  // r_ui_menu_item_t* file_menu_item = this->ui_api->create_menu_item(menu, "File");
+  // r_ui_menu_item_t* edit_menu_item = this->ui_api->create_menu_item(menu, "Edit");
+  // r_ui_menu_item_t* tools_menu_item = this->ui_api->create_menu_item(menu, "Tools");
+  // r_ui_menu_item_t* windows_menu_item = this->ui_api->create_menu_item(menu, "Windows");
+  // r_ui_menu_item_t* help_menu_item = this->ui_api->create_menu_item(menu, "Help");
+
+  // this->ui_api->add_menu_item(menu, file_menu_item);
+  // this->ui_api->add_menu_item(menu, edit_menu_item);
+  // this->ui_api->add_menu_item(menu, tools_menu_item);
+  // this->ui_api->add_menu_item(menu, windows_menu_item);
+  // this->ui_api->add_menu_item(menu, help_menu_item);
+
+  // this->ui_api->add_menu(canvas, menu);
+  // this->ui_api->add_canvas(ui, canvas);
+}
+
+void
+draw_form() {
+  local bool open = true;
+  // igShowDemoWindow(&open);
+  igBegin("Test", &open, ImGuiWindowFlags_None);
+  igEnd();
 }
 
 void //
 sandbox_run(sandbox_t* this, r_frame_info_t* frame_info) {
   r_window_t* window = this->window_api->window;
-  //this->window_api->clear_color(window);
+
   this->window_api->input(window);
   this->window_api->update(window);
 
   r_gfx_renderer_t* renderer = this->renderer_api->renderer;
   r_gfx_cmd_t* cmd = this->renderer_api->create_clear_color_cmd(renderer);
-  
+
   r_gfx_clear_color_cmd_t* clear_color_cmd = (r_gfx_clear_color_cmd_t*)cmd->data;
   clear_color_cmd->color = window->back_color;
-  
+
   this->renderer_api->clear(renderer);
   this->renderer_api->add_cmd(renderer, cmd);
   this->renderer_api->sort(renderer);
   this->renderer_api->submit(renderer);
 
   r_ui_t* ui = this->ui_api->ui;
-  this->ui_api->render(ui);
+
+  // note: gambis, will think about it later
+  this->ui_api->begin(ui);
+  draw_form();
+  this->ui_api->end(ui);
 
   this->window_api->swap_buffers(window);
 }
