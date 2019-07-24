@@ -56,5 +56,6 @@
             "color": "#fc0",
         }
     ],
-    "terminal.integrated.cursorStyle": "line"
+    "terminal.integrated.cursorStyle": "line",
+    "cmake.configureOnOpen": false
 }

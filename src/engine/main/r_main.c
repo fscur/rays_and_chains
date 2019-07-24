@@ -25,7 +25,7 @@ r_main(r_main_info_t* main_info,       //
   r_string_w_copy(L"rays and chains", app_info.title);
   app_info.width = 1280;
   app_info.height = 720;
-  app_info.back_color = (r_color_t){1.00f, 0.09f, 0.12f, 1.00f};
+  app_info.back_color = (r_color_t){0.07f, 0.07f, 0.09f, 1.00f};
   app_info.desired_fps = 60.0;
   app_info.frame_info = &frame_info;
   r_string_a_copy(main_info->app_filename, app_info.filename);

@@ -79,14 +79,16 @@ imgui_init(imgui_t* this, r_api_db_t* api_db) {
   this->io = igGetIO();
 
   // todo: embed the default font into the dll
-  ImFontAtlas_AddFontFromFileTTF(
-      this->io->Fonts, "../res/fonts/UbuntuMono-Regular.ttf", 16.0f, 0, 0);
+  // ImFontAtlas_AddFontFromFileTTF(
+  //     this->io->Fonts, "../res/fonts/UbuntuMono-Regular.ttf", 16.0f, 0, 0);
 
-  ImFontAtlas_AddFontFromFileTTF(
-      this->io->Fonts, "../res/fonts/UbuntuMono-Regular.ttf", 14.0f, 0, 0);
+  // ImFontAtlas_AddFontFromFileTTF(
+  //     this->io->Fonts, "../res/fonts/UbuntuMono-Regular.ttf", 14.0f, 0, 0);
 
-  ImFontAtlas_AddFontFromFileTTF(
-      this->io->Fonts, "../res/fonts/UbuntuMono-Regular.ttf", 12.0f, 0, 0);
+  // ImFontAtlas_AddFontFromFileTTF(
+  //     this->io->Fonts, "../res/fonts/UbuntuMono-Regular.ttf", 12.0f, 0, 0);
+
+  ImFontAtlas_AddFontFromFileTTF(this->io->Fonts, "../res/fonts/SegoeUI-Regular.ttf", 18.0f, 0, 0);
 
   this->ui_api->begin = &imgui_begin;
   this->ui_api->render = &imgui_render;

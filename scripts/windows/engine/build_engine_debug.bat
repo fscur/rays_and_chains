@@ -6,7 +6,7 @@ set "WARNINGS=/WX /W4 /wd4100 /wd4204 /wd4312 /wd4201 /wd4055 /wd4054"
 
 set "COMMON_COMPILER_FLAGS=/MT /nologo /Gm- /GR- /EHa- /Od /Oi %WARNINGS% /FC /Z7 %DEFINES%"
 set "INCLUDE_DIRS=/I%ROOT%\src /I%ROOT%\inc"
-set "COMMON_LINKER_FLAGS=-opt:ref /LIBPATH:%ROOT%\lib\windows\x64\debug"
+set "COMMON_LINKER_FLAGS=-opt:ref /LIBPATH:%ROOT%\lib\windows\debug"
 
 set VC14_PATH="%programfiles(x86)%\Microsoft Visual Studio 14.0\VC"
 set VC17_PATH="%programfiles(x86)%\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build"
@@ -40,7 +40,7 @@ if not exist engine mkdir engine
 popd
 
 call log [info] "Copying dependencies"
-call log2 [info] & robocopy %ROOT%\lib\windows\x64\debug %ROOT%\bin *.dll /xo /njh /njs /ndl /nc /ns
+call log2 [info] & robocopy %ROOT%\lib\windows\debug %ROOT%\bin *.dll /xo /njh /njs /ndl /nc /ns
 echo.
 
 call log [info] "Building r_engine.exe"
@@ -58,5 +58,5 @@ pushd %ROOT%
 robocopy .\build\engine .\bin *.pdb /xo /njh /njs /ndl /nc /ns /nfl
 robocopy .\build\engine .\bin *.dll /xo /njh /njs /ndl /nc /ns /nfl
 robocopy .\build\engine .\bin *.exe /xo /njh /njs /ndl /nc /ns /nfl
-robocopy .\build\engine .\lib\windows\x64\debug *.lib /xo /njh /njs /ndl /nc /ns /nfl
+robocopy .\build\engine .\lib\windows\debug *.lib /xo /njh /njs /ndl /nc /ns /nfl
 popd

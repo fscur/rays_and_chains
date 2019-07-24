@@ -8,8 +8,10 @@
 #include "engine/string/r_string_api.h"
 #include "engine/gfx/r_gfx_renderer.h"
 #include "engine/gfx/r_gfx_renderer_api.h"
-#include "cimgui/cimgui.h"
 
+#include "ui.c"
+
+#include "cimgui/cimgui.h"
 #pragma comment(lib, "cimgui.lib")
 
 u32 //
@@ -38,6 +40,8 @@ sandbox_init(sandbox_t* this, r_api_db_t* api_db) {
   this->string_api = api_db->apis[R_STRING_API_ID];
   this->renderer_api = api_db->apis[R_GFX_RENDERER_API_ID];
 
+  init_ui();
+
   // note: ui api prototype
   // r_ui_t* ui = this->ui_api->ui;
   // r_ui_canvas_t* canvas = this->ui_api->create_canvas(ui, 800, 600);
@@ -57,14 +61,6 @@ sandbox_init(sandbox_t* this, r_api_db_t* api_db) {
 
   // this->ui_api->add_menu(canvas, menu);
   // this->ui_api->add_canvas(ui, canvas);
-}
-
-void
-draw_form() {
-  local bool open = true;
-  // igShowDemoWindow(&open);
-  igBegin("Test", &open, ImGuiWindowFlags_None);
-  igEnd();
 }
 
 void //
@@ -89,7 +85,7 @@ sandbox_run(sandbox_t* this, r_frame_info_t* frame_info) {
 
   // note: gambis, will think about it later
   this->ui_api->begin(ui);
-  draw_form();
+  render_ui();
   this->ui_api->end(ui);
 
   this->window_api->swap_buffers(window);
