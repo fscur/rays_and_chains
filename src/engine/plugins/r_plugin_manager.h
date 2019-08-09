@@ -27,6 +27,7 @@ typedef struct r_plugin_manager_t {
   u8 render_count;
   u8 destroy_count;
   u8 reloaded_count;
+  char libs_path[SHORT_STRING_LENGTH];
 } r_plugin_manager_t;
 
 typedef r_plugin_manager_t* (*R_PLUGIN_MANAGER_CREATE)(r_memory_t*);

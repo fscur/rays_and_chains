@@ -1,8 +1,8 @@
 #include <winresrc.h>
-#define VER_FILEVERSION 0,0,0,10
-#define VER_FILEVERSION_STR "0.0.0.10\0"
-#define VER_PRODUCTVERSION 0,0,0,10
-#define VER_PRODUCTVERSION_STR "0.0.0.10\0"
+#define VER_FILEVERSION 0,0,0,52
+#define VER_FILEVERSION_STR "0.0.0.52\0"
+#define VER_PRODUCTVERSION 0,0,0,52
+#define VER_PRODUCTVERSION_STR "0.0.0.52\0"
 
 #ifndef DEBUG
 #define VER_DEBUG 0
@@ -22,11 +22,11 @@ BEGIN
         BLOCK "040904E4"
         BEGIN
             VALUE "CompanyName",      "Vector"
-            VALUE "FileDescription",  "opengl"
+            VALUE "FileDescription",  "r_ui_imgui"
             VALUE "FileVersion",      VER_FILEVERSION_STR
-            VALUE "InternalName",     "opengl"
+            VALUE "InternalName",     "r_ui_imgui"
             VALUE "LegalCopyright",   "Copyright 2019 (c). All rights reserved."
-            VALUE "ProductName",      "opengl"
+            VALUE "ProductName",      "r_ui_imgui"
             VALUE "ProductVersion",   VER_PRODUCTVERSION_STR
         END
     END

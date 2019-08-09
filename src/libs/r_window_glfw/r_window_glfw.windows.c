@@ -9,7 +9,7 @@
 #include "engine/window/r_window.h"
 #include "engine/plugins/r_plugin.h"
 #include "engine/string/r_string.h"
-#include "plugins/glfw/glfw.c"
+#include "r_window_glfw.c"
 
 #pragma comment(lib, "glfw3dll.lib")
 #pragma comment(lib, "kernel32.lib")
@@ -90,7 +90,7 @@ glfw_init(glfw_t* this, r_api_db_t* api_db) {
   i32 success = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
   if (!success)
-    printf("[ERROR]");
+    printf("[ERROR] Could not load glad.");
 
   glfwSwapInterval(0);
 

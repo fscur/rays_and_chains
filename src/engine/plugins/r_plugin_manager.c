@@ -20,7 +20,9 @@ r_plugin_manager_load_plugin(r_file_info_a_t file_info, r_plugin_manager_t* this
 
 void //
 r_plugin_manager_init(r_plugin_manager_t* this) {
-  r_directory_a_foreach_file(".\\plugins", "*.dll", (void*)r_plugin_manager_load_plugin, this);
+  // todo: remove this dependency...
+  // move this code to the platform layer, .dll is a windows only extension
+  r_directory_a_foreach_file(this->libs_path, "*.dll", (void*)r_plugin_manager_load_plugin, this);
 }
 
 void //

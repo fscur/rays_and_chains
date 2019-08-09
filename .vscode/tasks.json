@@ -102,16 +102,16 @@
             ]
         },
         {
-            "label": "build glfw plugin : debug",
+            "label": "build r_window_glfw lib : debug",
             "type": "shell",
             "windows": {
                 "options": {
                     "cwd": "p:\\scripts\\windows"
                 },
-                "command": "p:\\scripts\\windows\\plugins\\build_plugin_debug.bat glfw"
+                "command": "p:\\scripts\\windows\\libs\\build_lib_debug.bat r_window_glfw"
             },
             "linux": {
-                "command": "./scripts/linux/plugins/build_plugin_debug.sh glfw"
+                "command": "./scripts/linux/libs/build_libs_debug.sh r_window_glfw"
             },
             "group": {
                 "kind": "build",
@@ -122,16 +122,16 @@
             ]
         },
         {
-            "label": "build imgui plugin : debug",
+            "label": "build r_ui_imgui lib : debug",
             "type": "shell",
             "windows": {
                 "options": {
                     "cwd": "p:\\scripts\\windows"
                 },
-                "command": "p:\\scripts\\windows\\plugins\\build_plugin_debug.bat imgui"
+                "command": "p:\\scripts\\windows\\libs\\build_lib_debug.bat r_ui_imgui"
             },
             "linux": {
-                "command": "./scripts/linux/plugins/build_plugin_debug.sh imgui"
+                "command": "./scripts/linux/libs/build_lib_debug.sh r_ui_imgui"
             },
             "group": {
                 "kind": "build",
@@ -142,16 +142,16 @@
             ]
         },
         {
-            "label": "build opengl plugin : debug",
+            "label": "build r_gfx_opengl lib : debug",
             "type": "shell",
             "windows": {
                 "options": {
                     "cwd": "p:\\scripts\\windows"
                 },
-                "command": "p:\\scripts\\windows\\plugins\\build_plugin_debug.bat opengl"
+                "command": "p:\\scripts\\windows\\libs\\build_lib_debug.bat r_gfx_opengl"
             },
             "linux": {
-                "command": "./scripts/linux/plugins/build_plugin_debug.sh opengl"
+                "command": "./scripts/linux/libs/build_lib_debug.sh r_gfx_opengl"
             },
             "group": {
                 "kind": "build",

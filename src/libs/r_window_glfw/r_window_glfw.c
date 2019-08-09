@@ -1,18 +1,18 @@
 #include "engine/plugins/r_plugin.h"
-#include "glfw.h"
+#include "r_window_glfw.h"
 
 u32 //
-get_id_glfw() {
+get_id_r_window_glfw() {
   return GLFW_API_ID;
 }
 
 size_t //
-get_size_glfw() {
+get_size_r_window_glfw() {
   return sizeof(glfw_t);
 }
 
 r_plugin_t* //
-load_glfw(r_plugin_load_info_t* load_info) {
+load_r_window_glfw(r_plugin_load_info_t* load_info) {
 
   r_plugin_t* plugin = (r_plugin_t*)load_info->plugin_memory_addr;
   glfw_t* state = (glfw_t*)load_info->state_memory_addr;

@@ -26,7 +26,7 @@
 #include "engine/window/r_window.h"
 #include "engine/plugins/r_plugin.h"
 #include "engine/string/r_string.h"
-#include "plugins/imgui/imgui.c"
+#include "r_ui_imgui.c"
 
 #pragma comment(lib, "cimgui.lib")
 #pragma comment(lib, "glfw3dll.lib")

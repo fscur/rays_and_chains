@@ -4,22 +4,22 @@
 #include "engine/gfx/r_gfx_renderer.h"
 #include "engine/gfx/r_gfx_renderer_api.h"
 #include "engine/diagnostics/r_debug_api.h"
-#include "opengl.h"
+#include "r_gfx_opengl.h"
 
 #pragma comment(lib, "opengl32.lib")
 
 u32 //
-get_id_opengl() {
+get_id_r_gfx_opengl() {
   return OPENGL_API_ID;
 }
 
 size_t //
-get_size_opengl() {
+get_size_r_gfx_opengl() {
   return sizeof(opengl_t);
 }
 
 r_plugin_t* //
-load_opengl(r_plugin_load_info_t* load_info) {
+load_r_gfx_opengl(r_plugin_load_info_t* load_info) {
 
   r_plugin_t* plugin = (r_plugin_t*)load_info->plugin_memory_addr;
   opengl_t* state = (opengl_t*)load_info->state_memory_addr;
@@ -43,7 +43,7 @@ opengl_clear_color(r_color_t color) {
 internal void //
 opengl_clear_color_dispatcher(void* data) {
   r_gfx_clear_color_cmd_t* cmd = (r_gfx_clear_color_cmd_t*)data;
-  opengl_clear_color(cmd->color);  
+  opengl_clear_color(cmd->color);
 }
 
 void //
@@ -53,11 +53,11 @@ opengl_init(opengl_t* this, r_api_db_t* api_db) {
 
   r_gfx_renderer_t* renderer = this->renderer_api->renderer;
   renderer->clear_color_dispatcher = &opengl_clear_color_dispatcher;
-  
+
   i32 success = gladLoadGL();
 
   if (!success)
-    printf("[ERROR]");
+    printf("[ERROR] Could not load glad.");
 }
 
 void //

@@ -26,10 +26,8 @@ init_imgui_style() {
   style->TabBorderSize = 0.0f;
   style->WindowBorderSize = 0.0f;
 
-  ImVec4 color00 = (ImVec4){0.102f, 0.09f, 0.122f, 1.00f};
   ImVec4 color01 = (ImVec4){0.04f, 0.04f, 0.057f, 1.00f};
   ImVec4 color02 = (ImVec4){0.05f, 0.05f, 0.062f, 1.00f};
-  ImVec4 color03 = (ImVec4){0.04f, 0.04f, 0.057f, 1.00f};
   ImVec4 color04 = (ImVec4){0.56f, 0.56f, 0.58f, 1.00f};
   ImVec4 color05 = (ImVec4){0.56f, 0.56f, 0.58f, 0.80f};
   ImVec4 color06 = (ImVec4){1.00f, 0.71f, 0.00f, 1.00f};
@@ -37,21 +35,23 @@ init_imgui_style() {
   ImVec4 color08 = (ImVec4){0.10f, 0.09f, 0.12f, 1.00f};
   ImVec4 color09 = (ImVec4){0.56f, 0.56f, 0.58f, 0.60f};
   ImVec4 color10 = (ImVec4){0.50f, 0.50f, 0.50f, 0.90f};
+  ImVec4 color11 = (ImVec4){0.062f, 0.062f, 0.082f, 1.0f};
+  ImVec4 color12 = (ImVec4){0.106f, 0.106f, 0.141f, 1.0f};
 
   style->Colors[ImGuiCol_Text] = (ImVec4){0.90f, 0.90f, 0.9f, 1.00f};
   style->Colors[ImGuiCol_TextDisabled] = (ImVec4){0.24f, 0.23f, 0.29f, 1.00f};
-  style->Colors[ImGuiCol_WindowBg] = (ImVec4){0.06f, 0.05f, 0.07f, 0.60f};
-  style->Colors[ImGuiCol_ChildBg] = (ImVec4){0.07f, 0.05f, 0.07f, 1.00f};
-  style->Colors[ImGuiCol_PopupBg] = color00;
+  style->Colors[ImGuiCol_WindowBg] = (ImVec4){0.197f, 0.188f, 0.224f, 1.0f};
+  style->Colors[ImGuiCol_ChildBg] = color11;
+  style->Colors[ImGuiCol_PopupBg] = color11;
   style->Colors[ImGuiCol_Border] = (ImVec4){0.80f, 0.80f, 0.83f, 0.88f};
   style->Colors[ImGuiCol_BorderShadow] = (ImVec4){0.92f, 0.91f, 0.88f, 0.30f};
   style->Colors[ImGuiCol_FrameBg] = color08;
   style->Colors[ImGuiCol_FrameBgHovered] = color08;
   style->Colors[ImGuiCol_FrameBgActive] = color08;
-  style->Colors[ImGuiCol_TitleBg] = color08;
-  style->Colors[ImGuiCol_TitleBgCollapsed] = color08;
-  style->Colors[ImGuiCol_TitleBgActive] = color01;
-  style->Colors[ImGuiCol_MenuBarBg] = color03;
+  style->Colors[ImGuiCol_TitleBg] = color11;
+  style->Colors[ImGuiCol_TitleBgCollapsed] = color12;
+  style->Colors[ImGuiCol_TitleBgActive] = color12;
+  style->Colors[ImGuiCol_MenuBarBg] = color12;
   style->Colors[ImGuiCol_ScrollbarBg] = color02;
   style->Colors[ImGuiCol_ScrollbarGrab] = color09;
   style->Colors[ImGuiCol_ScrollbarGrabHovered] = color05;
@@ -62,9 +62,9 @@ init_imgui_style() {
   style->Colors[ImGuiCol_Button] = color06;
   style->Colors[ImGuiCol_ButtonHovered] = color01;
   style->Colors[ImGuiCol_ButtonActive] = color04;
-  style->Colors[ImGuiCol_Header] = color08;
-  style->Colors[ImGuiCol_HeaderHovered] = color01;
-  style->Colors[ImGuiCol_HeaderActive] = (ImVec4){0.06f, 0.05f, 0.07f, 1.00f};
+  style->Colors[ImGuiCol_Header] = color11;
+  style->Colors[ImGuiCol_HeaderHovered] = color11;
+  style->Colors[ImGuiCol_HeaderActive] = color11;
   style->Colors[ImGuiCol_ResizeGrip] = (ImVec4){0.00f, 0.00f, 0.00f, 0.00f};
   style->Colors[ImGuiCol_ResizeGripHovered] = color04;
   style->Colors[ImGuiCol_ResizeGripActive] = color01;
@@ -163,29 +163,22 @@ render_main_menu() {
 
 void //
 render_side_menu() {
-ImGuiWindowFlags flags = 
-    ImGuiWindowFlags_NoResize |
-    ImGuiWindowFlags_NoCollapse |
-    ImGuiWindowFlags_NoMove |
-    ImGuiWindowFlags_NoTitleBar | 
-    ImGuiWindowFlags_NoBringToFrontOnFocus;
+  ImGuiWindowFlags flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
+                           ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar |
+                           ImGuiWindowFlags_NoBringToFrontOnFocus;
 
   bool open = true;
   igPushStyleVarFloat(ImGuiStyleVar_WindowBorderSize, 1.0f);
   igPushStyleVarFloat(ImGuiStyleVar_WindowRounding, 0.0f);
   igPushStyleColor(ImGuiCol_Border, (ImVec4){0.04f, 0.04f, 0.04f, 0.80f});
-  //igPushStyleColor(ImGuiCol_WindowBg, (ImVec4){0.05f, 0.05f, 0.072f, 1.0f});
   igPushStyleColor(ImGuiCol_WindowBg, (ImVec4){0.045f, 0.045f, 0.065f, 1.00f});
 
   igBegin("side_menu", &open, flags);
   igSetWindowPosVec2((ImVec2){-1, -1}, ImGuiCond_Always);
   igSetWindowSizeVec2((ImVec2){51, 1081}, ImGuiCond_Always);
-  // igImage((void*)ui->texture_id,
-  //         (ImVec2){(f32)ui->image->width, (f32)ui->image->height},
-  //         (ImVec2){uv_start, uv_start},
-  //         (ImVec2){uv_end, uv_end},
-  //         (ImColor){255, 255, 255, 255},
-  //         (ImColor){255, 255, 255, 128});
+
+  // todo: add extension code
+
   igEnd();
   igPopStyleColor(2);
   igPopStyleVar(2);
@@ -193,12 +186,9 @@ ImGuiWindowFlags flags =
 
 void //
 render_extension_place_holder() {
-  ImGuiWindowFlags flags = 
-    ImGuiWindowFlags_NoResize |
-    ImGuiWindowFlags_NoCollapse |
-    ImGuiWindowFlags_NoMove |
-    ImGuiWindowFlags_NoTitleBar | 
-    ImGuiWindowFlags_NoBringToFrontOnFocus;
+  ImGuiWindowFlags flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
+                           ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar |
+                           ImGuiWindowFlags_NoBringToFrontOnFocus;
 
   bool open = true;
   igPushStyleVarFloat(ImGuiStyleVar_WindowBorderSize, 1.0f);
@@ -209,12 +199,9 @@ render_extension_place_holder() {
   igBegin("extension_place_holder", &open, flags);
   igSetWindowPosVec2((ImVec2){49, -1}, ImGuiCond_Always);
   igSetWindowSizeVec2((ImVec2){252, 1081}, ImGuiCond_Always);
-  // igImage((void*)ui->texture_id,
-  //         (ImVec2){(f32)ui->image->width, (f32)ui->image->height},
-  //         (ImVec2){uv_start, uv_start},
-  //         (ImVec2){uv_end, uv_end},
-  //         (ImColor){255, 255, 255, 255},
-  //         (ImColor){255, 255, 255, 128});
+
+  // todo: add extension code
+
   igEnd();
   igPopStyleColor(2);
   igPopStyleVar(2);
@@ -222,12 +209,9 @@ render_extension_place_holder() {
 
 void //
 render_viewport() {
-  ImGuiWindowFlags flags = 
-    ImGuiWindowFlags_NoResize |
-    ImGuiWindowFlags_NoCollapse |
-    ImGuiWindowFlags_NoMove |
-    ImGuiWindowFlags_NoTitleBar | 
-    ImGuiWindowFlags_NoBringToFrontOnFocus;
+  ImGuiWindowFlags flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
+                           ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar |
+                           ImGuiWindowFlags_NoBringToFrontOnFocus;
 
   bool open = true;
   igPushStyleVarFloat(ImGuiStyleVar_WindowBorderSize, 1.0f);
@@ -238,12 +222,16 @@ render_viewport() {
   igBegin("viewport", &open, flags);
   igSetWindowPosVec2((ImVec2){300, 27}, ImGuiCond_Always);
   igSetWindowSizeVec2((ImVec2){2000, 1081}, ImGuiCond_Always);
+
   // igImage((void*)ui->texture_id,
   //         (ImVec2){(f32)ui->image->width, (f32)ui->image->height},
   //         (ImVec2){uv_start, uv_start},
   //         (ImVec2){uv_end, uv_end},
   //         (ImColor){255, 255, 255, 255},
   //         (ImColor){255, 255, 255, 128});
+
+  // todo: add extension code
+
   igEnd();
   igPopStyleColor(2);
   igPopStyleVar(2);

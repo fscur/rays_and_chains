@@ -45,3 +45,4 @@ build/
 
 !tools/bumpver/bumpver.exe
 !tools/pdb_path_fixer/pdb_path_fixer.exe
+CBDF.tmp
