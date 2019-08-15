@@ -30,9 +30,13 @@ typedef struct r_app_host_t {
   r_frame_info_t* frame_info;
   r_app_t* app;
   r_api_db_t* api_db;
-  r_plugin_manager_t* plugin_manager;
   r_gfx_renderer_t* renderer;
   bool running;
+  char libs_path[SHORT_STRING_LENGTH];
+  r_lib_t libs[MAX_PLUGINS_COUNT];
+  i32 lib_count;
+  u8 reloaded_libs[MAX_PLUGINS_COUNT];
+  u8 reloaded_lib_count;
 } r_app_host_t;
 
 dll_export inline size_t //

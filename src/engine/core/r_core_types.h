@@ -83,6 +83,7 @@ typedef struct r_result_t {
 
 typedef struct r_memory_block_t r_memory_block_t;
 typedef struct r_lib_load_info_t r_lib_load_info_t;
+typedef struct r_api_db_t r_api_db_t;
 
 typedef void* (*R_LIB_LOADER_FN)(void*, const char*);
 
@@ -90,6 +91,8 @@ typedef u32 (*R_LIB_GET_ID)();
 typedef u32 (*R_LIB_GET_FN_COUNT)();
 typedef size_t (*R_LIB_GET_SIZE)();
 typedef void* (*R_LIB_LOAD)(r_lib_load_info_t* load_info);
+typedef void* (*R_LIB_INIT)(void* lib_state, r_api_db_t* db);
+typedef void* (*R_LIB_DESTROY)(void* lib_state);
 
 typedef struct r_lib_load_info_t {
   R_LIB_LOADER_FN fn;
@@ -106,10 +109,11 @@ typedef struct r_lib_t {
   r_datetime_t last_modification;          // 16
   void* handle;                            // 8
   r_memory_block_t* memory_block;          // 8
+  void* state;                             // 8
   i32 version;                             // 4
   u32 id;                                  // 4
   u32 fn_count;                            // 4
-} r_lib_t;                                 // 1324
+} r_lib_t;                                 // 1332
 
 #if defined(WIN32)
 #define dll_export __declspec(dllexport)

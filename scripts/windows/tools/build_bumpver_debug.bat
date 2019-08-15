@@ -8,27 +8,6 @@ set "COMMON_COMPILER_FLAGS=/MTd /nologo /Gm- /GR- /EHa- /Od /Oi %WARNINGS% /FC /
 set "INCLUDE_DIRS=/I..\src /I..\inc"
 set COMMON_LINKER_FLAGS="-opt:ref"
 
-set VC14_PATH="%programfiles(x86)%\Microsoft Visual Studio 14.0\VC"
-set VC17_PATH="%programfiles(x86)%\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build"
-
-if /I exist %VC14_PATH% (
-  goto vc14
-)
-
-if /I exist %VC17_PATH% ( 
-  goto vc17
-)
-
-:vc14
-call %VC14_PATH%\vcvarsall.bat x64
-goto start
-
-:vc17
-call %VC17_PATH%\vcvarsall.bat x64
-goto start
-
-:start
-
 call log [info] "********** DEBUG **********"
 pushd p:\
 del tools /Q

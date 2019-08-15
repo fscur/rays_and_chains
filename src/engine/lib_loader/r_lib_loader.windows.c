@@ -31,7 +31,7 @@ r_lib_loader_get_pdb_file_name(const char* file_name, char* pdb_file_name) {
 }
 
 void //
-r_lib_loader_load_lib(r_memory_t* memory, r_lib_t* lib, const char* file_name) {
+r_lib_loader_load_lib(r_memory_t* memory, r_lib_t* lib, const char* file_name, r_api_db_t* db) {
 
   char tmp_dll_file_name[SHORT_STRING_LENGTH] = {0};
   char tmp_pdb_file_name[SHORT_STRING_LENGTH] = {0};
@@ -78,6 +78,8 @@ r_lib_loader_load_lib(r_memory_t* memory, r_lib_t* lib, const char* file_name) {
     lib->handle = lib_handle;
     lib->id = id;
     lib->memory_block = lib_memory_block;
+    lib->state = lib_memory_block;
+
     r_string_a_copy(lib_name, lib->name);
     r_string_a_copy(file_name, lib->file_name);
     r_string_a_copy(tmp_dll_file_name, lib->tmp_file_name);
@@ -89,13 +91,16 @@ r_lib_loader_load_lib(r_memory_t* memory, r_lib_t* lib, const char* file_name) {
 
 void //
 r_lib_loader_destroy_lib(r_lib_t* lib) {
-  // if (lib->destroy)
-  //   lib->destroy(lib->state);
+  if (lib->functions[2]) {
+    R_LIB_DESTROY destroy_fn = (R_LIB_DESTROY)lib->functions[2];
+    destroy_fn(lib->state);
+  }
+  lib->fn_count = 0;
   FreeLibrary(lib->handle);
 }
 
 void //
-r_lib_loader_reload_lib(r_memory_t* memory, r_lib_t* lib) {
+r_lib_loader_reload_lib(r_lib_t* lib) {
 
   while (!DeleteFileA(lib->tmp_file_name))
     Sleep(1);
@@ -118,7 +123,7 @@ r_lib_loader_reload_lib(r_memory_t* memory, r_lib_t* lib) {
     strcat(load_fn_name, lib->name);
     strcat(get_size_fn_name, lib->name);
 
-    R_LIB_LOAD load_function = //
+    R_LIB_LOAD load = //
         (R_LIB_LOAD)r_lib_loader_fn(lib_handle, load_fn_name);
 
     r_lib_load_info_t load_info = {0};
@@ -126,9 +131,10 @@ r_lib_loader_reload_lib(r_memory_t* memory, r_lib_t* lib) {
     load_info.handle = lib_handle;
     load_info.lib_memory_addr = lib;
 
-    r_lib_t* new_lib = load_function(&load_info);
-    r_file_a_get_last_modification(new_lib->file_name, &new_lib->last_modification);
-    new_lib->memory_block = lib->memory_block;
+    load(&load_info);
+    r_file_a_get_last_modification(lib->file_name, &lib->last_modification);
+    lib->memory_block = lib->memory_block;
+    lib->state = lib->memory_block;
   }
 }
 

@@ -11,18 +11,9 @@ get_size_r_ui_imgui() {
   return sizeof(imgui_t);
 }
 
-r_plugin_t* //
-load_r_ui_imgui(r_plugin_load_info_t* load_info) {
-
-  r_plugin_t* plugin = (r_plugin_t*)load_info->plugin_memory_addr;
-  imgui_t* state = (imgui_t*)load_info->state_memory_addr;
-
-  plugin->handle = load_info->handle;
-  plugin->api = NULL;
-  plugin->state = state;
-
-  plugin->init = (R_PLUGIN_INIT)load_info->fn(load_info->handle, "imgui_init");
-  plugin->destroy = (R_PLUGIN_DESTROY)load_info->fn(load_info->handle, "imgui_destroy");
-
-  return plugin;
+void //
+load_r_ui_imgui(r_lib_load_info_t* load_info) {
+  r_lib_t* lib = (r_lib_t*)load_info->lib_memory_addr;
+  lib->functions[lib->fn_count++] = load_info->fn(load_info->handle, "imgui_init");
+  lib->functions[lib->fn_count++] = load_info->fn(load_info->handle, "imgui_destroy");
 }

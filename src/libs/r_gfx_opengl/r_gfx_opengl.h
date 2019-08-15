@@ -19,8 +19,8 @@ typedef struct opengl_t {
   r_gfx_renderer_api_t* renderer_api;
 } opengl_t;
 
-dll_export r_plugin_t* //
-load_r_gfx_opengl(r_plugin_load_info_t* load_info);
+dll_export void //
+load_r_gfx_opengl(r_lib_load_info_t* load_info);
 
 dll_export size_t //
 get_size_r_gfx_opengl();

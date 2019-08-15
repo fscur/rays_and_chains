@@ -9,6 +9,7 @@
 #include "engine/time/r_datetime.h"
 #include "engine/window/r_window.h"
 #include "engine/ui/r_ui.h"
+#include "engine/io/r_file.h"
 #include "engine/diagnostics/r_debug.h"
 #include "engine/gfx/r_gfx_renderer.h"
 
@@ -24,15 +25,27 @@
 
 size_t
 r_app_host_get_size() {
-  return sizeof(r_app_host_t) +       //
-         sizeof(r_app_t) +            //
-         sizeof(r_api_db_t) +         //
-         sizeof(r_ui_t) +             //
-         sizeof(r_window_t) +         //
-         sizeof(r_frame_info_t) +     //
-         sizeof(r_plugin_manager_t) + //
-         sizeof(r_gfx_renderer_t) +   //
-         sizeof(r_plugin_t) * MAX_PLUGINS_COUNT;
+  return sizeof(r_app_host_t) +     //
+         sizeof(r_app_t) +          //
+         sizeof(r_api_db_t) +       //
+         sizeof(r_ui_t) +           //
+         sizeof(r_window_t) +       //
+         sizeof(r_frame_info_t) +   //
+         sizeof(r_gfx_renderer_t) + //
+         sizeof(r_lib_t) * MAX_PLUGINS_COUNT;
+}
+
+internal void //
+r_app_host_load_lib(r_file_info_a_t file_info, r_app_host_t* this) {
+  r_lib_t lib = {0};
+  r_lib_loader_load_lib(this->memory, &lib, file_info.full_name, this->api_db);
+  this->libs[lib.id - 256] = lib;
+  this->lib_count++;
+}
+
+internal void //
+r_app_host_load_libs(r_app_host_t* this) {
+  r_directory_a_foreach_file(this->libs_path, "*.dll", (void*)r_app_host_load_lib, this);
 }
 
 r_app_host_t* //
@@ -45,16 +58,11 @@ r_app_host_create(r_memory_t* memory, r_app_info_t* info) {
   this->app = r_memory_block_push_struct(memory_block, r_app_t);
   this->window = r_memory_block_push_struct(memory_block, r_window_t);
   this->ui = r_memory_block_push_struct(memory_block, r_ui_t);
-  this->plugin_manager = r_memory_block_push_struct(memory_block, r_plugin_manager_t);
   this->api_db = r_memory_block_push_struct(memory_block, r_api_db_t);
   this->renderer = r_memory_block_push_struct(memory_block, r_gfx_renderer_t);
 
-  r_string_a_copy(".\\libs", this->plugin_manager->libs_path);
+  r_string_a_copy(".\\libs", this->libs_path);
 
-  this->plugin_manager->plugins =
-      (r_plugin_t*)r_memory_block_push_array(memory_block, r_plugin_t, MAX_PLUGINS_COUNT);
-
-  this->plugin_manager->memory = memory;
   this->frame_info = info->frame_info;
   this->memory = memory;
   this->frame_info->desired_fps = info->desired_fps;
@@ -67,7 +75,7 @@ r_app_host_create(r_memory_t* memory, r_app_info_t* info) {
   window->height = info->height;
   window->back_color = info->back_color;
 
-  r_lib_loader_load_lib(this->memory, &this->app->lib, info->filename);
+  r_lib_loader_load_lib(this->memory, &this->app->lib, info->filename, this->api_db);
   this->app->state = this->app->lib.memory_block;
   this->app->api = *(r_app_api_t*)this->app->lib.functions;
 
@@ -109,48 +117,74 @@ r_app_host_init_apis(r_app_host_t* this) {
 
 void //
 r_app_host_init(r_app_host_t* this) {
-
   r_app_host_init_apis(this);
+  r_app_host_load_libs(this);
 
-  r_plugin_manager_t* plugin_manager = this->plugin_manager;
-  r_plugin_manager_init(plugin_manager);
-
-  for (int i = 0; i < plugin_manager->init_count; ++i) {
-    u8 index = plugin_manager->init[i];
-    r_plugin_t plugin = plugin_manager->plugins[index];
-    this->api_db->apis[plugin.id] = plugin.api;
-    plugin.init(plugin.state, this->api_db);
+  for (i32 i = 0; i < this->lib_count; ++i) {
+    r_lib_t lib = this->libs[i];
+    R_LIB_INIT init_fn = (R_LIB_INIT)lib.functions[0];
+    init_fn(lib.state, this->api_db);
   }
 
   this->app->api.init(this->app->state, this->api_db);
 }
 
+internal bool //
+r_app_host_should_reload_lib(r_lib_t* lib) {
+  r_datetime_t last_modification = {0};
+  if (r_file_a_get_last_modification(lib->file_name, &last_modification))
+    return r_datetime_compare(&lib->last_modification, &last_modification) != 0;
+  return false;
+}
+
+internal void //
+r_app_host_reload_libs(r_app_host_t* this) {
+  for (u8 i = 0; i < this->lib_count; ++i) {
+    r_lib_t* lib = &this->libs[i];
+    if (r_app_host_should_reload_lib(lib)) {
+      r_lib_loader_destroy_lib(lib);
+      r_lib_loader_reload_lib(lib);
+      this->reloaded_libs[this->reloaded_lib_count++] = i;
+    }
+  }
+}
+
+internal void //
+r_app_host_reload_app(r_app_host_t* this) {
+  r_lib_t* app_lib = &this->app->lib;
+  bool should_reload_app = r_app_host_should_reload_lib(app_lib);
+
+  if (should_reload_app) {
+    r_lib_loader_destroy_lib(app_lib);
+    r_lib_loader_reload_lib(app_lib);
+    R_LIB_INIT init_fn = (R_LIB_INIT)app_lib->functions[0];
+    init_fn(app_lib->state, this->api_db);
+  }
+}
+
 void //
 r_app_host_reload(r_app_host_t* this) {
 
-  r_plugin_manager_t* plugin_manager = this->plugin_manager;
+  r_app_host_reload_libs(this);
 
-  r_plugin_manager_reload_plugins(plugin_manager);
-
-  for (u32 i = 0; i < plugin_manager->reloaded_count; ++i) {
-    u8 index = plugin_manager->reloaded_plugins[i];
-    r_plugin_t plugin = plugin_manager->plugins[index];
-    this->api_db->apis[plugin.id] = plugin.api;
-    plugin.init(plugin.state, this->api_db);
+  for (u32 i = 0; i < this->reloaded_lib_count; ++i) {
+    u8 index = this->reloaded_libs[i];
+    r_lib_t lib = this->libs[index];
+    R_LIB_INIT init_fn = (R_LIB_INIT)lib.functions[0];
+    init_fn(lib.state, this->api_db);
   }
 
-  plugin_manager->reloaded_count = 0;
+  this->reloaded_lib_count = 0;
+
+  r_app_host_reload_app(this);
 }
 
 void //
 r_app_host_destroy(const r_app_host_t* this) {
-
-  r_plugin_manager_t* plugin_manager = this->plugin_manager;
-
-  for (int i = 0; i < plugin_manager->destroy_count; ++i) {
-    u8 index = plugin_manager->destroy[i];
-    r_plugin_t plugin = plugin_manager->plugins[index];
-    plugin.destroy(plugin.state);
+  for (i32 i = 0; i < this->lib_count; ++i) {
+    r_lib_t lib = this->libs[i];
+    R_LIB_DESTROY destroy_fn = (R_LIB_DESTROY)lib.functions[1];
+    destroy_fn(lib.state);
   }
 
   this->app->api.destroy(this->app->state);

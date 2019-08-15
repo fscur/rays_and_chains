@@ -23,8 +23,8 @@ typedef struct glfw_t {
   r_window_t* window;
 } glfw_t;
 
-dll_export r_plugin_t* //
-load_r_window_glfw(r_plugin_load_info_t* load_info);
+dll_export void //
+load_r_window_glfw(r_lib_load_info_t* load_info);
 
 dll_export size_t //
 get_size_r_window_glfw();

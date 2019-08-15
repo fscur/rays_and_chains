@@ -40,6 +40,7 @@ init_imgui_style() {
 
   style->Colors[ImGuiCol_Text] = (ImVec4){0.90f, 0.90f, 0.9f, 1.00f};
   style->Colors[ImGuiCol_TextDisabled] = (ImVec4){0.24f, 0.23f, 0.29f, 1.00f};
+  //style->Colors[ImGuiCol_WindowBg] = (ImVec4){0.0f, 0.188f, 1.0f, 1.0f};
   style->Colors[ImGuiCol_WindowBg] = (ImVec4){0.197f, 0.188f, 0.224f, 1.0f};
   style->Colors[ImGuiCol_ChildBg] = color11;
   style->Colors[ImGuiCol_PopupBg] = color11;

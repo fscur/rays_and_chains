@@ -30,8 +30,8 @@ typedef struct imgui_t {
   ImGuiIO* io;
 } imgui_t;
 
-dll_export r_plugin_t* //
-load_r_ui_imgui(r_plugin_load_info_t* load_info);
+dll_export void //
+load_r_ui_imgui(r_lib_load_info_t* load_info);
 
 dll_export size_t //
 get_size_r_ui_imgui();
