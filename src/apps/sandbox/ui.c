@@ -4,6 +4,20 @@
 
 static bool show_demo_window = false;
 
+#define SIDE_MENU_WIDTH 50
+#define SIDE_MENU_HEIGHT 1080
+#define EXTENSION_WIDTH 250
+#define EXTENSION_HEIGHT 1080
+
+#define MAIN_BG_COLOR                                                                              \
+  (ImVec4) { 0.12f, 0.14f, 0.18f, 1.00f }
+
+#define MAIN_MENU_BG_COLOR                                                                         \
+  (ImVec4) { 0.101f, 0.113f, 0.149f, 1.00f }
+
+#define BORDER_COLOR                                                                               \
+  (ImVec4) { 0.04f, 0.04f, 0.04f, 0.80f }
+
 void //
 init_imgui_style() {
   struct ImGuiStyle* style = igGetStyle();
@@ -14,7 +28,7 @@ init_imgui_style() {
   style->ItemInnerSpacing = (ImVec2){7, 6};
   style->IndentSpacing = 25.0f;
   style->GrabMinSize = 7.0f;
-  style->ScrollbarSize = 12.0f;
+  style->ScrollbarSize = 14.0f;
   style->TabRounding = 2.0f;
   style->ScrollbarRounding = 2.0f;
   style->WindowRounding = 2.0f;
@@ -27,7 +41,7 @@ init_imgui_style() {
   style->WindowBorderSize = 0.0f;
 
   ImVec4 color01 = (ImVec4){0.04f, 0.04f, 0.057f, 1.00f};
-  ImVec4 color02 = (ImVec4){0.05f, 0.05f, 0.062f, 1.00f};
+  // ImVec4 color02 = (ImVec4){0.05f, 0.05f, 0.062f, 1.00f};
   ImVec4 color04 = (ImVec4){0.56f, 0.56f, 0.58f, 1.00f};
   ImVec4 color05 = (ImVec4){0.56f, 0.56f, 0.58f, 0.80f};
   ImVec4 color06 = (ImVec4){1.00f, 0.71f, 0.00f, 1.00f};
@@ -35,37 +49,36 @@ init_imgui_style() {
   ImVec4 color08 = (ImVec4){0.10f, 0.09f, 0.12f, 1.00f};
   ImVec4 color09 = (ImVec4){0.56f, 0.56f, 0.58f, 0.60f};
   ImVec4 color10 = (ImVec4){0.50f, 0.50f, 0.50f, 0.90f};
-  ImVec4 color11 = (ImVec4){0.062f, 0.062f, 0.082f, 1.0f};
-  ImVec4 color12 = (ImVec4){0.106f, 0.106f, 0.141f, 1.0f};
+  // ImVec4 color11 = (ImVec4){0.062f, 0.062f, 0.082f, 1.0f};
+  // ImVec4 color12 = (ImVec4){0.106f, 0.106f, 0.141f, 1.0f};
 
   style->Colors[ImGuiCol_Text] = (ImVec4){0.90f, 0.90f, 0.9f, 1.00f};
   style->Colors[ImGuiCol_TextDisabled] = (ImVec4){0.24f, 0.23f, 0.29f, 1.00f};
-  //style->Colors[ImGuiCol_WindowBg] = (ImVec4){0.0f, 0.188f, 1.0f, 1.0f};
-  style->Colors[ImGuiCol_WindowBg] = (ImVec4){0.197f, 0.188f, 0.224f, 1.0f};
-  style->Colors[ImGuiCol_ChildBg] = color11;
-  style->Colors[ImGuiCol_PopupBg] = color11;
-  style->Colors[ImGuiCol_Border] = (ImVec4){0.80f, 0.80f, 0.83f, 0.88f};
+  style->Colors[ImGuiCol_WindowBg] = MAIN_BG_COLOR;
+  style->Colors[ImGuiCol_ChildBg] = MAIN_BG_COLOR;
+  style->Colors[ImGuiCol_PopupBg] = MAIN_BG_COLOR;
+  style->Colors[ImGuiCol_Border] = BORDER_COLOR;
   style->Colors[ImGuiCol_BorderShadow] = (ImVec4){0.92f, 0.91f, 0.88f, 0.30f};
   style->Colors[ImGuiCol_FrameBg] = color08;
   style->Colors[ImGuiCol_FrameBgHovered] = color08;
   style->Colors[ImGuiCol_FrameBgActive] = color08;
-  style->Colors[ImGuiCol_TitleBg] = color11;
-  style->Colors[ImGuiCol_TitleBgCollapsed] = color12;
-  style->Colors[ImGuiCol_TitleBgActive] = color12;
-  style->Colors[ImGuiCol_MenuBarBg] = color12;
-  style->Colors[ImGuiCol_ScrollbarBg] = color02;
+  style->Colors[ImGuiCol_TitleBg] = MAIN_BG_COLOR;
+  style->Colors[ImGuiCol_TitleBgCollapsed] = MAIN_MENU_BG_COLOR;
+  style->Colors[ImGuiCol_TitleBgActive] = MAIN_MENU_BG_COLOR;
+  style->Colors[ImGuiCol_MenuBarBg] = MAIN_MENU_BG_COLOR;
+  style->Colors[ImGuiCol_ScrollbarBg] = MAIN_BG_COLOR;
   style->Colors[ImGuiCol_ScrollbarGrab] = color09;
   style->Colors[ImGuiCol_ScrollbarGrabHovered] = color05;
   style->Colors[ImGuiCol_ScrollbarGrabActive] = color04;
   style->Colors[ImGuiCol_CheckMark] = color04;
   style->Colors[ImGuiCol_SliderGrab] = color04;
   style->Colors[ImGuiCol_SliderGrabActive] = color05;
-  style->Colors[ImGuiCol_Button] = color06;
+  style->Colors[ImGuiCol_Button] = MAIN_MENU_BG_COLOR;
   style->Colors[ImGuiCol_ButtonHovered] = color01;
-  style->Colors[ImGuiCol_ButtonActive] = color04;
-  style->Colors[ImGuiCol_Header] = color11;
-  style->Colors[ImGuiCol_HeaderHovered] = color11;
-  style->Colors[ImGuiCol_HeaderActive] = color11;
+  style->Colors[ImGuiCol_ButtonActive] = MAIN_MENU_BG_COLOR;
+  style->Colors[ImGuiCol_Header] = MAIN_MENU_BG_COLOR;
+  style->Colors[ImGuiCol_HeaderHovered] = MAIN_MENU_BG_COLOR;
+  style->Colors[ImGuiCol_HeaderActive] = MAIN_MENU_BG_COLOR;
   style->Colors[ImGuiCol_ResizeGrip] = (ImVec4){0.00f, 0.00f, 0.00f, 0.00f};
   style->Colors[ImGuiCol_ResizeGripHovered] = color04;
   style->Colors[ImGuiCol_ResizeGripActive] = color01;
@@ -75,7 +88,7 @@ init_imgui_style() {
   style->Colors[ImGuiCol_PlotHistogramHovered] = (ImVec4){0.25f, 1.00f, 0.00f, 1.00f};
   style->Colors[ImGuiCol_TextSelectedBg] = (ImVec4){0.25f, 1.00f, 0.00f, 0.43f};
   style->Colors[ImGuiCol_ModalWindowDimBg] = color10;
-  style->Colors[ImGuiCol_Separator] = color06;
+  style->Colors[ImGuiCol_Separator] = BORDER_COLOR;
   style->Colors[ImGuiCol_SeparatorActive] = color06;
   style->Colors[ImGuiCol_SeparatorHovered] = color06;
   style->Colors[ImGuiCol_Tab] = color07;
@@ -155,11 +168,20 @@ render_menu_file() {
 
 void //
 render_main_menu() {
+  igPushStyleVarFloat(ImGuiStyleVar_PopupBorderSize, 1.0f);
+  igPushStyleVarFloat(ImGuiStyleVar_WindowRounding, 0.0f);
+  igPushStyleColor(ImGuiCol_Border, BORDER_COLOR);
+  igPushStyleColor(ImGuiCol_WindowBg, MAIN_MENU_BG_COLOR);
+  igPushStyleColor(ImGuiCol_PopupBg, MAIN_MENU_BG_COLOR);
+
   if (igBeginMainMenuBar()) {
     render_menu_file();
     render_menu_edit();
     igEndMainMenuBar();
   }
+
+  igPopStyleColor(3);
+  igPopStyleVar(2);
 }
 
 void //
@@ -171,12 +193,12 @@ render_side_menu() {
   bool open = true;
   igPushStyleVarFloat(ImGuiStyleVar_WindowBorderSize, 1.0f);
   igPushStyleVarFloat(ImGuiStyleVar_WindowRounding, 0.0f);
-  igPushStyleColor(ImGuiCol_Border, (ImVec4){0.04f, 0.04f, 0.04f, 0.80f});
-  igPushStyleColor(ImGuiCol_WindowBg, (ImVec4){0.045f, 0.045f, 0.065f, 1.00f});
+  igPushStyleColor(ImGuiCol_Border, BORDER_COLOR);
+  igPushStyleColor(ImGuiCol_WindowBg, MAIN_BG_COLOR);
 
   igBegin("side_menu", &open, flags);
   igSetWindowPosVec2((ImVec2){-1, -1}, ImGuiCond_Always);
-  igSetWindowSizeVec2((ImVec2){51, 1081}, ImGuiCond_Always);
+  igSetWindowSizeVec2((ImVec2){SIDE_MENU_WIDTH + 1, SIDE_MENU_HEIGHT + 1}, ImGuiCond_Always);
 
   // todo: add extension code
 
@@ -194,12 +216,12 @@ render_extension_place_holder() {
   bool open = true;
   igPushStyleVarFloat(ImGuiStyleVar_WindowBorderSize, 1.0f);
   igPushStyleVarFloat(ImGuiStyleVar_WindowRounding, 0.0f);
-  igPushStyleColor(ImGuiCol_Border, (ImVec4){0.04f, 0.04f, 0.04f, 0.80f});
-  igPushStyleColor(ImGuiCol_WindowBg, (ImVec4){0.05f, 0.05f, 0.072f, 1.0f});
+  igPushStyleColor(ImGuiCol_Border, BORDER_COLOR);
+  igPushStyleColor(ImGuiCol_WindowBg, MAIN_BG_COLOR);
 
   igBegin("extension_place_holder", &open, flags);
-  igSetWindowPosVec2((ImVec2){49, -1}, ImGuiCond_Always);
-  igSetWindowSizeVec2((ImVec2){252, 1081}, ImGuiCond_Always);
+  igSetWindowPosVec2((ImVec2){SIDE_MENU_WIDTH - 1, -1}, ImGuiCond_Always);
+  igSetWindowSizeVec2((ImVec2){EXTENSION_WIDTH + 2, EXTENSION_HEIGHT + 1}, ImGuiCond_Always);
 
   // todo: add extension code
 
@@ -218,10 +240,10 @@ render_viewport() {
   igPushStyleVarFloat(ImGuiStyleVar_WindowBorderSize, 1.0f);
   igPushStyleVarFloat(ImGuiStyleVar_WindowRounding, 0.0f);
   igPushStyleColor(ImGuiCol_Border, (ImVec4){0.04f, 0.04f, 0.04f, 0.80f});
-  igPushStyleColor(ImGuiCol_WindowBg, (ImVec4){0.05f, 0.05f, 0.072f, 1.0f});
+  igPushStyleColor(ImGuiCol_WindowBg, (ImVec4){0.137f, 0.156f, 0.203f, 1.0f});
 
   igBegin("viewport", &open, flags);
-  igSetWindowPosVec2((ImVec2){300, 27}, ImGuiCond_Always);
+  igSetWindowPosVec2((ImVec2){SIDE_MENU_WIDTH + EXTENSION_WIDTH, -1}, ImGuiCond_Always);
   igSetWindowSizeVec2((ImVec2){2000, 1081}, ImGuiCond_Always);
 
   // igImage((void*)ui->texture_id,

@@ -91,7 +91,7 @@ r_lib_loader_load_lib(r_memory_t* memory, r_lib_t* lib, const char* file_name, r
 
 void //
 r_lib_loader_destroy_lib(r_lib_t* lib) {
-  if (lib->functions[2]) {
+  if (lib->functions[3]) {
     R_LIB_DESTROY destroy_fn = (R_LIB_DESTROY)lib->functions[2];
     destroy_fn(lib->state);
   }

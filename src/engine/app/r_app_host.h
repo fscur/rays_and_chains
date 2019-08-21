@@ -11,17 +11,17 @@ typedef struct r_ui_t r_ui_t;
 typedef struct r_plugin_manager_t r_plugin_manager_t;
 typedef struct r_api_db_t r_api_db_t;
 
-typedef struct r_app_info_t {
-  char filename[SHORT_STRING_LENGTH];
-  wchar_t title[SHORT_STRING_LENGTH];
-  i32 width;
-  i32 height;
-  i32 x;
-  i32 y;
-  r_color_t back_color;
-  f64 desired_fps;
-  r_frame_info_t* frame_info;
-} r_app_info_t;
+// typedef struct r_app_info_t {
+//   char filename[SHORT_STRING_LENGTH];
+//   wchar_t title[SHORT_STRING_LENGTH];
+//   i32 width;
+//   i32 height;
+//   i32 x;
+//   i32 y;
+//   r_color_t back_color;
+//   f64 desired_fps;
+//   r_frame_info_t* frame_info;
+// } r_app_info_t;
 
 typedef struct r_app_host_t {
   r_memory_t* memory;
@@ -43,7 +43,10 @@ dll_export inline size_t //
 r_app_host_get_size();
 
 dll_export r_app_host_t* //
-r_app_host_create(r_memory_t* memory, r_app_info_t* app_info);
+r_app_host_create(r_memory_t* memory, r_frame_info_t* frame_info);
+
+dll_export void //
+r_app_host_load_app(r_app_host_t* this, const char* filename);
 
 dll_export void //
 r_app_host_run(r_app_host_t* this);

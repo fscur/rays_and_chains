@@ -49,7 +49,7 @@ r_app_host_load_libs(r_app_host_t* this) {
 }
 
 r_app_host_t* //
-r_app_host_create(r_memory_t* memory, r_app_info_t* info) {
+r_app_host_create(r_memory_t* memory, r_frame_info_t* frame_info) {
 
   size_t total_memory = r_app_host_get_size();
   r_memory_block_t* memory_block = r_memory_add_block(memory, total_memory);
@@ -63,23 +63,32 @@ r_app_host_create(r_memory_t* memory, r_app_info_t* info) {
 
   r_string_a_copy(".\\libs", this->libs_path);
 
-  this->frame_info = info->frame_info;
   this->memory = memory;
-  this->frame_info->desired_fps = info->desired_fps;
-  this->frame_info->desired_ms_per_frame = 1000.0 / info->desired_fps;
+  this->frame_info = frame_info;
+  this->frame_info->desired_fps = 60.0;
+  this->frame_info->desired_ms_per_frame = 1000.0 / 60.0;
   this->running = true;
 
   r_window_t* window = this->window;
-  window->title = info->title;
-  window->width = info->width;
-  window->height = info->height;
-  window->back_color = info->back_color;
+  r_string_w_copy(L"title", window->title);
+  window->width = 1280;
+  window->height = 720;
+  window->back_color = R_COLOR_BLACK;
 
-  r_lib_loader_load_lib(this->memory, &this->app->lib, info->filename, this->api_db);
+  return this;
+}
+
+void //
+r_app_host_load_app(r_app_host_t* this, const char* filename) {
+  r_lib_loader_load_lib(this->memory, &this->app->lib, filename, this->api_db);
   this->app->state = this->app->lib.memory_block;
   this->app->api = *(r_app_api_t*)this->app->lib.functions;
 
-  return this;
+  r_app_info_t app_info = this->app->api.get_app_info();
+  this->frame_info->desired_fps = app_info.desired_fps;
+  this->window->width = app_info.width;
+  this->window->height = app_info.height;
+  r_string_w_copy(app_info.title, this->window->title);
 }
 
 void //
@@ -157,7 +166,7 @@ r_app_host_reload_app(r_app_host_t* this) {
   if (should_reload_app) {
     r_lib_loader_destroy_lib(app_lib);
     r_lib_loader_reload_lib(app_lib);
-    R_LIB_INIT init_fn = (R_LIB_INIT)app_lib->functions[0];
+    R_LIB_INIT init_fn = (R_LIB_INIT)app_lib->functions[1];
     init_fn(app_lib->state, this->api_db);
   }
 }
@@ -183,7 +192,7 @@ void //
 r_app_host_destroy(const r_app_host_t* this) {
   for (i32 i = 0; i < this->lib_count; ++i) {
     r_lib_t lib = this->libs[i];
-    R_LIB_DESTROY destroy_fn = (R_LIB_DESTROY)lib.functions[1];
+    R_LIB_DESTROY destroy_fn = (R_LIB_DESTROY)lib.functions[2];
     destroy_fn(lib.state);
   }
 

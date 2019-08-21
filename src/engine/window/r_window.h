@@ -11,7 +11,7 @@ typedef void (*R_WINDOW_BACK_COLOR_CHANGED_CALLBACK)(r_window_t* window);
 
 typedef struct r_window_t {
   void* handle;
-  wchar_t* title;
+  wchar_t title[SHORT_STRING_LENGTH];
   i32 width;
   i32 height;
   r_color_t back_color;

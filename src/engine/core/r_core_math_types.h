@@ -33,6 +33,9 @@ typedef struct r_color_t {
   f32 r, g, b, a;
 } r_color_t;
 
+#define R_COLOR_BLACK                                                                              \
+  (r_color_t) { 0.0f, 0.0f, 0.0f, 1.0f }
+
 typedef struct r_ray_t {
   r_v3_t o, d;
 } r_ray_t;

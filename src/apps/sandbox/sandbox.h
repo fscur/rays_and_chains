@@ -35,6 +35,9 @@ get_size_sandbox();
 dll_export u32 //
 get_id_sandbox();
 
+dll_export r_app_info_t //
+sandbox_get_app_info();
+
 dll_export void //
 sandbox_init(sandbox_t* this, r_api_db_t* api_db);
 

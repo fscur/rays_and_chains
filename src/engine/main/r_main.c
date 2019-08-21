@@ -20,17 +20,8 @@ r_main(r_main_info_t* main_info,       //
   size_t total_app_memory = r_app_host_get_size();
   r_memory_t memory = r_memory_create(total_app_memory + kilobytes(128));
 
-  // todo: read from config file
-  r_app_info_t app_info = {0};
-  r_string_w_copy(L"rays and chains", app_info.title);
-  app_info.width = 1280;
-  app_info.height = 720;
-  app_info.back_color = (r_color_t){0.07f, 0.07f, 0.09f, 1.00f};
-  app_info.desired_fps = 60.0;
-  app_info.frame_info = &frame_info;
-  r_string_a_copy(main_info->app_filename, app_info.filename);
-
-  r_app_host_t* app_host = r_app_host_create(&memory, &app_info);
+  r_app_host_t* app_host = r_app_host_create(&memory, &frame_info);
+  r_app_host_load_app(app_host, main_info->app_filename);
   r_app_host_init(app_host);
 
   while (app_host->running) {

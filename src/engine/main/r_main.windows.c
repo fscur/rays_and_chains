@@ -28,11 +28,9 @@ on_error(r_error_t* error) {
 int CALLBACK
 WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {
 
-  //todo: parse cmd line and fill main_info
-  r_main_info_t main_info = {
-    .app_filename = "sandbox.dll"
-  };
-  
+  // todo: parse cmd line and fill main_info
+  r_main_info_t main_info = {.app_filename = "sandbox.dll"};
+
   r_main(&main_info, &on_success, &on_error);
 
   return 0;

@@ -9,7 +9,10 @@
             "type": "cppvsdbg",
             "request": "launch",
             "program": "${workspaceFolder}/bin/r_engine.exe",
-            "args": [],
+            "args": [
+                "fscur",
+                "rays_and_chains"
+            ],
             "stopAtEntry": true,
             "cwd": "${workspaceFolder}/bin",
             "environment": [],

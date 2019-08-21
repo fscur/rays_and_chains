@@ -27,7 +27,7 @@ call utctag
 set TAG=%_utctag%
 
 pushd %ROOT%\build\engine
-cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_engine.exe /Fmr_engine.map /For_engine.obj "%ROOT%\src\engine\main\r_main.windows.c" /link %COMMON_LINKER_FLAGS%
+cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% /Fer_engine.exe /Fmr_engine.map /For_engine.obj /TC "%ROOT%\src\engine\main\r_main.windows.c" /link %COMMON_LINKER_FLAGS%
 popd
 echo.
 

@@ -63,6 +63,15 @@ typedef struct r_frame_info_t {
   i64 frame_count;
 } r_frame_info_t;
 
+typedef struct r_app_info_t {
+  wchar_t title[SHORT_STRING_LENGTH];
+  i32 width;
+  i32 height;
+  i32 x;
+  i32 y;
+  f64 desired_fps;
+} r_app_info_t;
+
 typedef struct r_success_t {
   void* data;
 } r_success_t;
