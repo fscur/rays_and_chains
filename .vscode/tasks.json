@@ -2,16 +2,156 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build:debug",
+            "label": "build engine : debug",
             "type": "shell",
             "windows": {
                 "options": {
                     "cwd": "p:\\scripts\\windows"
                 },
-                "command": "p:\\scripts\\windows\\build_debug.bat"
+                "command": "p:\\scripts\\windows\\engine\\build_engine_debug.bat"
             },
             "linux": {
-                "command": "./scripts/linux/build_debug.sh"
+                "command": "./scripts/linux/engine/build_debug.sh"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
+            "label": "build sandbox : debug",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "cwd": "p:\\scripts\\windows"
+                },
+                "command": "p:\\scripts\\windows\\apps\\build_apps_debug.bat sandbox"
+            },
+            "linux": {
+                "command": "./scripts/linux/apps/build_apps_debug.sh"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
+            "label": "build hammer : debug",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "cwd": "p:\\scripts\\windows"
+                },
+                "command": "p:\\scripts\\windows\\apps\\build_apps_debug.bat hammer"
+            },
+            "linux": {
+                "command": "./scripts/linux/apps/build_apps_debug.sh"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
+            "label": "build bumpver : debug",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "cwd": "p:\\scripts\\windows"
+                },
+                "command": "p:\\scripts\\windows\\tools\\build_bumpver_debug.bat"
+            },
+            "linux": {
+                "command": "./scripts/linux/tools/build_bumpver_debug.sh"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
+            "label": "build pdb_path_fixer : debug",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "cwd": "p:\\scripts\\windows"
+                },
+                "command": "p:\\scripts\\windows\\tools\\build_pdb_path_fixer_debug.bat"
+            },
+            "linux": {
+                "command": "./scripts/linux/tools/build_pdb_path_fixer_debug.sh"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
+            "label": "build r_window_glfw lib : debug",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "cwd": "p:\\scripts\\windows"
+                },
+                "command": "p:\\scripts\\windows\\libs\\build_lib_debug.bat r_window_glfw"
+            },
+            "linux": {
+                "command": "./scripts/linux/libs/build_libs_debug.sh r_window_glfw"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
+            "label": "build r_ui_imgui lib : debug",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "cwd": "p:\\scripts\\windows"
+                },
+                "command": "p:\\scripts\\windows\\libs\\build_lib_debug.bat r_ui_imgui"
+            },
+            "linux": {
+                "command": "./scripts/linux/libs/build_lib_debug.sh r_ui_imgui"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
+            "label": "build r_gfx_opengl lib : debug",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "cwd": "p:\\scripts\\windows"
+                },
+                "command": "p:\\scripts\\windows\\libs\\build_lib_debug.bat r_gfx_opengl"
+            },
+            "linux": {
+                "command": "./scripts/linux/libs/build_lib_debug.sh r_gfx_opengl"
             },
             "group": {
                 "kind": "build",
@@ -28,10 +168,10 @@
                 "options": {
                     "cwd": "p:\\scripts\\windows"
                 },
-                "command": "p:\\scripts\\windows\\debug.bat"
+                "command": "p:\\scripts\\windows\\sandbox\\debug.bat"
             },
             "linux": {
-                "command": "./scripts/linux/debug.sh"
+                "command": "./scripts/linux/sandbox/debug.sh"
             },
             "group": {
                 "kind": "build",

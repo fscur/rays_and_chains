@@ -5,75 +5,42 @@ extern "C" {
 
 #include "engine/core/r_core_types.h"
 
-struct r_memory_arena_t;
-struct r_app_window_t;
-struct r_app_ui_t;
+typedef struct r_api_db_t r_api_db_t;
+typedef struct r_app_t r_app_t;
+typedef struct r_memory_block_t r_memory_block_t;
+typedef struct r_app_load_info_t r_app_load_info_t;
+typedef struct r_frame_info_t r_frame_info_t;
+typedef struct r_app_load_info_t r_app_load_info_t;
 
-typedef struct r_app_info_t {
-  char title[256];
-  i32 width;
-  i32 height;
-  r_color_t back_color;
+typedef void* (*R_APP_LOADER_FN)(void*, const char*);
 
-} r_app_info_t;
+typedef u32 (*R_APP_GET_ID)();
+typedef size_t (*R_APP_GET_SIZE)();
+typedef void* (*R_APP_LOAD)(r_app_load_info_t* load_info);
+typedef r_app_info_t (*R_APP_GET_APP_INFO)();
+typedef void (*R_APP_INIT)(void* state, r_api_db_t* api_db);
+typedef void (*R_APP_RUN)(void* state, r_frame_info_t* frame_info);
+typedef void (*R_APP_DESTROY)(void* state);
 
-typedef struct r_app_state_t {
-  r_memory_arena_t* memory_arena;
-  struct r_app_window_t* window;
-  struct r_app_ui_t* ui;
-  f32 dt;
-  bool running;
-} r_app_state_t;
-
-typedef r_app_state_t* (*R_APP_CREATE)(r_memory_arena_t*, r_app_info_t);
-typedef void (*R_APP_RUN)(r_app_state_t*);
-typedef void (*R_APP_INIT)(r_app_state_t*);
-typedef void (*R_APP_LOAD)(r_app_state_t*);
-typedef void (*R_APP_INPUT)(r_app_state_t*);
-typedef void (*R_APP_UPDATE)(r_app_state_t*);
-typedef void (*R_APP_RENDER)(r_app_state_t*);
-typedef void (*R_APP_UNLOAD)(r_app_state_t*);
-typedef void (*R_APP_DESTROY)(r_app_state_t*);
-
-typedef struct r_app_api {
+typedef struct r_app_load_info_t {
+  R_APP_LOADER_FN fn;
   void* handle;
-  r_app_state_t* (*create)(r_memory_arena_t*, r_app_info_t);
-  void (*run)(r_app_state_t*);
-  void (*init)(r_app_state_t*);
-  void (*load)(r_app_state_t*);
-  void (*input)(r_app_state_t*);
-  void (*update)(r_app_state_t*);
-  void (*render)(r_app_state_t*);
-  void (*unload)(r_app_state_t*);
-  void (*destroy)(r_app_state_t*);
-} r_app_api;
+  void* app_addr;
+  void* state_addr;
+} r_app_load_info_t;
 
-dll_export r_app_state_t* //
-r_app_create(r_memory_arena_t* memory_arena, r_app_info_t app_info);
+typedef struct r_app_api_t {
+  R_APP_GET_APP_INFO get_app_info;
+  R_APP_INIT init;
+  R_APP_RUN run;
+  R_APP_DESTROY destroy;
+} r_app_api_t;
 
-dll_export void //
-r_app_run(r_app_state_t* state);
-
-internal void //
-r_app_init(r_app_state_t* state);
-
-internal void //
-r_app_load(r_app_state_t* state);
-
-internal void //
-r_app_input(r_app_state_t* state);
-
-internal void //
-r_app_update(r_app_state_t* state);
-
-internal void //
-r_app_render(const r_app_state_t* state);
-
-internal void //
-r_app_unload(const r_app_state_t* state);
-
-internal void //
-r_app_destroy(const r_app_state_t* state);
+typedef struct r_app_t {
+  r_lib_t lib;
+  r_app_api_t api;
+  void* state;
+} r_app_t;
 
 #ifdef __cplusplus
 }

@@ -40,3 +40,9 @@ Mkfile.old
 dkms.conf
 
 bin/
+build/
+.vscode/ipch/
+
+!tools/bumpver/bumpver.exe
+!tools/pdb_path_fixer/pdb_path_fixer.exe
+CBDF.tmp

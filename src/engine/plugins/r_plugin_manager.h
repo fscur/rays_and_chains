@@ -4,43 +4,60 @@ extern "C" {
 #endif
 
 #include "engine/core/r_core_types.h"
-#include "engine/memory/r_memory.h"
-#include "engine/memory/r_memory_arena.h"
-#include "r_plugin.h"
 
-typedef struct r_plugin_manager_state_t {
-  r_memory_arena_t* memory_arena;
-  r_plugin_t plugins[5];
+#define MAX_PLUGINS_COUNT 256
+
+typedef struct r_memory_t r_memory_t;
+typedef struct r_memory_block_t r_memory_block_t;
+typedef struct r_plugin_t r_plugin_t;
+
+typedef struct r_plugin_manager_t {
+  r_memory_t* memory;
+  u8 init[MAX_PLUGINS_COUNT];
+  u8 input[MAX_PLUGINS_COUNT];
+  u8 update[MAX_PLUGINS_COUNT];
+  u8 render[MAX_PLUGINS_COUNT];
+  u8 destroy[MAX_PLUGINS_COUNT];
+  u8 reloaded_plugins[MAX_PLUGINS_COUNT];
+  r_plugin_t* plugins;
   u8 plugin_count;
-} r_plugin_manager_state_t;
+  u8 init_count;
+  u8 input_count;
+  u8 update_count;
+  u8 render_count;
+  u8 destroy_count;
+  u8 reloaded_count;
+  char libs_path[SHORT_STRING_LENGTH];
+} r_plugin_manager_t;
 
-typedef struct r_plugin_manager_api {
-  void* handle;
-  r_plugin_manager_state_t* (*create)(r_memory_t* memory);
-  void (*add)(r_plugin_manager_state_t* state, char* file_name, void* api, size_t memory_size);
-  void (*remove)(r_plugin_manager_state_t* state, void* api);
-  void* (*find)(r_plugin_manager_state_t* state, char* file_name);
-} r_plugin_manager_api;
-
-typedef r_plugin_manager_state_t* (*R_PLUGIN_MANAGER_CREATE)(r_memory_t*);
-typedef void (*R_PLUGIN_MANAGER_ADD)(r_plugin_manager_state_t*, char*, void*, size_t);
-typedef void (*R_PLUGIN_MANAGER_REMOVE)(r_plugin_manager_state_t*, void*);
-typedef void* (*R_PLUGIN_MANAGER_FIND)(r_plugin_manager_state_t*, char*);
-
-dll_export r_plugin_manager_state_t* //
-r_plugin_manager_create(r_memory_t* memory);
+typedef r_plugin_manager_t* (*R_PLUGIN_MANAGER_CREATE)(r_memory_t*);
+typedef void (*R_PLUGIN_MANAGER_ADD_PLUGIN)(r_plugin_manager_t*, r_plugin_t*);
+typedef void (*R_PLUGIN_MANAGER_REMOVE_PLUGIN)(r_plugin_manager_t*, void*);
+typedef r_plugin_t* (*R_PLUGIN_MANAGER_FIND_PLUGIN)(r_plugin_manager_t*, const char*);
 
 dll_export void //
-r_plugin_manager_add(r_plugin_manager_state_t* state,
-                     char* file_name,
-                     void* api,
-                     size_t memory_size);
+r_plugin_manager_init(r_plugin_manager_t* this);
 
 dll_export void //
-r_plugin_manager_remove(r_plugin_manager_state_t* state, void* api);
+r_plugin_manager_reload_plugins(r_plugin_manager_t* this);
 
-dll_export void* //
-r_plugin_manager_find(r_plugin_manager_state_t* state, char* file_name);
+dll_export void //
+r_plugin_manager_add_plugin(r_plugin_manager_t* this, r_plugin_t* plugin);
+
+dll_export bool //
+r_plugin_manager_should_reload(r_plugin_manager_t* this, r_plugin_t* plugin);
+
+dll_export void //
+r_plugin_manager_destroy_plugin(r_plugin_manager_t* this, r_plugin_t* plugin);
+
+dll_export void //
+r_plugin_manager_reload_plugin(r_plugin_manager_t* this, r_plugin_t* plugin);
+
+dll_export void //
+r_plugin_manager_remove_plugin(r_plugin_manager_t* this, r_plugin_t* plugin);
+
+dll_export r_plugin_t* //
+r_plugin_manager_find_plugin(r_plugin_manager_t* this, const char* name);
 
 #ifdef __cplusplus
 }
