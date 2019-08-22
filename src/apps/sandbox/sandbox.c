@@ -91,15 +91,16 @@ load_sandbox(r_lib_load_info_t* load_info) {
 
 r_app_info_t //
 sandbox_get_app_info() {
-  
+
   r_app_info_t app_info = {
-      .title = L"rays and chains", .width = 1920, .height = 1080, .desired_fps = 30.0};
+      .title = L"sandbox app", .width = 1920, .height = 1080, .desired_fps = 30.0};
 
   return app_info;
 }
 
 void //
 sandbox_init(sandbox_t* this, r_api_db_t* api_db) {
+  
   this->debug_api = api_db->apis[R_DEBUG_API_ID];
   this->window_api = api_db->apis[R_WINDOW_API_ID];
   this->ui_api = api_db->apis[R_UI_API_ID];
@@ -107,7 +108,7 @@ sandbox_init(sandbox_t* this, r_api_db_t* api_db) {
   this->renderer_api = api_db->apis[R_GFX_RENDERER_API_ID];
 
   init_ui();
-
+  
   // note: ui api prototype
   // r_ui_t* ui = this->ui_api->ui;
   // r_ui_canvas_t* canvas = this->ui_api->create_canvas(ui, 800, 600);

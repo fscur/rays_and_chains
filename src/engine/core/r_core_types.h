@@ -8,6 +8,18 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
+#define PROG_NAME "r_engine"
+#if _DEBUG
+#define PROG_VERSION "[dev]"
+#define PROG_DESCRIPTION "Rays and chains engine. Development version."
+#else
+#define PROG_VERSION "0.0.0.1"
+#define PROG_DESCRIPTION "Rays and chains engine."
+#endif
+
+#define SHORT_STRING_LENGTH 256
+#define MAX_FUNCTION_COUNT 64
+
 #define local static
 #define internal static
 #define global extern
@@ -16,9 +28,6 @@ extern "C" {
 #define megabytes(value) (kilobytes(value) * 1024LL)
 #define gigabytes(value) (megabytes(value) * 1024LL)
 #define terabytes(value) (gigabytes(value) * 1024LL)
-
-#define SHORT_STRING_LENGTH 256
-#define MAX_FUNCTION_COUNT 64
 
 #if _DEBUG
 #define assert(expression)                                                                         \

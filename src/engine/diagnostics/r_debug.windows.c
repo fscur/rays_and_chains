@@ -10,6 +10,9 @@ r_debug_print(const char* format, ...) {
   va_start(vl, format);
   vsprintf(msg, format, vl);
   va_end(vl);
-  OutputDebugStringA(msg);
+
+  freopen(R_DEBUG_LOG_FILENAME, "a+", stdout);
+  printf(msg);
+  fclose(stdout);
 #endif
 }

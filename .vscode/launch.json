@@ -10,8 +10,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/bin/r_engine.exe",
             "args": [
-                "fscur",
-                "rays_and_chains"
+                "sandbox"
             ],
             "stopAtEntry": true,
             "cwd": "${workspaceFolder}/bin",

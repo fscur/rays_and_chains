@@ -36,3 +36,8 @@ void //
 r_string_w_copy(const wchar_t* src, wchar_t* dst) {
   wsprintf(dst, src);
 }
+
+void //
+r_string_a_cat(char* dst, const char* src) {
+  strcat(dst, src);
+}

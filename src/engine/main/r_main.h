@@ -9,7 +9,8 @@ extern "C" {
 typedef struct r_app_info_t r_app_info_t;
 
 typedef struct r_main_info_t {
-  const char app_filename[SHORT_STRING_LENGTH];
+  char app_filename[SHORT_STRING_LENGTH];
+  char log_filename[SHORT_STRING_LENGTH];
 } r_main_info_t;
 
 void                                   //

@@ -5,6 +5,8 @@ extern "C" {
 
 #include "engine/core/r_core_types.h"
 
+global char R_DEBUG_LOG_FILENAME[256] = "log.log";
+
 void //
 r_debug_print(const char* format, ...);
 

@@ -192,7 +192,7 @@ void //
 r_app_host_destroy(const r_app_host_t* this) {
   for (i32 i = 0; i < this->lib_count; ++i) {
     r_lib_t lib = this->libs[i];
-    R_LIB_DESTROY destroy_fn = (R_LIB_DESTROY)lib.functions[2];
+    R_LIB_DESTROY destroy_fn = (R_LIB_DESTROY)lib.functions[1];
     destroy_fn(lib.state);
   }
 

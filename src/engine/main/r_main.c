@@ -23,7 +23,7 @@ r_main(r_main_info_t* main_info,       //
   r_app_host_t* app_host = r_app_host_create(&memory, &frame_info);
   r_app_host_load_app(app_host, main_info->app_filename);
   r_app_host_init(app_host);
-
+  
   while (app_host->running) {
     r_debug_print(                                  //
         "[%010I64d][%08.3f][debug] Frame Start.\n", //
