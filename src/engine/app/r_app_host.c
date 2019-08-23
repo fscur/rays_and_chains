@@ -75,6 +75,9 @@ r_app_host_create(r_memory_t* memory, r_frame_info_t* frame_info) {
   window->height = 720;
   window->back_color = R_COLOR_BLACK;
 
+  r_ui_t* ui = this->ui;
+  r_ui_set_theme(ui, 0);
+
   return this;
 }
 
@@ -106,6 +109,8 @@ r_app_host_init_apis(r_app_host_t* this) {
 
   local r_ui_api_t r_ui_api = {0};
   r_ui_api.ui = this->ui;
+  r_ui_api.create_menu = (R_UI_CREATE_MENU)&r_ui_create_menu;
+  r_ui_api.create_menu_item = (R_UI_CREATE_MENU_ITEM)&r_ui_create_menu_item;
 
   local r_gfx_renderer_api_t r_gfx_renderer_api = {0};
   r_gfx_renderer_api.renderer = this->renderer;

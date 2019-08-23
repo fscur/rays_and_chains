@@ -21,11 +21,13 @@
 
 #include "engine/app/r_api_db.h"
 #include "engine/diagnostics/r_debug_api.h"
-#include "engine/window/r_window_api.h"
-#include "engine/ui/r_ui_api.h"
 #include "engine/window/r_window.h"
+#include "engine/window/r_window_api.h"
+#include "engine/ui/r_ui.h"
+#include "engine/ui/r_ui_api.h"
 #include "engine/plugins/r_plugin.h"
 #include "engine/string/r_string.h"
+#include "engine/string/r_string_api.h"
 #include "r_ui_imgui.c"
 
 #pragma comment(lib, "cimgui.lib")
@@ -37,20 +39,75 @@
 #pragma comment(lib, "opengl32.lib")
 
 internal void //
-imgui_begin(r_ui_t* ui) {
+r_ui_imgui_begin(r_ui_api_t* this) {
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
   igNewFrame();
 }
 
-internal void //
-imgui_render(r_ui_t* ui) {
-  local bool open = true;
-  igShowDemoWindow(&open);
+internal ImVec4
+from(r_color_t color) {
+  return (ImVec4){color.r, color.g, color.b, color.a};
 }
 
 internal void //
-imgui_end(r_ui_t* ui) {
+render_menu(imgui_t* this, r_ui_t* ui, r_ui_menu_t* menu) {
+
+  r_ui_theme_t* theme = ui->active_theme;
+
+  igPushStyleVarFloat(ImGuiStyleVar_PopupBorderSize, theme->border_size);
+  igPushStyleVarFloat(ImGuiStyleVar_WindowRounding, 0.0f);
+  igPushStyleColor(ImGuiCol_Border, from(theme->border_color));
+  igPushStyleColor(ImGuiCol_WindowBg, from(theme->menu_background_color));
+  igPushStyleColor(ImGuiCol_PopupBg, from(theme->menu_background_color));
+
+  if (menu->parent == NULL) {
+    if (igBeginMainMenuBar()) {
+      local bool isEnabled[R_UI_MAX_MENU_ITEMS] = {0};
+
+      for (size_t i = 0; i < R_UI_MAX_MENU_ITEMS; i++) {
+        isEnabled[i] = true;
+      }
+
+      for (size_t i = 0; i < menu->item_count; i++) {
+        r_ui_menu_item_t* item = &menu->items[i];
+
+        if (igBeginMenu(item->text_ansi, &isEnabled[i])) {
+          // render_menu_file_items();
+          igEndMenu();
+        }
+      }
+      // render_menu_file();
+      // render_menu_edit();
+      igEndMainMenuBar();
+    }
+  }
+
+  igPopStyleColor(3);
+  igPopStyleVar(2);
+}
+
+internal void //
+render_controls(imgui_t* this, r_ui_t* ui) {
+  for (size_t i = 0; i < ui->control_count; i++) {
+    r_ui_control_t* control = &ui->controls[i];
+    r_ui_control_type_t control_type = control->type;
+
+    switch (control_type) {
+    case R_UI_CONTROL_TYPE_MENU:
+      render_menu(this, ui, (r_ui_menu_t*)control->data);
+    }
+  }
+}
+
+internal void //
+r_ui_imgui_render(r_ui_api_t* ui_api) {
+  imgui_t* this = ui_api->impl_state;
+  render_controls(this, ui_api->ui);
+}
+
+internal void //
+r_ui_imgui_end(r_ui_api_t* ui_api) {
   igRender();
   ImGui_ImplOpenGL3_RenderDrawData(igGetDrawData());
 }
@@ -60,8 +117,11 @@ imgui_init(imgui_t* this, r_api_db_t* api_db) {
   this->debug_api = api_db->apis[R_DEBUG_API_ID];
   this->window_api = api_db->apis[R_WINDOW_API_ID];
   this->ui_api = api_db->apis[R_UI_API_ID];
+
   r_window_t* window = this->window_api->window;
   assert(window->handle);
+
+  this->ui_api->impl_state = this;
 
   i32 success = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
   if (!success)
@@ -90,9 +150,9 @@ imgui_init(imgui_t* this, r_api_db_t* api_db) {
 
   ImFontAtlas_AddFontFromFileTTF(this->io->Fonts, "../res/fonts/SegoeUI-Regular.ttf", 18.0f, 0, 0);
 
-  this->ui_api->begin = &imgui_begin;
-  this->ui_api->render = &imgui_render;
-  this->ui_api->end = &imgui_end;
+  this->ui_api->begin = &r_ui_imgui_begin;
+  this->ui_api->render = &r_ui_imgui_render;
+  this->ui_api->end = &r_ui_imgui_end;
 }
 
 void //
