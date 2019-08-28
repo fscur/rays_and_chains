@@ -43,6 +43,11 @@ sandbox_get_app_info() {
   return app_info;
 }
 
+internal void //
+set_menu_color(r_ui_frame_t* frame) {
+  frame->is_open = true;
+}
+
 void //
 sandbox_init(sandbox_t* this, r_api_db_t* api_db) {
 
@@ -61,26 +66,33 @@ sandbox_init(sandbox_t* this, r_api_db_t* api_db) {
   theme->border_color = (r_color_t){0.04f, 0.04f, 0.04f, 0.80f};
   theme->menu_background_color = (r_color_t){0.101f, 0.113f, 0.149f, 1.00f};
   theme->menu_item_background_color = (r_color_t){0.12f, 0.14f, 0.18f, 1.00f};
+  theme->border_size = 0.0f;
 
   r_ui_api_t* ui_api = this->ui_api;
 
   // ui->create_canvas(ui, 800, 600);
+  ui->root = &ui->widgets[ui->widget_count++];
 
-  r_ui_menu_t* menu = ui_api->create_menu(ui, NULL);
-  ui_api->create_menu_item(ui, menu, L"File");
-  ui_api->create_menu_item(ui, menu, L"Edit");
-  ui_api->create_menu_item(ui, menu, L"Tools");
-  ui_api->create_menu_item(ui, menu, L"Windows");
-  ui_api->create_menu_item(ui, menu, L"Help");
+  r_ui_frame_t* frame = ui_api->create_frame(ui, ui->root, L"Demo");
+  frame->is_open = false;
 
-  // this->ui_api->add_menu_item(menu, file_menu_item);
-  // this->ui_api->add_menu_item(menu, edit_menu_item);
-  // this->ui_api->add_menu_item(menu, tools_menu_item);
-  // this->ui_api->add_menu_item(menu, windows_menu_item);
-  // this->ui_api->add_menu_item(menu, help_menu_item);
+  r_ui_menu_t* main_menu = ui_api->create_main_menu(ui, ui->root);
 
-  // this->ui_api->add_menu(canvas, menu);
-  // this->ui_api->add_canvas(ui, canvas);
+  r_ui_menu_t* file_menu = ui_api->create_menu(ui, main_menu->widget, L"File");
+  ui_api->create_menu_item(ui, file_menu->widget, L"New", L"CTRL+N", true, &set_menu_color, frame);
+  ui_api->create_menu_item(ui, file_menu->widget, L"Open", L"CTRL+O", true, NULL, NULL);
+  ui_api->create_menu_item(ui, file_menu->widget, L"Save", L"CTRL+S", true, NULL, NULL);
+  ui_api->create_menu_item(ui, file_menu->widget, L"Close", L"", true, NULL, NULL);
+
+  r_ui_menu_t* edit_menu = ui_api->create_menu(ui, main_menu->widget, L"Edit");
+  ui_api->create_menu_item(ui, edit_menu->widget, L"Copy", L"CTRL+C", true, NULL, NULL);
+  ui_api->create_menu_item(ui, edit_menu->widget, L"Paste", L"CTRL+V", true, NULL, NULL);
+
+  r_ui_menu_t* tools_menu = ui_api->create_menu(ui, main_menu->widget, L"Tools");
+  ui_api->create_menu_item(ui, tools_menu->widget, L"Plugin creator", L"", true, NULL, NULL);
+
+  r_ui_menu_t* help_menu = ui_api->create_menu(ui, main_menu->widget, L"Help");
+  ui_api->create_menu_item(ui, help_menu->widget, L"About", L"", true, NULL, NULL);
 }
 
 void //

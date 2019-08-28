@@ -51,6 +51,17 @@ from(r_color_t color) {
 }
 
 internal void //
+render_widget(imgui_t* this, r_ui_t* ui, r_ui_widget_t* widget);
+
+internal void //
+render_menu_item(imgui_t* this, r_ui_t* ui, r_ui_menu_item_t* menu_item) {
+  if (igMenuItemBool(menu_item->label_ansi, menu_item->shortcut_ansi, false, menu_item->enabled)) {
+    if (menu_item->callback)
+      menu_item->callback(menu_item->context);
+  }
+}
+
+internal void //
 render_menu(imgui_t* this, r_ui_t* ui, r_ui_menu_t* menu) {
 
   r_ui_theme_t* theme = ui->active_theme;
@@ -61,26 +72,12 @@ render_menu(imgui_t* this, r_ui_t* ui, r_ui_menu_t* menu) {
   igPushStyleColor(ImGuiCol_WindowBg, from(theme->menu_background_color));
   igPushStyleColor(ImGuiCol_PopupBg, from(theme->menu_background_color));
 
-  if (menu->parent == NULL) {
-    if (igBeginMainMenuBar()) {
-      local bool isEnabled[R_UI_MAX_MENU_ITEMS] = {0};
-
-      for (size_t i = 0; i < R_UI_MAX_MENU_ITEMS; i++) {
-        isEnabled[i] = true;
-      }
-
-      for (size_t i = 0; i < menu->item_count; i++) {
-        r_ui_menu_item_t* item = &menu->items[i];
-
-        if (igBeginMenu(item->text_ansi, &isEnabled[i])) {
-          // render_menu_file_items();
-          igEndMenu();
-        }
-      }
-      // render_menu_file();
-      // render_menu_edit();
-      igEndMainMenuBar();
+  local bool is_open = true;
+  if (igBeginMenu(menu->label_ansi, &is_open)) {
+    for (size_t i = 0; i < menu->widget->item_count; i++) {
+      render_widget(this, ui, menu->widget->items[i]);
     }
+    igEndMenu();
   }
 
   igPopStyleColor(3);
@@ -88,22 +85,83 @@ render_menu(imgui_t* this, r_ui_t* ui, r_ui_menu_t* menu) {
 }
 
 internal void //
-render_controls(imgui_t* this, r_ui_t* ui) {
-  for (size_t i = 0; i < ui->control_count; i++) {
-    r_ui_control_t* control = &ui->controls[i];
-    r_ui_control_type_t control_type = control->type;
+render_main_menu(imgui_t* this, r_ui_t* ui, r_ui_menu_t* menu) {
 
-    switch (control_type) {
-    case R_UI_CONTROL_TYPE_MENU:
-      render_menu(this, ui, (r_ui_menu_t*)control->data);
+  r_ui_theme_t* theme = ui->active_theme;
+
+  igPushStyleVarFloat(ImGuiStyleVar_PopupBorderSize, theme->border_size);
+  igPushStyleVarFloat(ImGuiStyleVar_WindowRounding, 0.0f);
+  igPushStyleColor(ImGuiCol_Border, from(theme->border_color));
+  igPushStyleColor(ImGuiCol_WindowBg, from(theme->menu_background_color));
+  igPushStyleColor(ImGuiCol_PopupBg, from(theme->menu_background_color));
+
+  if (igBeginMainMenuBar()) {
+
+    for (size_t i = 0; i < menu->widget->item_count; i++) {
+      render_widget(this, ui, menu->widget->items[i]);
     }
+
+    igEndMainMenuBar();
+  }
+
+  igPopStyleColor(3);
+  igPopStyleVar(2);
+}
+
+internal void //
+render_frame(imgui_t* this, r_ui_t* ui, r_ui_frame_t* frame) {
+  if (!frame->is_open)
+    return;
+
+  if (igBegin(frame->title_ansi, &frame->is_open, ImGuiWindowFlags_None)) {
+    for (size_t i = 0; i < frame->widget->item_count; i++) {
+      render_widget(this, ui, frame->widget->items[i]);
+    }
+    igEnd();
+  }
+}
+
+internal void //
+render_demo_window(imgui_t* this, r_ui_t* ui, r_ui_frame_t* frame) {
+  if (!frame->is_open)
+    return;
+
+  local bool is_open;
+  igShowDemoWindow(&is_open);
+}
+
+internal void //
+render_widget(imgui_t* this, r_ui_t* ui, r_ui_widget_t* widget) {
+  r_ui_widget_type_t widget_type = widget->type;
+  switch (widget_type) {
+  case R_UI_WIDGET_TYPE_FRAME:
+    render_frame(this, ui, (r_ui_frame_t*)widget->data);
+    break;
+  case R_UI_WIDGET_TYPE_MAIN_MENU:
+    render_main_menu(this, ui, (r_ui_menu_t*)widget->data);
+    break;
+  case R_UI_WIDGET_TYPE_MENU:
+    render_menu(this, ui, (r_ui_menu_t*)widget->data);
+    break;
+  case R_UI_WIDGET_TYPE_MENU_ITEM:
+    render_menu_item(this, ui, (r_ui_menu_item_t*)widget->data);
+    break;
+  }
+}
+
+internal void //
+render_widgets(imgui_t* this, r_ui_t* ui) {
+  r_ui_widget_t* root = ui->root;
+  for (size_t i = 0; i < root->item_count; i++) {
+    r_ui_widget_t* child = root->items[i];
+    render_widget(this, ui, child);
   }
 }
 
 internal void //
 r_ui_imgui_render(r_ui_api_t* ui_api) {
   imgui_t* this = ui_api->impl_state;
-  render_controls(this, ui_api->ui);
+  render_widgets(this, ui_api->ui);
 }
 
 internal void //
