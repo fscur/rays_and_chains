@@ -113,12 +113,11 @@ render_frame(imgui_t* this, r_ui_t* ui, r_ui_frame_t* frame) {
   if (!frame->is_open)
     return;
 
-  if (igBegin(frame->title_ansi, &frame->is_open, ImGuiWindowFlags_None)) {
-    for (size_t i = 0; i < frame->widget->item_count; i++) {
-      render_widget(this, ui, frame->widget->items[i]);
-    }
-    igEnd();
+  igBegin(frame->title_ansi, &frame->is_open, ImGuiWindowFlags_None);
+  for (size_t i = 0; i < frame->widget->item_count; i++) {
+    render_widget(this, ui, frame->widget->items[i]);
   }
+  igEnd();
 }
 
 internal void //
