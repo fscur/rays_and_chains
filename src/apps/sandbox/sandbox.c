@@ -48,6 +48,11 @@ set_menu_color(r_ui_frame_t* frame) {
   frame->is_open = true;
 }
 
+internal void
+close(r_window_t* window) {
+  window->should_close = true;
+}
+
 void //
 sandbox_init(sandbox_t* this, r_api_db_t* api_db) {
 
@@ -82,7 +87,8 @@ sandbox_init(sandbox_t* this, r_api_db_t* api_db) {
   ui_api->create_menu_item(ui, file_menu->widget, L"New", L"CTRL+N", true, &set_menu_color, frame);
   ui_api->create_menu_item(ui, file_menu->widget, L"Open", L"CTRL+O", true, NULL, NULL);
   ui_api->create_menu_item(ui, file_menu->widget, L"Save", L"CTRL+S", true, NULL, NULL);
-  ui_api->create_menu_item(ui, file_menu->widget, L"Close", L"", true, NULL, NULL);
+  ui_api->create_menu_item(
+      ui, file_menu->widget, L"Close", L"", true, &close, this->window_api->window);
 
   r_ui_menu_t* edit_menu = ui_api->create_menu(ui, main_menu->widget, L"Edit");
   ui_api->create_menu_item(ui, edit_menu->widget, L"Copy", L"CTRL+C", true, NULL, NULL);
