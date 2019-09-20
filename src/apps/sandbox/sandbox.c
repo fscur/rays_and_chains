@@ -44,8 +44,8 @@ sandbox_get_app_info() {
 }
 
 internal void //
-set_menu_color(r_ui_frame_t* frame) {
-  frame->is_open = true;
+open_imgui_demo(r_ui_t* ui) {
+  ui->show_demo = !ui->show_demo;
 }
 
 internal void
@@ -62,8 +62,6 @@ sandbox_init(sandbox_t* this, r_api_db_t* api_db) {
   this->string_api = api_db->apis[R_STRING_API_ID];
   this->renderer_api = api_db->apis[R_GFX_RENDERER_API_ID];
 
-  // init_ui();
-
   // note: ui api prototype
   r_ui_t* ui = this->ui_api->ui;
   r_ui_theme_t* theme = ui->active_theme;
@@ -72,19 +70,46 @@ sandbox_init(sandbox_t* this, r_api_db_t* api_db) {
   theme->menu_background_color = (r_color_t){0.101f, 0.113f, 0.149f, 1.00f};
   theme->menu_item_background_color = (r_color_t){0.12f, 0.14f, 0.18f, 1.00f};
   theme->border_size = 0.0f;
+  theme->frame_rounding = 0.0;
 
   r_ui_api_t* ui_api = this->ui_api;
+  ui_api->init_theme(ui);
 
-  // ui->create_canvas(ui, 800, 600);
   ui->root = &ui->widgets[ui->widget_count++];
 
-  r_ui_frame_t* frame = ui_api->create_frame(ui, ui->root, L"Demo");
-  frame->is_open = false;
+  r_ui_frame_t* side_menu = ui_api->create_frame(ui, ui->root, L"SideBar");
+  side_menu->is_open = false;
+  side_menu->position = (r_v2_t){0.0, 29.0};
+  side_menu->size = (r_v2_t){50, 700.0};
+  side_menu->frame_style = R_UI_FRAME_STYLE_NO_BORDER;
+  side_menu->is_open = true;
+
+  r_ui_frame_t* side_bar = ui_api->create_frame(ui, ui->root, L"ExtensionBar");
+  side_bar->is_open = false;
+  side_bar->position = (r_v2_t){51.0, 29.0};
+  side_bar->size = (r_v2_t){250, 700.0};
+  side_bar->frame_style = R_UI_FRAME_STYLE_NO_BORDER;
+  side_bar->is_open = true;
+
+  r_ui_button_t* button1 =
+      ui_api->create_button(ui, side_menu->widget, L"F", true, &open_imgui_demo, ui);
+  button1->position = (r_v2_t){5, 5};
+  button1->size = (r_v2_t){40, 40};
+
+  r_ui_button_t* button2 =
+      ui_api->create_button(ui, side_menu->widget, L"I", true, &open_imgui_demo, ui);
+  button2->position = (r_v2_t){5, 50};
+  button2->size = (r_v2_t){40, 40};
+
+  r_ui_button_t* button3 =
+      ui_api->create_button(ui, side_menu->widget, L"L", true, &open_imgui_demo, ui);
+  button3->position = (r_v2_t){5, 95};
+  button3->size = (r_v2_t){40, 40};
 
   r_ui_menu_t* main_menu = ui_api->create_main_menu(ui, ui->root);
 
   r_ui_menu_t* file_menu = ui_api->create_menu(ui, main_menu->widget, L"File");
-  ui_api->create_menu_item(ui, file_menu->widget, L"New", L"CTRL+N", true, &set_menu_color, frame);
+  ui_api->create_menu_item(ui, file_menu->widget, L"New", L"CTRL+N", true, NULL, NULL);
   ui_api->create_menu_item(ui, file_menu->widget, L"Open", L"CTRL+O", true, NULL, NULL);
   ui_api->create_menu_item(ui, file_menu->widget, L"Save", L"CTRL+S", true, NULL, NULL);
   ui_api->create_menu_item(
@@ -96,6 +121,7 @@ sandbox_init(sandbox_t* this, r_api_db_t* api_db) {
 
   r_ui_menu_t* tools_menu = ui_api->create_menu(ui, main_menu->widget, L"Tools");
   ui_api->create_menu_item(ui, tools_menu->widget, L"Plugin creator", L"", true, NULL, NULL);
+  ui_api->create_menu_item(ui, tools_menu->widget, L"ImGui Demo", L"", true, &open_imgui_demo, ui);
 
   r_ui_menu_t* help_menu = ui_api->create_menu(ui, main_menu->widget, L"Help");
   ui_api->create_menu_item(ui, help_menu->widget, L"About", L"", true, NULL, NULL);
@@ -112,7 +138,7 @@ sandbox_run(sandbox_t* this, r_frame_info_t* frame_info) {
   r_gfx_cmd_t* cmd = this->renderer_api->create_clear_color_cmd(renderer);
 
   r_gfx_clear_color_cmd_t* clear_color_cmd = (r_gfx_clear_color_cmd_t*)cmd->data;
-  clear_color_cmd->color = window->back_color;
+  clear_color_cmd->color = (r_color_t){0.04f, 0.04f, 0.054f, 1.00f};
 
   this->renderer_api->clear(renderer);
   this->renderer_api->add_cmd(renderer, cmd);

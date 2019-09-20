@@ -112,6 +112,7 @@ r_app_host_init_apis(r_app_host_t* this) {
   r_ui_api.create_main_menu = (R_UI_CREATE_MAIN_MENU)&r_ui_create_main_menu;
   r_ui_api.create_menu = (R_UI_CREATE_MENU)&r_ui_create_menu;
   r_ui_api.create_menu_item = (R_UI_CREATE_MENU_ITEM)&r_ui_create_menu_item;
+  r_ui_api.create_button = (R_UI_CREATE_BUTTON)&r_ui_create_button;
   r_ui_api.create_frame = (R_UI_CREATE_FRAME)&r_ui_create_frame;
 
   local r_gfx_renderer_api_t r_gfx_renderer_api = {0};

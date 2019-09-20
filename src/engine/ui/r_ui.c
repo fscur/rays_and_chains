@@ -1,6 +1,8 @@
 #include "engine/ui/r_ui.h"
 #include "engine/string/r_string_api.h"
 
+// TODO: REMOVE MALLOCS!
+
 r_ui_menu_t* //
 r_ui_create_main_menu(r_ui_t* this, r_ui_widget_t* parent) {
   if (this->widget_count == R_UI_MAX_WIDGET_COUNT)
@@ -107,7 +109,39 @@ r_ui_create_frame(r_ui_t* this, r_ui_widget_t* parent, const wchar_t* title) {
   return frame;
 }
 
-dll_export void //
+r_ui_button_t* //
+r_ui_create_button(r_ui_t* this,
+                   r_ui_widget_t* parent,
+                   const wchar_t* label,
+                   bool enabled,
+                   R_UI_BUTTON_CLICK_CALLBACK callback,
+                   void* context) {
+  if (this->widget_count == R_UI_MAX_WIDGET_COUNT)
+    return NULL;
+
+  r_ui_widget_t* widget = &this->widgets[this->widget_count++];
+  widget->type = R_UI_WIDGET_TYPE_BUTTON;
+  widget->item_count = 0;
+  widget->parent = parent;
+
+  r_ui_button_t* button = (r_ui_button_t*)malloc(sizeof(r_ui_button_t));
+  memset(button, 0, sizeof(r_ui_button_t));
+  r_string_w_copy(label, button->label_wide);
+  r_string_to_ansi(button->label_wide, button->label_ansi, SHORT_STRING_LENGTH);
+  button->enabled = enabled;
+  button->callback = callback;
+  button->context = context;
+  button->widget = widget;
+  widget->data = button;
+
+  if (parent != NULL) {
+    parent->items[parent->item_count++] = widget;
+  }
+
+  return button;
+}
+
+void //
 r_ui_set_theme(r_ui_t* this, u32 theme_id) {
   assert(theme_id < R_UI_MAX_THEME_COUNT);
   this->active_theme = &this->themes[theme_id];

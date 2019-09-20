@@ -83,8 +83,9 @@ glfw_init(glfw_t* this, r_api_db_t* api_db) {
 
   this->string_api->to_ansi(window->title, title, SHORT_STRING_LENGTH);
 
+  glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
   window->handle = (void*)glfwCreateWindow(window->width, window->height, title, NULL, NULL);
-
+  // glfwSetWindowPos(window->handle, 100, 100);
   glfwMakeContextCurrent(window->handle);
 
   i32 success = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
