@@ -78,7 +78,7 @@ r_lib_loader_load_lib(r_memory_t* memory, r_lib_t* lib, const char* file_name, r
     lib->handle = lib_handle;
     lib->id = id;
     lib->memory_block = lib_memory_block;
-    lib->state = lib_memory_block;
+    lib->state = state_memory_addr;
 
     r_string_a_copy(lib_name, lib->name);
     r_string_a_copy(file_name, lib->file_name);
@@ -118,10 +118,8 @@ r_lib_loader_reload_lib(r_lib_t* lib) {
     assert(lib_handle != NULL);
 
     char load_fn_name[SHORT_STRING_LENGTH] = {"load_"};
-    char get_size_fn_name[SHORT_STRING_LENGTH] = {"get_size_"};
 
     strcat(load_fn_name, lib->name);
-    strcat(get_size_fn_name, lib->name);
 
     R_LIB_LOAD load = //
         (R_LIB_LOAD)r_lib_loader_fn(lib_handle, load_fn_name);
@@ -134,7 +132,7 @@ r_lib_loader_reload_lib(r_lib_t* lib) {
     load(&load_info);
     r_file_a_get_last_modification(lib->file_name, &lib->last_modification);
     lib->memory_block = lib->memory_block;
-    lib->state = lib->memory_block;
+    lib->state = lib->state;
   }
 }
 

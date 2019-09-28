@@ -9,20 +9,25 @@
 #include "engine/string/r_string_api.h"
 #include "engine/gfx/r_gfx_renderer.h"
 #include "engine/gfx/r_gfx_renderer_api.h"
+#include "engine/memory/r_memory_block.h"
 
-#include "ui.c"
+//#include "ui.c"
 
-#include "cimgui/cimgui.h"
-#pragma comment(lib, "cimgui.lib")
+// #include "cimgui/cimgui.h"
+// #pragma comment(lib, "cimgui.lib")
 
 u32 //
-get_id_sandbox() {
+get_id_sandbox(void) {
   return 0;
 }
 
 size_t //
-get_size_sandbox() {
-  return sizeof(sandbox_t);
+get_size_sandbox(void) {
+  return sizeof(sandbox_t) +         //
+         sizeof(r_ui_frame_t) * 2 +  //
+         sizeof(r_ui_button_t) * 4 + //
+         sizeof(r_ui_menu_t) * 5 +   //
+         sizeof(r_ui_menu_item_t) * 9;
 }
 
 void //
@@ -35,7 +40,7 @@ load_sandbox(r_lib_load_info_t* load_info) {
 }
 
 r_app_info_t //
-sandbox_get_app_info() {
+sandbox_get_app_info(void) {
 
   r_app_info_t app_info = {
       .title = L"sandbox app", .width = 1280, .height = 720, .desired_fps = 30.0};
@@ -54,16 +59,17 @@ close(r_window_t* window) {
 }
 
 void //
-sandbox_init(sandbox_t* this, r_api_db_t* api_db) {
+init_ui(sandbox_t* this, r_memory_block_t* memory_block) {
 
-  this->debug_api = api_db->apis[R_DEBUG_API_ID];
-  this->window_api = api_db->apis[R_WINDOW_API_ID];
-  this->ui_api = api_db->apis[R_UI_API_ID];
-  this->string_api = api_db->apis[R_STRING_API_ID];
-  this->renderer_api = api_db->apis[R_GFX_RENDERER_API_ID];
+  r_memory_block_t ui_memory_block = {0};
+  ui_memory_block.base_addr =
+      (u8*)memory_block->base_addr + sizeof(r_memory_block_t) + sizeof(sandbox_t);
+  ui_memory_block.current_addr = ui_memory_block.base_addr;
+  ui_memory_block.size = 0;
+  ui_memory_block.max_size = memory_block->size - (sizeof(r_memory_block_t) + sizeof(sandbox_t));
 
-  // note: ui api prototype
   r_ui_t* ui = this->ui_api->ui;
+  ui->memory_block = &ui_memory_block;
   r_ui_theme_t* theme = ui->active_theme;
 
   theme->border_color = (r_color_t){0.04f, 0.04f, 0.04f, 0.80f};
@@ -106,6 +112,11 @@ sandbox_init(sandbox_t* this, r_api_db_t* api_db) {
   button3->position = (r_v2_t){5, 95};
   button3->size = (r_v2_t){40, 40};
 
+  r_ui_button_t* button4 =
+      ui_api->create_button(ui, side_menu->widget, L"I", true, &open_imgui_demo, ui);
+  button4->position = (r_v2_t){5, 140};
+  button4->size = (r_v2_t){40, 40};
+
   r_ui_menu_t* main_menu = ui_api->create_main_menu(ui, ui->root);
 
   r_ui_menu_t* file_menu = ui_api->create_menu(ui, main_menu->widget, L"File");
@@ -125,6 +136,20 @@ sandbox_init(sandbox_t* this, r_api_db_t* api_db) {
 
   r_ui_menu_t* help_menu = ui_api->create_menu(ui, main_menu->widget, L"Help");
   ui_api->create_menu_item(ui, help_menu->widget, L"About", L"", true, NULL, NULL);
+}
+
+void //
+sandbox_init(r_app_t* app, r_api_db_t* api_db) {
+
+  sandbox_t* this = (sandbox_t*)app->state;
+
+  this->debug_api = api_db->apis[R_DEBUG_API_ID];
+  this->window_api = api_db->apis[R_WINDOW_API_ID];
+  this->ui_api = api_db->apis[R_UI_API_ID];
+  this->string_api = api_db->apis[R_STRING_API_ID];
+  this->renderer_api = api_db->apis[R_GFX_RENDERER_API_ID];
+
+  init_ui(this, app->memory_block);
 }
 
 void //

@@ -4,12 +4,12 @@
 #include "engine/diagnostics/r_debug_api.h"
 
 u32 //
-get_id_hammer() {
+get_id_hammer(void) {
   return 0;
 }
 
 size_t //
-get_size_hammer() {
+get_size_hammer(void) {
   return sizeof(hammer_t);
 }
 

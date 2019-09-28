@@ -39,6 +39,7 @@ typedef struct r_app_api_t {
 typedef struct r_app_t {
   r_lib_t lib;
   r_app_api_t api;
+  r_memory_block_t* memory_block;
   void* state;
 } r_app_t;
 

@@ -10,7 +10,7 @@
 static const WORD MAX_CONSOLE_LINES = 500;
 
 void
-r_redirect_io_to_console() {
+r_redirect_io_to_console(void) {
 
   int hConHandle;
   HANDLE lStdHandle;

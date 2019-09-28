@@ -2,12 +2,12 @@
 #include "r_window_glfw.h"
 
 u32 //
-get_id_r_window_glfw() {
+get_id_r_window_glfw(void) {
   return GLFW_API_ID;
 }
 
 size_t //
-get_size_r_window_glfw() {
+get_size_r_window_glfw(void) {
   return sizeof(glfw_t);
 }
 

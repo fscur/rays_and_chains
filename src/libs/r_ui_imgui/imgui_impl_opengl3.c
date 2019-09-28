@@ -132,12 +132,12 @@ ImGui_ImplOpenGL3_Init(const char* glsl_version) {
 }
 
 void
-ImGui_ImplOpenGL3_Shutdown() {
+ImGui_ImplOpenGL3_Shutdown(void) {
   ImGui_ImplOpenGL3_DestroyDeviceObjects();
 }
 
 void
-ImGui_ImplOpenGL3_NewFrame() {
+ImGui_ImplOpenGL3_NewFrame(void) {
   if (!g_FontTexture)
     ImGui_ImplOpenGL3_CreateDeviceObjects();
 }
@@ -370,7 +370,7 @@ ImGui_ImplOpenGL3_RenderDrawData(ImDrawData* draw_data) {
 }
 
 bool
-ImGui_ImplOpenGL3_CreateFontsTexture() {
+ImGui_ImplOpenGL3_CreateFontsTexture(void) {
   // Build texture atlas
 
   struct ImGuiIO* io = igGetIO();
@@ -402,7 +402,7 @@ ImGui_ImplOpenGL3_CreateFontsTexture() {
 }
 
 void
-ImGui_ImplOpenGL3_DestroyFontsTexture() {
+ImGui_ImplOpenGL3_DestroyFontsTexture(void) {
   if (g_FontTexture) {
     struct ImGuiIO* io = igGetIO();
     glDeleteTextures(1, &g_FontTexture);
@@ -449,7 +449,7 @@ CheckProgram(GLuint handle, const char* desc) {
 }
 
 bool
-ImGui_ImplOpenGL3_CreateDeviceObjects() {
+ImGui_ImplOpenGL3_CreateDeviceObjects(void) {
   // Backup GL state
   GLint last_texture, last_array_buffer, last_vertex_array;
   glGetIntegerv(GL_TEXTURE_BINDING_2D, &last_texture);
@@ -613,7 +613,7 @@ ImGui_ImplOpenGL3_CreateDeviceObjects() {
 }
 
 void
-ImGui_ImplOpenGL3_DestroyDeviceObjects() {
+ImGui_ImplOpenGL3_DestroyDeviceObjects(void) {
   if (g_VboHandle)
     glDeleteBuffers(1, &g_VboHandle);
   if (g_ElementsHandle)

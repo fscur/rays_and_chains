@@ -24,7 +24,7 @@
 #include "r_app_host.h"
 
 size_t
-r_app_host_get_size() {
+r_app_host_get_size(void) {
   return sizeof(r_app_host_t) +     //
          sizeof(r_app_t) +          //
          sizeof(r_api_db_t) +       //
@@ -84,7 +84,8 @@ r_app_host_create(r_memory_t* memory, r_frame_info_t* frame_info) {
 void //
 r_app_host_load_app(r_app_host_t* this, const char* filename) {
   r_lib_loader_load_lib(this->memory, &this->app->lib, filename, this->api_db);
-  this->app->state = this->app->lib.memory_block;
+  this->app->memory_block = this->app->lib.memory_block;
+  this->app->state = this->app->lib.state;
   this->app->api = *(r_app_api_t*)this->app->lib.functions;
 
   r_app_info_t app_info = this->app->api.get_app_info();
@@ -143,7 +144,7 @@ r_app_host_init(r_app_host_t* this) {
     init_fn(lib.state, this->api_db);
   }
 
-  this->app->api.init(this->app->state, this->api_db);
+  this->app->api.init(this->app, this->api_db);
 }
 
 internal bool //

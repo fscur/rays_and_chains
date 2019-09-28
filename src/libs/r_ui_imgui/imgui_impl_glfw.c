@@ -215,7 +215,7 @@ ImGui_ImplGlfw_InitForVulkan(GLFWwindow* window, bool install_callbacks) {
 }
 
 void
-ImGui_ImplGlfw_Shutdown() {
+ImGui_ImplGlfw_Shutdown(void) {
   for (ImGuiMouseCursor cursor_n = 0; cursor_n < ImGuiMouseCursor_COUNT; cursor_n++) {
     glfwDestroyCursor(g_MouseCursors[cursor_n]);
     g_MouseCursors[cursor_n] = NULL;
@@ -224,7 +224,7 @@ ImGui_ImplGlfw_Shutdown() {
 }
 
 static void
-ImGui_ImplGlfw_UpdateMousePosAndButtons() {
+ImGui_ImplGlfw_UpdateMousePosAndButtons(void) {
   // Update buttons
   ImGuiIO* io = igGetIO();
   for (int i = 0; i < IM_ARRAYSIZE(io->MouseDown); i++) {
@@ -255,7 +255,7 @@ ImGui_ImplGlfw_UpdateMousePosAndButtons() {
 }
 
 static void
-ImGui_ImplGlfw_UpdateMouseCursor() {
+ImGui_ImplGlfw_UpdateMouseCursor(void) {
   ImGuiIO* io = igGetIO();
   if ((io->ConfigFlags & ImGuiConfigFlags_NoMouseCursorChange) ||
       glfwGetInputMode(g_Window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED)
@@ -277,7 +277,7 @@ ImGui_ImplGlfw_UpdateMouseCursor() {
 }
 
 static void
-ImGui_ImplGlfw_UpdateGamepads() {
+ImGui_ImplGlfw_UpdateGamepads(void) {
   ImGuiIO* io = igGetIO();
   memset(io->NavInputs, 0, sizeof(io->NavInputs));
   if ((io->ConfigFlags & ImGuiConfigFlags_NavEnableGamepad) == 0)
@@ -326,7 +326,7 @@ ImGui_ImplGlfw_UpdateGamepads() {
 }
 
 void
-ImGui_ImplGlfw_NewFrame() {
+ImGui_ImplGlfw_NewFrame(void) {
   ImGuiIO* io = igGetIO();
   // IM_ASSERT(io->Fonts->IsBuilt() &&
   //           "Font atlas not built! It is generally built by the renderer back-end. Missing call

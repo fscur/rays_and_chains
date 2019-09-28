@@ -9,12 +9,12 @@
 #pragma comment(lib, "opengl32.lib")
 
 u32 //
-get_id_r_gfx_opengl() {
+get_id_r_gfx_opengl(void) {
   return OPENGL_API_ID;
 }
 
 size_t //
-get_size_r_gfx_opengl() {
+get_size_r_gfx_opengl(void) {
   return sizeof(opengl_t);
 }
 

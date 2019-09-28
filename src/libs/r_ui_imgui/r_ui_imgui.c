@@ -2,12 +2,12 @@
 #include "r_ui_imgui.h"
 
 u32 //
-get_id_r_ui_imgui() {
+get_id_r_ui_imgui(void) {
   return IMGUI_API_ID;
 }
 
 size_t //
-get_size_r_ui_imgui() {
+get_size_r_ui_imgui(void) {
   return sizeof(imgui_t);
 }
 

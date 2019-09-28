@@ -19,7 +19,7 @@ static bool show_demo_window = false;
   (ImVec4) { 0.04f, 0.04f, 0.04f, 0.80f }
 
 void //
-init_imgui_style() {
+init_imgui_style(void) {
   struct ImGuiStyle* style = igGetStyle();
 
   style->WindowPadding = (ImVec2){7, 7};
@@ -97,12 +97,12 @@ init_imgui_style() {
 }
 
 void //
-init_ui() {
+init_ui(void) {
   init_imgui_style();
 }
 
 void //
-render_menu_help() {
+render_menu_help(void) {
   local bool editMenuEnabled = true;
   if (igBeginMenu("Edit", &editMenuEnabled)) {
     if (igMenuItemBool("About", "", false, true)) {
@@ -112,7 +112,7 @@ render_menu_help() {
 }
 
 void //
-render_menu_edit_items() {
+render_menu_edit_items(void) {
   if (igMenuItemBool("Undo", "CTRL+Z", false, true)) {
   }
   if (igMenuItemBool("Redo", "CTRL+Y", false, false)) {
@@ -129,7 +129,7 @@ render_menu_edit_items() {
 }
 
 void //
-render_menu_edit() {
+render_menu_edit(void) {
   local bool editMenuEnabled = true;
   if (igBeginMenu("Edit", &editMenuEnabled)) {
     render_menu_edit_items();
@@ -138,7 +138,7 @@ render_menu_edit() {
 }
 
 void //
-render_menu_file_items() {
+render_menu_file_items(void) {
   if (igMenuItemBool("New", "CTRL+N", false, true)) {
     show_demo_window = true;
   }
@@ -158,7 +158,7 @@ render_menu_file_items() {
 }
 
 void //
-render_menu_file() {
+render_menu_file(void) {
   local bool isFileMenuEnabled = true;
   if (igBeginMenu("File", &isFileMenuEnabled)) {
     render_menu_file_items();
@@ -167,7 +167,7 @@ render_menu_file() {
 }
 
 void //
-render_main_menu() {
+render_main_menu(void) {
   igPushStyleVarFloat(ImGuiStyleVar_PopupBorderSize, 1.0f);
   igPushStyleVarFloat(ImGuiStyleVar_WindowRounding, 0.0f);
   igPushStyleColor(ImGuiCol_Border, BORDER_COLOR);
@@ -185,7 +185,7 @@ render_main_menu() {
 }
 
 void //
-render_side_menu() {
+render_side_menu(void) {
   ImGuiWindowFlags flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
                            ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar |
                            ImGuiWindowFlags_NoBringToFrontOnFocus;
@@ -208,7 +208,7 @@ render_side_menu() {
 }
 
 void //
-render_extension_place_holder() {
+render_extension_place_holder(void) {
   ImGuiWindowFlags flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
                            ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar |
                            ImGuiWindowFlags_NoBringToFrontOnFocus;
@@ -231,7 +231,7 @@ render_extension_place_holder() {
 }
 
 void //
-render_viewport() {
+render_viewport(void) {
   ImGuiWindowFlags flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
                            ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar |
                            ImGuiWindowFlags_NoBringToFrontOnFocus;
@@ -261,7 +261,7 @@ render_viewport() {
 }
 
 void //
-render_ui() {
+render_ui(void) {
   render_main_menu();
   render_side_menu();
   render_extension_place_holder();
