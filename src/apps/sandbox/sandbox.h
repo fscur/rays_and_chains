@@ -28,13 +28,13 @@ typedef struct sandbox_t {
 } sandbox_t;
 
 dll_export void //
-load_sandbox(r_lib_load_info_t* load_info);
+sandbox_load(r_lib_load_info_t* load_info);
 
 dll_export size_t //
-get_size_sandbox();
+sandbox_get_size();
 
 dll_export u32 //
-get_id_sandbox();
+sandbox_get_id();
 
 dll_export r_app_info_t //
 sandbox_get_app_info();

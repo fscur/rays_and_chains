@@ -56,7 +56,7 @@ glfw_update(r_window_t* window) {
 }
 
 void //
-glfw_init(glfw_t* this, r_api_db_t* api_db) {
+r_window_glfw_init(glfw_t* this, r_api_db_t* api_db) {
   this->debug_api = api_db->apis[R_DEBUG_API_ID];
   this->window_api = api_db->apis[R_WINDOW_API_ID];
   this->string_api = api_db->apis[R_STRING_API_ID];
@@ -99,6 +99,6 @@ glfw_init(glfw_t* this, r_api_db_t* api_db) {
 }
 
 void //
-glfw_destroy(glfw_t* this) {
+r_window_glfw_destroy(glfw_t* this) {
   glfwTerminate();
 }

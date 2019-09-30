@@ -26,15 +26,20 @@ close(r_window_t* window) {
   window->should_close = true;
 }
 
-void //
-init_ui(sandbox_t* this, r_memory_block_t* memory_block) {
-
+r_memory_block_t sandbox_ui_get_ui_memory_block(r_memory_block_t* memory_block) {
   r_memory_block_t ui_memory_block = {0};
   ui_memory_block.base_addr =
       (u8*)memory_block->base_addr + sizeof(r_memory_block_t) + sizeof(sandbox_t);
   ui_memory_block.current_addr = ui_memory_block.base_addr;
   ui_memory_block.size = 0;
   ui_memory_block.max_size = memory_block->size - (sizeof(r_memory_block_t) + sizeof(sandbox_t));
+  return ui_memory_block;
+}
+
+void //
+init_ui(sandbox_t* this, r_memory_block_t* memory_block) {
+
+  r_memory_block_t ui_memory_block = sandbox_ui_get_ui_memory_block(memory_block);
 
   r_ui_t* ui = this->ui_api->ui;
   ui->memory_block = &ui_memory_block;

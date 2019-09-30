@@ -9,20 +9,20 @@
 #pragma comment(lib, "opengl32.lib")
 
 u32 //
-get_id_r_gfx_opengl(void) {
+r_gfx_opengl_get_id(void) {
   return OPENGL_API_ID;
 }
 
 size_t //
-get_size_r_gfx_opengl(void) {
+r_gfx_opengl_get_size(void) {
   return sizeof(opengl_t);
 }
 
 void //
-load_r_gfx_opengl(r_lib_load_info_t* load_info) {
+r_gfx_opengl_load(r_lib_load_info_t* load_info) {
   r_lib_t* lib = (r_lib_t*)load_info->lib_memory_addr;
-  lib->functions[lib->fn_count++] = load_info->fn(load_info->handle, "opengl_init");
-  lib->functions[lib->fn_count++] = load_info->fn(load_info->handle, "opengl_destroy");
+  lib->functions[lib->fn_count++] = load_info->fn(load_info->handle, "r_gfx_opengl_init");
+  lib->functions[lib->fn_count++] = load_info->fn(load_info->handle, "r_gfx_opengl_destroy");
 }
 
 internal void //
@@ -38,7 +38,7 @@ opengl_clear_color_dispatcher(void* data) {
 }
 
 void //
-opengl_init(opengl_t* this, r_api_db_t* api_db) {
+r_gfx_opengl_init(opengl_t* this, r_api_db_t* api_db) {
   this->debug_api = api_db->apis[R_DEBUG_API_ID];
   this->renderer_api = api_db->apis[R_GFX_RENDERER_API_ID];
 
@@ -52,4 +52,4 @@ opengl_init(opengl_t* this, r_api_db_t* api_db) {
 }
 
 void //
-opengl_destroy(opengl_t* this) {}
+r_gfx_opengl_destroy(opengl_t* this) {}

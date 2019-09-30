@@ -24,19 +24,19 @@ typedef struct glfw_t {
 } glfw_t;
 
 dll_export void //
-load_r_window_glfw(r_lib_load_info_t* load_info);
+r_window_glfw_load(r_lib_load_info_t* load_info);
 
 dll_export size_t //
-get_size_r_window_glfw();
+r_window_glfw_get_size();
 
 dll_export u32 //
-get_id_r_window_glfw();
+r_window_glfw_get_id();
 
 dll_export void //
-glfw_init(glfw_t* this, r_api_db_t* api_db);
+r_window_glfw_init(glfw_t* this, r_api_db_t* api_db);
 
 dll_export void //
-glfw_destroy(glfw_t* this);
+r_window_glfw_destroy(glfw_t* this);
 
 #ifdef __cplusplus
 }

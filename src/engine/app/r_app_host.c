@@ -176,7 +176,7 @@ r_app_host_reload_app(r_app_host_t* this) {
     r_lib_loader_destroy_lib(app_lib);
     r_lib_loader_reload_lib(app_lib);
     R_LIB_INIT init_fn = (R_LIB_INIT)app_lib->functions[1];
-    init_fn(app_lib->state, this->api_db);
+    init_fn(this->app, this->api_db);
   }
 }
 

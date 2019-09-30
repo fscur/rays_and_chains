@@ -292,7 +292,7 @@ r_ui_imgui_end(r_ui_api_t* ui_api) {
 }
 
 void //
-imgui_init(imgui_t* this, r_api_db_t* api_db) {
+r_ui_imgui_init(imgui_t* this, r_api_db_t* api_db) {
   this->debug_api = api_db->apis[R_DEBUG_API_ID];
   this->window_api = api_db->apis[R_WINDOW_API_ID];
   this->ui_api = api_db->apis[R_UI_API_ID];
@@ -336,7 +336,7 @@ imgui_init(imgui_t* this, r_api_db_t* api_db) {
 }
 
 void //
-imgui_destroy(imgui_t* this) {
+r_ui_imgui_destroy(imgui_t* this) {
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplGlfw_Shutdown();
   igDestroyContext(this->context);

@@ -11,7 +11,7 @@ if /I exist %VC17_PATH% (
 
 :vc14
 call %VC14_PATH%\vcvarsall.bat x64
-goto start
+cmd /C "code p:"
 
 :vc17
 call %VC17_PATH%\vcvarsall.bat x64

@@ -20,19 +20,19 @@ typedef struct opengl_t {
 } opengl_t;
 
 dll_export void //
-load_r_gfx_opengl(r_lib_load_info_t* load_info);
+r_gfx_opengl_load(r_lib_load_info_t* load_info);
 
 dll_export size_t //
-get_size_r_gfx_opengl();
+r_gfx_opengl_get_size();
 
 dll_export u32 //
-get_id_r_gfx_opengl();
+r_gfx_opengl_get_id();
 
 dll_export void //
-opengl_init(opengl_t* this, r_api_db_t* api_db);
+r_gfx_opengl_init(opengl_t* this, r_api_db_t* api_db);
 
 dll_export void //
-opengl_destroy(opengl_t* this);
+r_gfx_opengl_destroy(opengl_t* this);
 
 #ifdef __cplusplus
 }

@@ -31,19 +31,19 @@ typedef struct imgui_t {
 } imgui_t;
 
 dll_export void //
-load_r_ui_imgui(r_lib_load_info_t* load_info);
+r_ui_imgui_load(r_lib_load_info_t* load_info);
 
 dll_export size_t //
-get_size_r_ui_imgui();
+r_ui_imgui_get_size();
 
 dll_export u32 //
-get_id_r_ui_imgui();
+r_ui_imgui_get_id();
 
 dll_export void //
-imgui_init(imgui_t* this, r_api_db_t* api_db);
+r_ui_imgui_init(imgui_t* this, r_api_db_t* api_db);
 
 dll_export void //
-imgui_destroy(imgui_t* this);
+r_ui_imgui_destroy(imgui_t* this);
 
 #ifdef __cplusplus
 }

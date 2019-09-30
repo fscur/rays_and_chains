@@ -52,13 +52,13 @@ r_lib_loader_load_lib(r_memory_t* memory, r_lib_t* lib, const char* file_name, r
     sprintf(lib_name, "%s", PathFindFileNameA(file_name));
     PathRemoveExtensionA(lib_name);
 
-    char load_fn_name[SHORT_STRING_LENGTH] = {"load_"};
-    char get_size_fn_name[SHORT_STRING_LENGTH] = {"get_size_"};
-    char get_id_fn_name[SHORT_STRING_LENGTH] = {"get_id_"};
+    char load_fn_name[SHORT_STRING_LENGTH] = {0};
+    char get_size_fn_name[SHORT_STRING_LENGTH] = {0};
+    char get_id_fn_name[SHORT_STRING_LENGTH] = {0};
 
-    strcat(load_fn_name, lib_name);
-    strcat(get_size_fn_name, lib_name);
-    strcat(get_id_fn_name, lib_name);
+    sprintf(load_fn_name, "%s_%s", lib_name, "load");
+    sprintf(get_size_fn_name, "%s_%s", lib_name, "get_size");
+    sprintf(get_id_fn_name, "%s_%s", lib_name, "get_id");
 
     R_LIB_LOAD load = (R_LIB_LOAD)r_lib_loader_fn(lib_handle, load_fn_name);
     R_LIB_GET_SIZE get_size = (R_LIB_GET_SIZE)r_lib_loader_fn(lib_handle, get_size_fn_name);

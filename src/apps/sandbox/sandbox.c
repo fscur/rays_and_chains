@@ -13,18 +13,18 @@
 #include "sandbox_ui.c"
 
 u32 //
-get_id_sandbox(void) {
+sandbox_get_id(void) {
   return 0;
 }
 
 size_t //
-get_size_sandbox(void) {
+sandbox_get_size(void) {
   return sizeof(sandbox_t) + //
          sandbox_get_sizeof_ui();
 }
 
 void //
-load_sandbox(r_lib_load_info_t* load_info) {
+sandbox_load(r_lib_load_info_t* load_info) {
   r_lib_t* lib = (r_lib_t*)load_info->lib_memory_addr;
   lib->functions[lib->fn_count++] = load_info->fn(load_info->handle, "sandbox_get_app_info");
   lib->functions[lib->fn_count++] = load_info->fn(load_info->handle, "sandbox_init");
@@ -66,7 +66,7 @@ sandbox_run(sandbox_t* this, r_frame_info_t* frame_info) {
   r_gfx_cmd_t* cmd = this->renderer_api->create_clear_color_cmd(renderer);
 
   r_gfx_clear_color_cmd_t* clear_color_cmd = (r_gfx_clear_color_cmd_t*)cmd->data;
-  clear_color_cmd->color = (r_color_t){0.04f, 0.04f, 0.054f, 1.00f};
+  clear_color_cmd->color = (r_color_t){0.5f, 0.04f, 0.054f, 1.00f};
 
   this->renderer_api->clear(renderer);
   this->renderer_api->add_cmd(renderer, cmd);
