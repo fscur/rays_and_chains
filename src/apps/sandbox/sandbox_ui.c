@@ -26,7 +26,8 @@ close(r_window_t* window) {
   window->should_close = true;
 }
 
-r_memory_block_t sandbox_ui_get_ui_memory_block(r_memory_block_t* memory_block) {
+r_memory_block_t
+sandbox_ui_get_ui_memory_block(r_memory_block_t* memory_block) {
   r_memory_block_t ui_memory_block = {0};
   ui_memory_block.base_addr =
       (u8*)memory_block->base_addr + sizeof(r_memory_block_t) + sizeof(sandbox_t);

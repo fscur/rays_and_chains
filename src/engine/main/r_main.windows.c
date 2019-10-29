@@ -27,9 +27,10 @@ on_error(r_error_t* error) {
   r_debug_print("No good.");
 }
 
+#include "engine/algorithms/r_linked_list.c"
+
 int CALLBACK
 WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {
-
   int argc = 0;
   char** argv = NULL;
 

@@ -92,7 +92,7 @@ r_lib_loader_load_lib(r_memory_t* memory, r_lib_t* lib, const char* file_name, r
 void //
 r_lib_loader_destroy_lib(r_lib_t* lib) {
   if (lib->functions[3]) {
-    R_LIB_DESTROY destroy_fn = (R_LIB_DESTROY)lib->functions[2];
+    R_LIB_DESTROY destroy_fn = (R_LIB_DESTROY)lib->functions[3];
     destroy_fn(lib->state);
   }
   lib->fn_count = 0;
@@ -117,9 +117,8 @@ r_lib_loader_reload_lib(r_lib_t* lib) {
     HMODULE lib_handle = LoadLibraryA(lib->tmp_file_name);
     assert(lib_handle != NULL);
 
-    char load_fn_name[SHORT_STRING_LENGTH] = {"load_"};
-
-    strcat(load_fn_name, lib->name);
+    char load_fn_name[SHORT_STRING_LENGTH] = {0};
+    sprintf(load_fn_name, "%s_%s", lib->name, "load");
 
     R_LIB_LOAD load = //
         (R_LIB_LOAD)r_lib_loader_fn(lib_handle, load_fn_name);

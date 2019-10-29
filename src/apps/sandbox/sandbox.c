@@ -66,7 +66,7 @@ sandbox_run(sandbox_t* this, r_frame_info_t* frame_info) {
   r_gfx_cmd_t* cmd = this->renderer_api->create_clear_color_cmd(renderer);
 
   r_gfx_clear_color_cmd_t* clear_color_cmd = (r_gfx_clear_color_cmd_t*)cmd->data;
-  clear_color_cmd->color = (r_color_t){0.5f, 0.04f, 0.054f, 1.00f};
+  clear_color_cmd->color = (r_color_t){0.0f, 0.04f, 0.054f, 1.00f};
 
   this->renderer_api->clear(renderer);
   this->renderer_api->add_cmd(renderer, cmd);
