@@ -1,7 +1,7 @@
 #include "r_gfx_renderer.h"
 
 r_gfx_cmd_t* //
-r_gfx_renderer_create_clear_color_buffer_cmd(r_gfx_renderer_t* this) {
+r_gfx_renderer_create_clear_color_buffer_cmd(const r_gfx_renderer_t* this) {
   
   r_color_t color = {
     .r = 1.0f,
@@ -39,7 +39,7 @@ r_gfx_renderer_sort(r_gfx_renderer_t* this) {
 }
 
 void //
-r_gfx_renderer_submit(r_gfx_renderer_t* this) {
+r_gfx_renderer_submit(const r_gfx_renderer_t* this) {
   for (int i = 0; i < this->cmd_buffer.cmd_count; ++i) {
     this->cmd_buffer.fn[i](this->cmd_buffer.data[i]);
   }

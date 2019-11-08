@@ -31,7 +31,7 @@ r_lib_loader_get_pdb_file_name(const char* file_name, char* pdb_file_name) {
 }
 
 void //
-r_lib_loader_load_lib(r_memory_t* memory, r_lib_t* lib, const char* file_name, r_api_db_t* db) {
+r_lib_loader_load_lib(r_memory_t* memory, r_lib_t* lib, const char* file_name) {
 
   char tmp_dll_file_name[SHORT_STRING_LENGTH] = {0};
   char tmp_pdb_file_name[SHORT_STRING_LENGTH] = {0};

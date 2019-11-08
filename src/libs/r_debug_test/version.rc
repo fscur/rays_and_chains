@@ -1,8 +1,8 @@
 #include <winresrc.h>
-#define VER_FILEVERSION 0,0,0,85
-#define VER_FILEVERSION_STR "0.0.0.85\0"
-#define VER_PRODUCTVERSION 0,0,0,85
-#define VER_PRODUCTVERSION_STR "0.0.0.85\0"
+#define VER_FILEVERSION 0,0,0,11
+#define VER_FILEVERSION_STR "0.0.0.11\0"
+#define VER_PRODUCTVERSION 0,0,0,11
+#define VER_PRODUCTVERSION_STR "0.0.0.11\0"
 
 #ifndef DEBUG
 #define VER_DEBUG 0
@@ -22,11 +22,11 @@ BEGIN
         BLOCK "040904E4"
         BEGIN
             VALUE "CompanyName",      "Vector"
-            VALUE "FileDescription",  "r_window_glfw"
+            VALUE "FileDescription",  "r_debug_test"
             VALUE "FileVersion",      VER_FILEVERSION_STR
-            VALUE "InternalName",     "r_window_glfw"
+            VALUE "InternalName",     "r_debug_test"
             VALUE "LegalCopyright",   "Copyright 2019 (c). All rights reserved."
-            VALUE "ProductName",      "r_window_glfw"
+            VALUE "ProductName",      "r_debug_test"
             VALUE "ProductVersion",   VER_PRODUCTVERSION_STR
         END
     END

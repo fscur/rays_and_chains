@@ -1,10 +1,10 @@
 #pragma once
 #include "engine/core/r_core_types.h"
-#include "engine/window/r_window_api.h"
+#include "engine/window/r_window_i.h"
 #include "engine/window/r_window.h"
-#include "engine/ui/r_ui_api.h"
+#include "engine/ui/r_ui_i.h"
 #include "engine/ui/r_ui.h"
-#include "engine/string/r_string_api.h"
+#include "engine/string/r_string_i.h"
 #include "engine/memory/r_memory_block.h"
 #include "sandbox.h"
 
@@ -38,11 +38,11 @@ sandbox_ui_get_ui_memory_block(r_memory_block_t* memory_block) {
 }
 
 void //
-init_ui(sandbox_t* this, r_memory_block_t* memory_block) {
+sandbox_ui_init(sandbox_t* this, r_memory_block_t* memory_block) {
 
   r_memory_block_t ui_memory_block = sandbox_ui_get_ui_memory_block(memory_block);
 
-  r_ui_t* ui = this->ui_api->ui;
+  r_ui_t* ui = this->ui_api->instance;
   ui->memory_block = &ui_memory_block;
   r_ui_theme_t* theme = ui->active_theme;
 
@@ -52,7 +52,7 @@ init_ui(sandbox_t* this, r_memory_block_t* memory_block) {
   theme->border_size = 0.0f;
   theme->frame_rounding = 0.0;
 
-  r_ui_api_t* ui_api = this->ui_api;
+  r_ui_i* ui_api = this->ui_api;
   ui_api->init_theme(ui);
 
   ui->root = &ui->widgets[ui->widget_count++];
@@ -71,13 +71,27 @@ init_ui(sandbox_t* this, r_memory_block_t* memory_block) {
   side_bar->frame_style = R_UI_FRAME_STYLE_NO_BORDER;
   side_bar->is_open = true;
 
-  r_ui_button_t* button1 =
-      ui_api->create_button(ui, side_menu->widget, L"F", true, &open_imgui_demo, ui);
+  r_ui_button_t* button1 =   //
+      ui_api->create_button( //
+          ui,
+          side_menu->widget,
+          L"F",
+          true,
+          &open_imgui_demo,
+          ui);
+
   button1->position = (r_v2_t){5, 5};
   button1->size = (r_v2_t){40, 40};
 
-  r_ui_button_t* button2 =
-      ui_api->create_button(ui, side_menu->widget, L"I", true, &open_imgui_demo, ui);
+  r_ui_button_t* button2 =   //
+      ui_api->create_button( //
+          ui,
+          side_menu->widget,
+          L"I",
+          true,
+          &open_imgui_demo,
+          ui);
+          
   button2->position = (r_v2_t){5, 50};
   button2->size = (r_v2_t){40, 40};
 
@@ -98,7 +112,7 @@ init_ui(sandbox_t* this, r_memory_block_t* memory_block) {
   ui_api->create_menu_item(ui, file_menu->widget, L"Open", L"CTRL+O", true, NULL, NULL);
   ui_api->create_menu_item(ui, file_menu->widget, L"Save", L"CTRL+S", true, NULL, NULL);
   ui_api->create_menu_item(
-      ui, file_menu->widget, L"Close", L"", true, &close, this->window_api->window);
+      ui, file_menu->widget, L"Close", L"", true, &close, this->window_api->instance);
 
   r_ui_menu_t* edit_menu = ui_api->create_menu(ui, main_menu->widget, L"Edit");
   ui_api->create_menu_item(ui, edit_menu->widget, L"Copy", L"CTRL+C", true, NULL, NULL);

@@ -22,6 +22,9 @@ dll_export void //
 r_linked_list_free(r_linked_list_t* list);
 
 dll_export void //
+r_linked_list_insert(r_linked_list_t* list, r_linked_list_node_t* node);
+
+dll_export void //
 r_linked_list_push_back(r_linked_list_t* list, r_linked_list_node_t* node);
 
 #ifdef __cplusplus

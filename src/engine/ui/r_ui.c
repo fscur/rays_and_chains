@@ -1,5 +1,5 @@
 #include "engine/ui/r_ui.h"
-#include "engine/string/r_string_api.h"
+#include "engine/string/r_string_i.h"
 #include "engine/memory/r_memory_block.h"
 
 r_ui_menu_t* //

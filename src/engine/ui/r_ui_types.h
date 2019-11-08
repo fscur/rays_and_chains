@@ -83,6 +83,16 @@ typedef struct r_ui_frame_t {
   r_ui_frame_style_t frame_style;
 } r_ui_frame_t;
 
+typedef struct r_ui_t {
+  r_memory_block_t* memory_block;
+  u32 widget_count;
+  r_ui_widget_t widgets[R_UI_MAX_WIDGET_COUNT];
+  r_ui_widget_t* root;
+  r_ui_theme_t themes[R_UI_MAX_THEME_COUNT];
+  r_ui_theme_t* active_theme;
+  bool show_demo;
+} r_ui_t;
+
 #ifdef __cplusplus
 }
 #endif

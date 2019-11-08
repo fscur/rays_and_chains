@@ -101,7 +101,7 @@ typedef struct r_result_t {
 
 typedef struct r_memory_block_t r_memory_block_t;
 typedef struct r_lib_load_info_t r_lib_load_info_t;
-typedef struct r_api_db_t r_api_db_t;
+typedef struct r_api_db_i r_api_db_i;
 
 typedef void* (*R_LIB_LOADER_FN)(void*, const char*);
 
@@ -109,7 +109,7 @@ typedef u32 (*R_LIB_GET_ID)();
 typedef u32 (*R_LIB_GET_FN_COUNT)();
 typedef size_t (*R_LIB_GET_SIZE)();
 typedef void* (*R_LIB_LOAD)(r_lib_load_info_t* load_info);
-typedef void* (*R_LIB_INIT)(void* lib_state, r_api_db_t* db);
+typedef void* (*R_LIB_INIT)(void* lib_state, r_api_db_i* db);
 typedef void* (*R_LIB_DESTROY)(void* lib_state);
 
 typedef struct r_lib_load_info_t {

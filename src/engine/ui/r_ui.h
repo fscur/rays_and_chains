@@ -5,16 +5,6 @@ extern "C" {
 
 #include "engine/ui/r_ui_types.h"
 
-typedef struct r_ui_t {
-  r_memory_block_t* memory_block;
-  u32 widget_count;
-  r_ui_widget_t widgets[R_UI_MAX_WIDGET_COUNT];
-  r_ui_widget_t* root;
-  r_ui_theme_t themes[R_UI_MAX_THEME_COUNT];
-  r_ui_theme_t* active_theme;
-  bool show_demo;
-} r_ui_t;
-
 dll_export r_ui_frame_t* //
 r_ui_create_frame(r_ui_t* this, r_ui_widget_t* parent, const wchar_t* title);
 

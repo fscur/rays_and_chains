@@ -1,7 +1,6 @@
 {
     "version": "2.0.0",
-    "tasks": [
-        {
+    "tasks": [{
             "label": "build all : debug",
             "type": "shell",
             "windows": {
@@ -172,6 +171,26 @@
             },
             "linux": {
                 "command": "./scripts/linux/libs/build_libs_debug.sh r_gfx_opengl"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
+            "label": "build r_debug_test lib : debug",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "cwd": "p:\\scripts\\windows"
+                },
+                "command": "p:\\scripts\\windows\\libs\\build_libs_debug.bat r_debug_test"
+            },
+            "linux": {
+                "command": "./scripts/linux/libs/build_libs_debug.sh r_debug_test"
             },
             "group": {
                 "kind": "build",

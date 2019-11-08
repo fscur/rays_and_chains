@@ -7,16 +7,16 @@ extern "C" {
 #include "engine/core/r_core_types.h"
 
 typedef struct r_plugin_load_info_t r_plugin_load_info_t;
-typedef struct r_api_db_t r_api_db_t;
-typedef struct r_debug_api_t r_debug_api_t;
+typedef struct r_api_db_i r_api_db_i;
+typedef struct r_debug_i r_debug_i;
 typedef struct r_plugin_t r_plugin_t;
-typedef struct r_gfx_renderer_api_t r_gfx_renderer_api_t;
+typedef struct r_gfx_renderer_i r_gfx_renderer_i;
 
 #define OPENGL_API_ID 258
 
 typedef struct opengl_t {
-  r_debug_api_t* debug_api;
-  r_gfx_renderer_api_t* renderer_api;
+  r_debug_i* debug;
+  r_gfx_renderer_i* renderer;
 } opengl_t;
 
 dll_export void //
@@ -29,7 +29,7 @@ dll_export u32 //
 r_gfx_opengl_get_id();
 
 dll_export void //
-r_gfx_opengl_init(opengl_t* this, r_api_db_t* api_db);
+r_gfx_opengl_init(opengl_t* this, r_api_db_i* api_db);
 
 dll_export void //
 r_gfx_opengl_destroy(opengl_t* this);

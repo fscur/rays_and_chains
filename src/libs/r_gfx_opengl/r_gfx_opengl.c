@@ -1,9 +1,10 @@
 #include "glad.c"
 #include "engine/app/r_api_db.h"
+#include "engine/app/r_api_db_i.h"
 #include "engine/plugins/r_plugin.h"
 #include "engine/gfx/r_gfx_renderer.h"
-#include "engine/gfx/r_gfx_renderer_api.h"
-#include "engine/diagnostics/r_debug_api.h"
+#include "engine/gfx/r_gfx_renderer_i.h"
+#include "engine/diagnostics/r_debug_i.h"
 #include "r_gfx_opengl.h"
 
 #pragma comment(lib, "opengl32.lib")
@@ -38,11 +39,11 @@ opengl_clear_color_dispatcher(void* data) {
 }
 
 void //
-r_gfx_opengl_init(opengl_t* this, r_api_db_t* api_db) {
-  this->debug_api = api_db->apis[R_DEBUG_API_ID];
-  this->renderer_api = api_db->apis[R_GFX_RENDERER_API_ID];
+r_gfx_opengl_init(opengl_t* this, r_api_db_i* api_db) {
+  this->debug = api_db->instance->apis[R_DEBUG_API_ID];
+  this->renderer = api_db->instance->apis[R_GFX_RENDERER_API_ID];
 
-  r_gfx_renderer_t* renderer = this->renderer_api->renderer;
+  r_gfx_renderer_t* renderer = this->renderer->instance;
   renderer->clear_color_dispatcher = &opengl_clear_color_dispatcher;
 
   i32 success = gladLoadGL();

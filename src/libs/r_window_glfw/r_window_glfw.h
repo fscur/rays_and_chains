@@ -7,19 +7,19 @@ extern "C" {
 #include "engine/core/r_core_types.h"
 
 typedef struct r_plugin_load_info_t r_plugin_load_info_t;
-typedef struct r_api_db_t r_api_db_t;
-typedef struct r_debug_api_t r_debug_api_t;
-typedef struct r_window_api_t r_window_api_t;
-typedef struct r_string_api_t r_string_api_t;
+typedef struct r_api_db_i r_api_db_i;
+typedef struct r_debug_i r_debug_i;
+typedef struct r_window_i r_window_i;
+typedef struct r_string_i r_string_i;
 typedef struct r_window_t r_window_t;
 typedef struct r_plugin_t r_plugin_t;
 
 #define GLFW_API_ID 256
 
 typedef struct glfw_t {
-  r_debug_api_t* debug_api;
-  r_window_api_t* window_api;
-  r_string_api_t* string_api;
+  r_debug_i* debug_api;
+  r_window_i* window_api;
+  r_string_i* string_api;
   r_window_t* window;
 } glfw_t;
 
@@ -33,7 +33,7 @@ dll_export u32 //
 r_window_glfw_get_id();
 
 dll_export void //
-r_window_glfw_init(glfw_t* this, r_api_db_t* api_db);
+r_window_glfw_init(glfw_t* this, r_api_db_i* api_db);
 
 dll_export void //
 r_window_glfw_destroy(glfw_t* this);

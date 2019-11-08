@@ -18,7 +18,7 @@ typedef u32 (*R_APP_GET_ID)();
 typedef size_t (*R_APP_GET_SIZE)();
 typedef void* (*R_APP_LOAD)(r_app_load_info_t* load_info);
 typedef r_app_info_t (*R_APP_GET_APP_INFO)();
-typedef void (*R_APP_INIT)(void* state, r_api_db_t* api_db);
+typedef void (*R_APP_INIT)(void* state, r_api_db_i* api_db);
 typedef void (*R_APP_RUN)(void* state, r_frame_info_t* frame_info);
 typedef void (*R_APP_DESTROY)(void* state);
 

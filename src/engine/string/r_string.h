@@ -6,6 +6,9 @@ extern "C" {
 
 #include "engine/core/r_core_types.h"
 
+dll_export size_t //
+r_string_len(const char* str);
+
 dll_export i32 //
 r_string_cmp(const char* str_a, const char* str_b);
 

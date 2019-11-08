@@ -16,3 +16,9 @@ r_debug_print(const char* format, ...) {
   fclose(stdout);
 #endif
 }
+
+void //
+r_debug_print_test(r_debug_t* this, const char* format)
+{
+  printf("%d", 0);
+}

@@ -9,18 +9,18 @@ extern "C" {
 typedef struct r_lib_load_info_t r_lib_load_info_t;
 typedef struct r_api_db_t r_api_db_t;
 typedef struct r_app_api_t r_app_api_t;
-typedef struct r_debug_api_t r_debug_api_t;
-typedef struct r_window_api_t r_window_api_t;
-typedef struct r_string_api_t r_string_api_t;
+typedef struct r_debug_i r_debug_i;
+typedef struct r_window_i r_window_i;
+typedef struct r_string_i r_string_i;
 typedef struct r_window_t r_window_t;
 typedef struct r_lib_t r_lib_t;
 
 #define SANDBOX_API_ID 256
 
 typedef struct hammer_t {
-  r_debug_api_t* debug_api;
-  r_window_api_t* window_api;
-  r_string_api_t* string_api;
+  r_debug_i* debug_api;
+  r_window_i* window_api;
+  r_string_i* string_api;
 } hammer_t;
 
 dll_export void //

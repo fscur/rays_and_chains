@@ -26,7 +26,7 @@ typedef struct r_gfx_cmd_t {
 
 typedef struct r_gfx_renderer_t {
   r_gfx_cmd_buffer_t cmd_buffer;
-  R_GFX_CMD_DISPATCHER clear_color_dispatcher; //set by backend implementation
+  R_GFX_CMD_DISPATCHER clear_color_dispatcher; // set by backend implementation
 } r_gfx_renderer_t;
 
 typedef struct r_gfx_clear_color_cmd_t {
@@ -36,9 +36,6 @@ typedef struct r_gfx_clear_color_cmd_t {
 dll_export void //
 r_gfx_renderer_add_cmd(r_gfx_renderer_t* this, r_gfx_cmd_t cmd);
 
-dll_export r_gfx_cmd_t* //
-r_gfx_renderer_create_clear_color_buffer_cmd(r_gfx_renderer_t* this);
-
 dll_export void //
 r_gfx_renderer_clear(r_gfx_renderer_t* this);
 
@@ -46,7 +43,10 @@ dll_export void //
 r_gfx_renderer_sort(r_gfx_renderer_t* this);
 
 dll_export void //
-r_gfx_renderer_submit(r_gfx_renderer_t* this);
+r_gfx_renderer_submit(const r_gfx_renderer_t* this);
+
+dll_export r_gfx_cmd_t* //
+r_gfx_renderer_create_clear_color_buffer_cmd(const r_gfx_renderer_t* this);
 
 #ifdef __cplusplus
 }

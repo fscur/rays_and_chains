@@ -1,7 +1,7 @@
 #include "hammer.h"
 #include "engine/app/r_app.h"
 #include "engine/app/r_api_db.h"
-#include "engine/diagnostics/r_debug_api.h"
+#include "engine/diagnostics/r_debug_i.h"
 
 u32 //
 get_id_hammer(void) {
