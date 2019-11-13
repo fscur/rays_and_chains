@@ -42,7 +42,7 @@ sandbox_ui_init(sandbox_t* this, r_memory_block_t* memory_block) {
 
   r_memory_block_t ui_memory_block = sandbox_ui_get_ui_memory_block(memory_block);
 
-  r_ui_t* ui = this->ui_api->instance;
+  r_ui_t* ui = this->ui->instance;
   ui->memory_block = &ui_memory_block;
   r_ui_theme_t* theme = ui->active_theme;
 
@@ -52,8 +52,7 @@ sandbox_ui_init(sandbox_t* this, r_memory_block_t* memory_block) {
   theme->border_size = 0.0f;
   theme->frame_rounding = 0.0;
 
-  r_ui_i* ui_api = this->ui_api;
-  ui_api->init_theme(ui);
+  r_ui_i* ui_api = this->ui;
 
   ui->root = &ui->widgets[ui->widget_count++];
 
@@ -112,7 +111,7 @@ sandbox_ui_init(sandbox_t* this, r_memory_block_t* memory_block) {
   ui_api->create_menu_item(ui, file_menu->widget, L"Open", L"CTRL+O", true, NULL, NULL);
   ui_api->create_menu_item(ui, file_menu->widget, L"Save", L"CTRL+S", true, NULL, NULL);
   ui_api->create_menu_item(
-      ui, file_menu->widget, L"Close", L"", true, &close, this->window_api->instance);
+      ui, file_menu->widget, L"Close", L"", true, &close, this->window->instance);
 
   r_ui_menu_t* edit_menu = ui_api->create_menu(ui, main_menu->widget, L"Edit");
   ui_api->create_menu_item(ui, edit_menu->widget, L"Copy", L"CTRL+C", true, NULL, NULL);

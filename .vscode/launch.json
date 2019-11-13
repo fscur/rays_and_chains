@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/bin/r_engine.exe",
             "args": [
-                "sandbox"
+                "hammer"
             ],
             "stopAtEntry": true,
             "cwd": "${workspaceFolder}/bin",

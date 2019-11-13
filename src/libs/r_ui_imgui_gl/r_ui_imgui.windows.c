@@ -28,8 +28,9 @@
 
 internal void //
 r_ui_imgui_render(r_ui_renderer_t* this) {
+  
+  ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
-
   igNewFrame();
 
   r_ui_t* ui = this->ui_api->instance;
@@ -42,7 +43,6 @@ r_ui_imgui_render(r_ui_renderer_t* this) {
   }
 
   igRender();
-
   ImGui_ImplOpenGL3_RenderDrawData(igGetDrawData());
 }
 
@@ -52,9 +52,26 @@ r_ui_imgui_init(r_ui_renderer_t* this, r_api_db_i* api_db) {
   this->window_api = api_db->instance->apis[R_WINDOW_API_ID];
   this->ui_api = api_db->instance->apis[R_UI_API_ID];
 
+  r_window_t* window = this->window_api->instance;
+  assert(window->handle);
+
+  i32 success = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+  if (!success)
+    this->debug_api->print("[ERROR]");
+
+  const char* glsl_version = "#version 130";
   this->context = igCreateContext(NULL);
+
+  ImGui_ImplOpenGL3_Init(glsl_version);
+  ImGui_ImplGlfw_InitForOpenGL(window->handle, true);
+
+  struct ImGuiStyle* style = igGetStyle();
+  igStyleColorsDark(style);
+
   this->io = igGetIO();
+
   // todo: embed the default font into the dll
+
   ImFontAtlas_AddFontFromFileTTF(this->io->Fonts, "../res/fonts/SegoeUI-Regular.ttf", 18.0f, 0, 0);
 
   local r_ui_renderer_i ui_renderer;
@@ -66,17 +83,6 @@ r_ui_imgui_init(r_ui_renderer_t* this, r_api_db_i* api_db) {
       R_UI_RENDERER_IMGUI_API_ID,
       R_UI_RENDERER_IMGUI_API_NAME,
       &ui_renderer);
-
-  i32 success = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-  if (!success)
-    this->debug_api->print("[ERROR]");
-
-  const char* glsl_version = "#version 130";
-  ImGui_ImplOpenGL3_Init(glsl_version);
-
-  r_window_t* window = this->window_api->instance;
-  assert(window->handle);
-  ImGui_ImplGlfw_InitForOpenGL(window->handle, true);
 }
 
 void //

@@ -7,11 +7,13 @@
 #include "engine/window/r_window_i.h"
 #include "engine/ui/r_ui.h"
 #include "engine/ui/r_ui_i.h"
+#include "engine/ui/r_ui_renderer_i.h"
 #include "engine/string/r_string_i.h"
 #include "engine/gfx/r_gfx_renderer.h"
 #include "engine/gfx/r_gfx_renderer_i.h"
 #include "engine/memory/r_memory_block.h"
 #include "libs/r_debug_test/r_debug_test.h"
+#include "libs/r_ui_imgui/r_ui_imgui.h"
 #include "sandbox_ui.c"
 
 u32 //
@@ -48,39 +50,38 @@ sandbox_init(r_app_t* app, r_api_db_i* api_db) {
 
   sandbox_t* this = (sandbox_t*)app->state;
 
-  this->debug_api = api_db->find_by_name(api_db->instance, R_DEBUG_TEST_API_NAME);
-  this->window_api = api_db->find_by_name(api_db->instance, R_WINDOW_API_NAME);
-  this->ui_api = api_db->find_by_name(api_db->instance, R_UI_API_NAME);
-  this->string_api = api_db->find_by_name(api_db->instance, R_STRING_API_NAME);
-  this->renderer_api = api_db->find_by_name(api_db->instance, R_GFX_RENDERER_API_NAME);
-
+  this->debug = api_db->find_by_name(api_db->instance, R_DEBUG_TEST_API_NAME);
+  this->window = api_db->find_by_name(api_db->instance, R_WINDOW_API_NAME);
+  this->ui = api_db->find_by_name(api_db->instance, R_UI_API_NAME);
+  this->string = api_db->find_by_name(api_db->instance, R_STRING_API_NAME);
+  this->renderer = api_db->find_by_name(api_db->instance, R_GFX_RENDERER_API_NAME);
+  this->ui_renderer = api_db->find_by_name(api_db->instance, R_UI_RENDERER_IMGUI_API_NAME);
   sandbox_ui_init(this, app->memory_block);
 }
 
 void //
 sandbox_run(sandbox_t* this, r_frame_info_t* frame_info) {
-  r_window_t* window = this->window_api->instance;
+  r_window_t* window = this->window->instance;
 
-  this->window_api->input(window);
-  this->window_api->update(window);
+  this->window->input(window);
+  this->window->update(window);
 
-  r_gfx_renderer_t* renderer = this->renderer_api->instance;
-  r_gfx_cmd_t* cmd = this->renderer_api->create_clear_color_cmd(renderer);
+  r_gfx_renderer_t* renderer = this->renderer->instance;
+  r_gfx_cmd_t* cmd = this->renderer->create_clear_color_cmd(renderer);
 
   r_gfx_clear_color_cmd_t* clear_color_cmd = (r_gfx_clear_color_cmd_t*)cmd->data;
   clear_color_cmd->color = (r_color_t){0.0f, 0.04f, 0.054f, 1.00f};
 
-  this->renderer_api->clear(renderer);
-  this->renderer_api->add_cmd(renderer, *cmd);
-  this->renderer_api->sort(renderer);
-  this->renderer_api->submit(renderer);
+  this->renderer->clear(renderer);
+  this->renderer->add_cmd(renderer, *cmd);
+  this->renderer->sort(renderer);
+  this->renderer->submit(renderer);
 
-  this->ui_api->begin(this->ui_api);
-  this->ui_api->render(this->ui_api);
-  this->ui_api->end(this->ui_api);
+  r_ui_renderer_t* ui_renderer = this->ui_renderer->instance;
+  this->ui_renderer->render(ui_renderer);
 
-  this->window_api->swap_buffers(window);
-  this->debug_api->print_test(this->debug_api->instance, "%d teste lala");
+  this->window->swap_buffers(window);
+  this->debug->print_test(this->debug->instance, "%d teste lala");
 }
 
 void //

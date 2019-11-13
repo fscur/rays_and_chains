@@ -7,8 +7,8 @@ extern "C" {
 #include "engine/core/r_core_types.h"
 
 typedef struct r_lib_load_info_t r_lib_load_info_t;
-typedef struct r_api_db_t r_api_db_t;
-typedef struct r_app_api_t r_app_api_t;
+typedef struct r_api_db_i r_api_db_i;
+typedef struct r_app_t r_app_t;
 typedef struct r_debug_i r_debug_i;
 typedef struct r_window_i r_window_i;
 typedef struct r_string_i r_string_i;
@@ -24,16 +24,19 @@ typedef struct hammer_t {
 } hammer_t;
 
 dll_export void //
-load_hammer(r_lib_load_info_t* load_info);
+hammer_load(r_lib_load_info_t* load_info);
 
 dll_export size_t //
-get_size_hammer();
+hammer_get_size();
 
 dll_export u32 //
-get_id_hammer();
+hammer_get_id();
+
+dll_export r_app_info_t //
+hammer_get_app_info();
 
 dll_export void //
-hammer_init(hammer_t* this, r_api_db_t* api_db);
+hammer_init(r_app_t* app, r_api_db_i* api_db);
 
 dll_export void //
 hammer_run(hammer_t* this, r_frame_info_t* frame_info);
