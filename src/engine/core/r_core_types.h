@@ -2,41 +2,14 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#include <math.h>
 
+#include <math.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdint.h>
 
-#define PROG_NAME "r_engine"
-#if _DEBUG
-#define PROG_VERSION "[dev]"
-#define PROG_DESCRIPTION "Rays and chains engine. Development version."
-#else
-#define PROG_VERSION "0.0.0.1"
-#define PROG_DESCRIPTION "Rays and chains engine."
-#endif
-
-#define SHORT_STRING_LENGTH 256
-#define MAX_FUNCTION_COUNT 64
-
-#define local static
-#define internal static
-#define global extern
-
-#define kilobytes(value) ((value)*1024LL)
-#define megabytes(value) (kilobytes(value) * 1024LL)
-#define gigabytes(value) (megabytes(value) * 1024LL)
-#define terabytes(value) (gigabytes(value) * 1024LL)
-
-#if _DEBUG
-#define assert(expression)                                                                         \
-  if (!(expression)) {                                                                             \
-    *(int*)0 = 0;                                                                                  \
-  }
-#else
-#define assert(expression)
-#endif
+#include "r_core_version.h"
+#include "r_core_defines.h"
 
 // cache line = 64 bytes = 64 * 8 bits = 512 bits = 16 i32 = 8 i64;
 
@@ -132,10 +105,6 @@ typedef struct r_lib_t {
   u32 id;                                  // 4
   u32 fn_count;                            // 4
 } r_lib_t;                                 // 1332
-
-#if defined(WIN32)
-#define dll_export __declspec(dllexport)
-#endif
 
 #ifdef __cplusplus
 }
