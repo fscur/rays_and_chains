@@ -14,7 +14,7 @@ typedef struct r_window_t r_window_t;
 typedef struct r_lib_t r_lib_t;
 typedef struct r_gfx_renderer_t r_gfx_renderer_t;
 typedef struct r_api_db_i r_api_db_i;
-typedef struct r_debug_i r_debug_i;
+typedef struct r_logger_i r_logger_i;
 typedef struct r_window_i r_window_i;
 typedef struct r_ui_i r_ui_i;
 typedef struct r_string_i r_string_i;
@@ -23,7 +23,7 @@ typedef struct r_ui_renderer_i r_ui_renderer_i;
 
 typedef struct sandbox_t {
   r_api_db_i* api_db;
-  r_debug_i* debug;
+  r_logger_i* debug;
   r_window_i* window;
   r_ui_i* ui;
   r_string_i* string;

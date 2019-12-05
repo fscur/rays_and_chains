@@ -6,7 +6,7 @@
 
 #include "engine/app/r_api_db.h"
 #include "engine/app/r_api_db_i.h"
-#include "engine/diagnostics/r_debug_i.h"
+#include "engine/diagnostics/r_logger_i.h"
 #include "engine/window/r_window.h"
 #include "engine/window/r_window_i.h"
 #include "engine/ui/r_ui.h"
@@ -48,7 +48,7 @@ r_ui_imgui_render(r_ui_renderer_t* this) {
 
 void //
 r_ui_imgui_init(r_ui_renderer_t* this, r_api_db_i* api_db) {
-  this->debug_api = api_db->instance->apis[R_DEBUG_API_ID];
+  this->debug_api = api_db->instance->apis[R_LOGGER_API_ID];
   this->window_api = api_db->instance->apis[R_WINDOW_API_ID];
   this->ui_api = api_db->instance->apis[R_UI_API_ID];
 

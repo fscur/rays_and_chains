@@ -4,7 +4,7 @@
 
 #include "engine/app/r_api_db_i.h"
 #include "engine/app/r_api_db.h"
-#include "engine/diagnostics/r_debug_i.h"
+#include "engine/diagnostics/r_logger_i.h"
 #include "engine/string/r_string_i.h"
 #include "engine/window/r_window_i.h"
 #include "engine/window/r_window.h"
@@ -59,7 +59,7 @@ glfw_update(r_window_t* window) {
 void //
 r_window_glfw_init(glfw_t* this, r_api_db_i* api_db) {
 
-  this->debug_api = api_db->instance->apis[R_DEBUG_API_ID];
+  this->debug_api = api_db->instance->apis[R_LOGGER_API_ID];
   this->window_api = api_db->instance->apis[R_WINDOW_API_ID];
   this->string_api = api_db->instance->apis[R_STRING_API_ID];
 

@@ -25,7 +25,7 @@ r_main(r_main_info_t* main_info,       //
   r_app_host_init(app_host);
   
   while (app_host->running) {
-    r_debug_print(                                  //
+    r_logger_print(                                  //
         "[%010I64d][%08.3f][debug] Frame Start.\n", //
         frame_info.frame_count,
         frame_info.now / 1000.0);
@@ -48,7 +48,7 @@ r_main(r_main_info_t* main_info,       //
         frame_info.dt = r_datetime_now() - last;
       }
     } else if (frame_info.frame_count > 0) {
-      r_debug_print(                                                   //
+      r_logger_print(                                                   //
           "[%010I64d][%08.3f][debug] Frame lost! It took %5.2f ms.\n", //
           frame_info.frame_count,
           frame_info.now / 1000.0f,
@@ -63,13 +63,13 @@ r_main(r_main_info_t* main_info,       //
     // important:  wtf is going on here??? how does a frame jumps by more than 5.0 ms??? not cool.
     // try to understand it...
     if (frame_info.frame_count > 0 && frame_info.dt > frame_info.desired_ms_per_frame + 5.0) {
-      r_debug_print(                                                   //
+      r_logger_print(                                                   //
           "[%010I64d][%08.3f][debug] Frame drop? It took %5.2f ms.\n", //
           frame_info.frame_count,
           frame_info.now / 1000.0f,
           frame_info.dt);
     } else {
-      r_debug_print(                                                  //
+      r_logger_print(                                                  //
           "[%010I64d][%08.3f][debug] Frame End. It took %5.2f ms.\n", //
           frame_info.frame_count,
           frame_info.now / 1000.0f,

@@ -1,9 +1,9 @@
 #include <windows.h>
 #include <stdio.h>
-#include "engine/diagnostics/r_debug.h"
+#include "engine/diagnostics/r_logger.h"
 
 void //
-r_debug_print(const char* format, ...) {
+r_logger_print(const char* format, ...) {
 #if _DEBUG
   local char msg[1024] = {0};
   va_list vl;
@@ -11,14 +11,13 @@ r_debug_print(const char* format, ...) {
   vsprintf(msg, format, vl);
   va_end(vl);
 
-  freopen(R_DEBUG_LOG_FILENAME, "a+", stdout);
+  freopen(R_LOGGER_LOG_FILENAME, "a+", stdout);
   printf(msg);
   fclose(stdout);
 #endif
 }
 
 void //
-r_debug_print_test(r_debug_t* this, const char* format)
-{
+r_logger_print_test(r_logger_t* this, const char* format) {
   printf("%d", 0);
 }

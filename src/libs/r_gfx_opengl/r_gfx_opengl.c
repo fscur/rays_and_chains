@@ -4,7 +4,7 @@
 #include "engine/plugins/r_plugin.h"
 #include "engine/gfx/r_gfx_renderer.h"
 #include "engine/gfx/r_gfx_renderer_i.h"
-#include "engine/diagnostics/r_debug_i.h"
+#include "engine/diagnostics/r_logger_i.h"
 #include "r_gfx_opengl.h"
 
 #pragma comment(lib, "opengl32.lib")
@@ -40,7 +40,7 @@ opengl_clear_color_dispatcher(void* data) {
 
 void //
 r_gfx_opengl_init(opengl_t* this, r_api_db_i* api_db) {
-  this->debug = api_db->instance->apis[R_DEBUG_API_ID];
+  this->debug = api_db->instance->apis[R_LOGGER_API_ID];
   this->renderer = api_db->instance->apis[R_GFX_RENDERER_API_ID];
 
   r_gfx_renderer_t* renderer = this->renderer->instance;

@@ -10,11 +10,11 @@
 #include "engine/window/r_window.h"
 #include "engine/ui/r_ui.h"
 #include "engine/io/r_file.h"
-#include "engine/diagnostics/r_debug.h"
+#include "engine/diagnostics/r_logger.h"
 #include "engine/gfx/r_gfx_renderer.h"
 
 #include "engine/app/r_api_db_i.h"
-#include "engine/diagnostics/r_debug_i.h"
+#include "engine/diagnostics/r_logger_i.h"
 #include "engine/string/r_string_i.h"
 #include "engine/window/r_window_i.h"
 #include "engine/ui/r_ui_i.h"
@@ -40,8 +40,8 @@ r_app_host_load_libs(r_app_host_t* this) {
 
 internal void //
 r_app_host_init_apis(r_app_host_t* this) {
-  local r_debug_i debug_api = {0};
-  debug_api.print = &r_debug_print;
+  local r_logger_i debug_api = {0};
+  debug_api.print = &r_logger_print;
 
   local r_window_i window_api = {0};
   window_api.instance = this->window;
@@ -73,7 +73,7 @@ r_app_host_init_apis(r_app_host_t* this) {
   this->api_db_api = &api_db_api;
   this->api_db_api->instance = this->api_db;
 
-  r_api_db_add(this->api_db, R_DEBUG_API_ID, R_DEBUG_API_NAME, &debug_api);
+  r_api_db_add(this->api_db, R_LOGGER_API_ID, R_LOGGER_API_NAME, &debug_api);
   r_api_db_add(this->api_db, R_WINDOW_API_ID, R_WINDOW_API_NAME, &window_api);
   r_api_db_add(this->api_db, R_STRING_API_ID, R_STRING_API_NAME, &string_api);
   r_api_db_add(this->api_db, R_UI_API_ID, R_UI_API_NAME, &ui_api);
@@ -156,7 +156,6 @@ r_app_host_init(r_app_host_t* this) {
 void //
 r_app_host_run(r_app_host_t* this) {
   this->app->api.run(this->app->state, this->frame_info);
-  //r_app_host_reload(this);
   this->running = !this->window->should_close;
 }
 

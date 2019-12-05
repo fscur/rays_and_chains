@@ -257,7 +257,7 @@ r_try_parse_cmd_line(int argc, char** argv, r_cmd_line_cmds_t* cmd_line_cmds) {
 
   /* verify the argtable[] entries were allocated sucessfully */
   if (arg_nullcheck(argtable) != 0) {
-    // important: maybe the cmd should use r_debug_log to log the errors?
+    // important: maybe the cmd should use r_logger_log to log the errors?
     freopen(cmd_line_cmds->log_filename, "w", stdout);
     /* NULL entries were detected, some allocations must have failed */
     printf("%s: insufficient memory\n", prog_name);

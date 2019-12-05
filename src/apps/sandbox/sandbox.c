@@ -2,7 +2,7 @@
 #include "engine/app/r_app.h"
 #include "engine/app/r_api_db.h"
 #include "engine/app/r_api_db_i.h"
-#include "engine/diagnostics/r_debug_i.h"
+#include "engine/diagnostics/r_logger_i.h"
 #include "engine/window/r_window.h"
 #include "engine/window/r_window_i.h"
 #include "engine/ui/r_ui.h"
@@ -12,7 +12,7 @@
 #include "engine/gfx/r_gfx_renderer.h"
 #include "engine/gfx/r_gfx_renderer_i.h"
 #include "engine/memory/r_memory_block.h"
-#include "libs/r_debug_test/r_debug_test.h"
+#include "libs/r_logger_output/r_logger_output.h"
 #include "libs/r_ui_imgui/r_ui_imgui.h"
 #include "sandbox_ui.c"
 
@@ -50,7 +50,7 @@ sandbox_init(r_app_t* app, r_api_db_i* api_db) {
 
   sandbox_t* this = (sandbox_t*)app->state;
 
-  this->debug = api_db->find_by_name(api_db->instance, R_DEBUG_TEST_API_NAME);
+  this->debug = api_db->find_by_name(api_db->instance, R_LOGGER_OUTPUT_API_NAME);
   this->window = api_db->find_by_name(api_db->instance, R_WINDOW_API_NAME);
   this->ui = api_db->find_by_name(api_db->instance, R_UI_API_NAME);
   this->string = api_db->find_by_name(api_db->instance, R_STRING_API_NAME);

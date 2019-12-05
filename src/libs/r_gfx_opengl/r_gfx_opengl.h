@@ -8,14 +8,14 @@ extern "C" {
 
 typedef struct r_plugin_load_info_t r_plugin_load_info_t;
 typedef struct r_api_db_i r_api_db_i;
-typedef struct r_debug_i r_debug_i;
+typedef struct r_logger_i r_logger_i;
 typedef struct r_plugin_t r_plugin_t;
 typedef struct r_gfx_renderer_i r_gfx_renderer_i;
 
 #define OPENGL_API_ID 258
 
 typedef struct opengl_t {
-  r_debug_i* debug;
+  r_logger_i* debug;
   r_gfx_renderer_i* renderer;
 } opengl_t;
 

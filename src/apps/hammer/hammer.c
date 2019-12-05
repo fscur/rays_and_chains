@@ -4,7 +4,9 @@
 #include "engine/window/r_window.h"
 #include "engine/window/r_window_i.h"
 
-#include "engine/diagnostics/r_debug_i.h"
+#include "engine/diagnostics/r_logger_i.h"
+
+#include "libs/r_logger_output/r_logger_output.h"
 
 u32 //
 hammer_get_id(void) {
@@ -39,13 +41,13 @@ hammer_load(r_lib_load_info_t* load_info) {
 void //
 hammer_init(r_app_t* app, r_api_db_i* api_db) {
   hammer_t* this = (hammer_t*)app->state;
-  this->debug_api = api_db->find_by_name(api_db->instance, R_DEBUG_API_NAME);
+  this->debug_api = api_db->find_by_name(api_db->instance, R_LOGGER_OUTPUT_API_NAME);
   this->window_api = api_db->find_by_name(api_db->instance, R_WINDOW_API_NAME);
 }
 
 void //
 hammer_run(hammer_t* this, r_frame_info_t* frame_info) {
-  this->debug_api->print("Running.");
+  this->debug_api->print_test(NULL, "Running.");
   r_window_t* window = this->window_api->instance;
   this->window_api->input(window);
   this->window_api->update(window);

@@ -1,7 +1,7 @@
 #include <windows.h>
 #include <stdio.h>
 
-#include "engine/diagnostics/r_debug.windows.c"
+#include "engine/diagnostics/r_logger.windows.c"
 #include "engine/window/r_window.windows.c"
 #include "engine/ui/r_ui.windows.c"
 #include "engine/memory/r_memory.windows.c"
@@ -19,12 +19,12 @@
 
 void
 on_success(r_success_t* success) {
-  r_debug_print("All good.");
+  r_logger_print("All good.");
 }
 
 void
 on_error(r_error_t* error) {
-  r_debug_print("No good.");
+  r_logger_print("No good.");
 }
 
 int CALLBACK
@@ -36,7 +36,7 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
     return 1;
 
   r_cmd_line_cmds_t cmd_line_cmds = {0};
-  r_string_a_copy(R_DEBUG_LOG_FILENAME, cmd_line_cmds.log_filename);
+  r_string_a_copy(R_LOGGER_LOG_FILENAME, cmd_line_cmds.log_filename);
 
   if (!r_try_parse_cmd_line(argc, argv, &cmd_line_cmds))
     return 1;
@@ -49,7 +49,7 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
   r_string_a_copy(cmd_line_cmds.log_filename, main_info.log_filename);
 
   // todo: if file does not exists then we must not change default filename
-  r_string_a_copy(cmd_line_cmds.log_filename, R_DEBUG_LOG_FILENAME);
+  r_string_a_copy(cmd_line_cmds.log_filename, R_LOGGER_LOG_FILENAME);
 
   r_main(&main_info, &on_success, &on_error);
 

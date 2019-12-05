@@ -1,3 +1,3 @@
 #include <windows.h>
 #include <stdio.h>
-#include "r_debug_test.c"
+#include "r_logger_output.c"
