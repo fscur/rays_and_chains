@@ -41,13 +41,13 @@ hammer_load(r_lib_load_info_t* load_info) {
 void //
 hammer_init(r_app_t* app, r_api_db_i* api_db) {
   hammer_t* this = (hammer_t*)app->state;
-  this->debug_api = api_db->find_by_name(api_db->instance, R_LOGGER_OUTPUT_API_NAME);
+  this->debug_api = api_db->find_by_name(api_db->instance, R_LOGGER_API_NAME);  
   this->window_api = api_db->find_by_name(api_db->instance, R_WINDOW_API_NAME);
 }
 
 void //
 hammer_run(hammer_t* this, r_frame_info_t* frame_info) {
-  this->debug_api->print_test(NULL, "Running.");
+  this->debug_api->debug("Running.");
   r_window_t* window = this->window_api->instance;
   this->window_api->input(window);
   this->window_api->update(window);

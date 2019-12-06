@@ -19,12 +19,12 @@
 
 void
 on_success(r_success_t* success) {
-  r_logger_print("All good.");
+  r_logger_debug("All good.");
 }
 
 void
 on_error(r_error_t* error) {
-  r_logger_print("No good.");
+  r_logger_debug("No good.");
 }
 
 int CALLBACK

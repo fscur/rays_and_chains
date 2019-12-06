@@ -41,7 +41,10 @@ r_app_host_load_libs(r_app_host_t* this) {
 internal void //
 r_app_host_init_apis(r_app_host_t* this) {
   local r_logger_i debug_api = {0};
-  debug_api.print = &r_logger_print;
+  debug_api.add_device = &r_logger_add_device;
+  debug_api.debug = &r_logger_debug;
+  debug_api.warn = &r_logger_warn;
+  debug_api.error = &r_logger_error;
 
   local r_window_i window_api = {0};
   window_api.instance = this->window;

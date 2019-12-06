@@ -11,10 +11,6 @@ typedef struct r_api_db_i r_api_db_i;
 #define R_LOGGER_OUTPUT_API_ID 259
 #define R_LOGGER_OUTPUT_API_NAME "r_logger_output"
 
-typedef struct r_logger_t {
-  int test;
-} r_logger_t;
-
 dll_export void //
 r_logger_output_load(r_lib_load_info_t* load_info);
 
@@ -25,10 +21,10 @@ dll_export u32 //
 r_logger_output_get_id();
 
 dll_export void //
-r_logger_output_init(r_logger_t* this, r_api_db_i* api_db);
+r_logger_output_init(void* this, r_api_db_i* api_db);
 
 dll_export void //
-r_logger_output_destroy(r_logger_t* this);
+r_logger_output_destroy(void* this);
 
 #ifdef __cplusplus
 }

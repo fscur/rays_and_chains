@@ -3,6 +3,7 @@
 #include "engine/time/r_datetime.h"
 #include "engine/app/r_app_host.h"
 #include "engine/thread/r_thread.h"
+#include "engine/diagnostics/r_logger.h"
 
 void                                   //
 r_main(r_main_info_t* main_info,       //
@@ -21,15 +22,12 @@ r_main(r_main_info_t* main_info,       //
   r_memory_t memory = r_memory_create(total_app_memory + kilobytes(128));
 
   r_app_host_t* app_host = r_app_host_create(&memory, &frame_info);
+  r_logger_init(&frame_info);
   r_app_host_load_app(app_host, main_info->app_filename);
   r_app_host_init(app_host);
-  
-  while (app_host->running) {
-    r_logger_print(                                  //
-        "[%010I64d][%08.3f][debug] Frame Start.\n", //
-        frame_info.frame_count,
-        frame_info.now / 1000.0);
 
+  while (app_host->running) {
+    r_logger_debug("Frame Start.");
     r_app_host_run(app_host);
 
     // todo: make timings be measured in seconds
@@ -48,11 +46,7 @@ r_main(r_main_info_t* main_info,       //
         frame_info.dt = r_datetime_now() - last;
       }
     } else if (frame_info.frame_count > 0) {
-      r_logger_print(                                                   //
-          "[%010I64d][%08.3f][debug] Frame lost! It took %5.2f ms.\n", //
-          frame_info.frame_count,
-          frame_info.now / 1000.0f,
-          frame_info.dt);
+      r_logger_debug("Frame lost! It took %5.2f ms.\n", frame_info.dt);
     }
 
     f64 end = r_datetime_now();
@@ -63,17 +57,9 @@ r_main(r_main_info_t* main_info,       //
     // important:  wtf is going on here??? how does a frame jumps by more than 5.0 ms??? not cool.
     // try to understand it...
     if (frame_info.frame_count > 0 && frame_info.dt > frame_info.desired_ms_per_frame + 5.0) {
-      r_logger_print(                                                   //
-          "[%010I64d][%08.3f][debug] Frame drop? It took %5.2f ms.\n", //
-          frame_info.frame_count,
-          frame_info.now / 1000.0f,
-          frame_info.dt);
+      r_logger_debug("Frame drop? It took %5.2f ms.", frame_info.dt);
     } else {
-      r_logger_print(                                                  //
-          "[%010I64d][%08.3f][debug] Frame End. It took %5.2f ms.\n", //
-          frame_info.frame_count,
-          frame_info.now / 1000.0f,
-          frame_info.dt);
+      r_logger_debug("Frame End. It took %5.2f ms.", frame_info.dt);
     }
 
     frame_info.frame_count++;
