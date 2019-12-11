@@ -181,16 +181,16 @@
       ]
     },
     {
-      "label": "build r_logger_output lib : debug",
+      "label": "build r_logger_outputstring_device lib : debug",
       "type": "shell",
       "windows": {
         "options": {
           "cwd": "p:\\scripts\\windows"
         },
-        "command": "p:\\scripts\\windows\\libs\\build_libs_debug.bat r_logger_output"
+        "command": "p:\\scripts\\windows\\libs\\build_libs_debug.bat r_logger_outputstring_device"
       },
       "linux": {
-        "command": "./scripts/linux/libs/build_libs_debug.sh r_logger_output"
+        "command": "./scripts/linux/libs/build_libs_debug.sh r_logger_outputstring_device"
       },
       "group": {
         "kind": "build",

@@ -12,7 +12,7 @@
 #include "engine/gfx/r_gfx_renderer.h"
 #include "engine/gfx/r_gfx_renderer_i.h"
 #include "engine/memory/r_memory_block.h"
-#include "libs/r_logger_output/r_logger_output.h"
+#include "libs/r_logger_outputstring_device/r_logger_outputstring_device.h"
 #include "libs/r_ui_imgui/r_ui_imgui.h"
 #include "sandbox_ui.c"
 
