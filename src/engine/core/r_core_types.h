@@ -72,7 +72,7 @@ typedef struct r_result_t {
   R_RESULT_ON_ERROR on_error;
 } r_result_t;
 
-typedef struct r_memory_block_t r_memory_block_t;
+typedef struct r_memory_arena_t r_memory_arena_t;
 typedef struct r_lib_load_info_t r_lib_load_info_t;
 typedef struct r_api_db_i r_api_db_i;
 
@@ -99,7 +99,7 @@ typedef struct r_lib_t {
   char tmp_file_name[SHORT_STRING_LENGTH]; // 256
   r_datetime_t last_modification;          // 16
   void* handle;                            // 8
-  r_memory_block_t* memory_block;          // 8
+  r_memory_arena_t* memory_arena;          // 8
   void* state;                             // 8
   i32 version;                             // 4
   u32 id;                                  // 4

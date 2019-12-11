@@ -7,7 +7,7 @@ extern "C" {
 
 typedef struct r_api_db_t r_api_db_t;
 typedef struct r_plugin_t r_plugin_t;
-typedef struct r_memory_block_t r_memory_block_t;
+typedef struct r_memory_arena_t r_memory_arena_t;
 typedef struct r_plugin_load_info_t r_plugin_load_info_t;
 
 typedef void* (*R_PLUGIN_LOADER_FN)(void*, const char*);
@@ -38,7 +38,7 @@ typedef struct r_plugin_t {
   void* handle;
   void* state;
   void* api;
-  r_memory_block_t* memory_block;
+  r_memory_arena_t* memory_arena;
   R_PLUGIN_INIT init;
   R_PLUGIN_INPUT input;
   R_PLUGIN_UPDATE update;

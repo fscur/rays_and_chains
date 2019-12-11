@@ -1,6 +1,6 @@
 #include "engine/io/r_path.h"
 #include "engine/io/r_directory.h"
-#include "engine/memory/r_memory_block.h"
+#include "engine/memory/r_memory_arena.h"
 #include "engine/plugins/r_plugin_manager.h"
 #include "engine/plugins/r_plugin_loader.h"
 #include "engine/lib_loader/r_lib_loader.h"
@@ -99,14 +99,14 @@ r_app_host_t* //
 r_app_host_create(r_memory_t* memory, r_frame_info_t* frame_info) {
 
   size_t total_memory = r_app_host_get_size();
-  r_memory_block_t* memory_block = r_memory_add_block(memory, total_memory);
+  r_memory_arena_t* memory_arena = r_memory_add_arena(memory, total_memory);
 
-  r_app_host_t* this = r_memory_block_push_struct(memory_block, r_app_host_t);
-  this->app = r_memory_block_push_struct(memory_block, r_app_t);
-  this->window = r_memory_block_push_struct(memory_block, r_window_t);
-  this->ui = r_memory_block_push_struct(memory_block, r_ui_t);
-  this->api_db = r_memory_block_push_struct(memory_block, r_api_db_t);
-  this->renderer = r_memory_block_push_struct(memory_block, r_gfx_renderer_t);
+  r_app_host_t* this = r_memory_arena_push_struct(memory_arena, r_app_host_t);
+  this->app = r_memory_arena_push_struct(memory_arena, r_app_t);
+  this->window = r_memory_arena_push_struct(memory_arena, r_window_t);
+  this->ui = r_memory_arena_push_struct(memory_arena, r_ui_t);
+  this->api_db = r_memory_arena_push_struct(memory_arena, r_api_db_t);
+  this->renderer = r_memory_arena_push_struct(memory_arena, r_gfx_renderer_t);
 
   r_string_a_copy(".\\libs", this->libs_path);
 
@@ -131,7 +131,7 @@ r_app_host_create(r_memory_t* memory, r_frame_info_t* frame_info) {
 void //
 r_app_host_load_app(r_app_host_t* this, const char* filename) {
   r_lib_loader_load_lib(this->memory, &this->app->lib, filename);
-  this->app->memory_block = this->app->lib.memory_block;
+  this->app->memory_arena = this->app->lib.memory_arena;
   this->app->state = this->app->lib.state;
   this->app->api = *(r_app_api_t*)this->app->lib.functions;
 

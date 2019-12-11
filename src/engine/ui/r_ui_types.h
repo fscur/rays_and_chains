@@ -84,7 +84,7 @@ typedef struct r_ui_frame_t {
 } r_ui_frame_t;
 
 typedef struct r_ui_t {
-  r_memory_block_t* memory_block;
+  r_memory_arena_t* memory_arena;
   u32 widget_count;
   r_ui_widget_t widgets[R_UI_MAX_WIDGET_COUNT];
   r_ui_widget_t* root;

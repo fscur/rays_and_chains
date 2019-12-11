@@ -2,7 +2,7 @@
 #include <shlwapi.h>
 #include <stdio.h>
 #include "engine/memory/r_memory.h"
-#include "engine/memory/r_memory_block.h"
+#include "engine/memory/r_memory_arena.h"
 #include "engine/lib_loader/r_lib_loader.h"
 #include "engine/io/r_file.h"
 
@@ -66,8 +66,8 @@ r_lib_loader_load_lib(r_memory_t* memory, r_lib_t* lib, const char* file_name) {
 
     u32 id = get_id();
     size_t memory_size = get_size();
-    r_memory_block_t* lib_memory_block = r_memory_add_block(memory, memory_size);
-    void* state_memory_addr = r_memory_block_push(lib_memory_block, memory_size);
+    r_memory_arena_t* lib_memory_arena = r_memory_add_arena(memory, memory_size);
+    void* state_memory_addr = r_memory_arena_push(lib_memory_arena, memory_size);
 
     r_lib_load_info_t load_info = {0};
     load_info.fn = &r_lib_loader_fn;
@@ -77,7 +77,7 @@ r_lib_loader_load_lib(r_memory_t* memory, r_lib_t* lib, const char* file_name) {
 
     lib->handle = lib_handle;
     lib->id = id;
-    lib->memory_block = lib_memory_block;
+    lib->memory_arena = lib_memory_arena;
     lib->state = state_memory_addr;
 
     r_string_a_copy(lib_name, lib->name);
@@ -130,7 +130,7 @@ r_lib_loader_reload_lib(r_lib_t* lib) {
 
     load(&load_info);
     r_file_a_get_last_modification(lib->file_name, &lib->last_modification);
-    lib->memory_block = lib->memory_block;
+    lib->memory_arena = lib->memory_arena;
     lib->state = lib->state;
   }
 }

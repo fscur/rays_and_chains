@@ -16,7 +16,8 @@
 #include "engine/main/r_cmd_line.c"
 #include "engine/main/r_main.c"
 #include "engine/main/r_console.c"
-
+#include "engine/core/r_core_buffer.h"
+#include<windows.h>
 void
 on_success(r_success_t* success) {
   r_logger_debug("All good.");

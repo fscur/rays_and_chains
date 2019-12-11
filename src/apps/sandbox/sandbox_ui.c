@@ -5,7 +5,7 @@
 #include "engine/ui/r_ui_i.h"
 #include "engine/ui/r_ui.h"
 #include "engine/string/r_string_i.h"
-#include "engine/memory/r_memory_block.h"
+#include "engine/memory/r_memory_arena.h"
 #include "sandbox.h"
 
 size_t //
@@ -26,24 +26,24 @@ close(r_window_t* window) {
   window->should_close = true;
 }
 
-r_memory_block_t
-sandbox_ui_get_ui_memory_block(r_memory_block_t* memory_block) {
-  r_memory_block_t ui_memory_block = {0};
-  ui_memory_block.base_addr =
-      (u8*)memory_block->base_addr + sizeof(r_memory_block_t) + sizeof(sandbox_t);
-  ui_memory_block.current_addr = ui_memory_block.base_addr;
-  ui_memory_block.size = 0;
-  ui_memory_block.max_size = memory_block->size - (sizeof(r_memory_block_t) + sizeof(sandbox_t));
-  return ui_memory_block;
+r_memory_arena_t
+sandbox_ui_get_ui_memory_arena(r_memory_arena_t* memory_arena) {
+  r_memory_arena_t ui_memory_arena = {0};
+  ui_memory_arena.base_addr =
+      (u8*)memory_arena->base_addr + sizeof(r_memory_arena_t) + sizeof(sandbox_t);
+  ui_memory_arena.current_addr = ui_memory_arena.base_addr;
+  ui_memory_arena.size = 0;
+  ui_memory_arena.max_size = memory_arena->size - (sizeof(r_memory_arena_t) + sizeof(sandbox_t));
+  return ui_memory_arena;
 }
 
 void //
-sandbox_ui_init(sandbox_t* this, r_memory_block_t* memory_block) {
+sandbox_ui_init(sandbox_t* this, r_memory_arena_t* memory_arena) {
 
-  r_memory_block_t ui_memory_block = sandbox_ui_get_ui_memory_block(memory_block);
+  r_memory_arena_t ui_memory_arena = sandbox_ui_get_ui_memory_arena(memory_arena);
 
   r_ui_t* ui = this->ui->instance;
-  ui->memory_block = &ui_memory_block;
+  ui->memory_arena = &ui_memory_arena;
   r_ui_theme_t* theme = ui->active_theme;
 
   theme->border_color = (r_color_t){0.04f, 0.04f, 0.04f, 0.80f};
@@ -90,7 +90,7 @@ sandbox_ui_init(sandbox_t* this, r_memory_block_t* memory_block) {
           true,
           &open_imgui_demo,
           ui);
-          
+
   button2->position = (r_v2_t){5, 50};
   button2->size = (r_v2_t){40, 40};
 

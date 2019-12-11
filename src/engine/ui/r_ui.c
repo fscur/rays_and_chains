@@ -1,6 +1,6 @@
 #include "engine/ui/r_ui.h"
 #include "engine/string/r_string_i.h"
-#include "engine/memory/r_memory_block.h"
+#include "engine/memory/r_memory_arena.h"
 
 r_ui_menu_t* //
 r_ui_create_main_menu(r_ui_t* this, r_ui_widget_t* parent) {
@@ -12,8 +12,8 @@ r_ui_create_main_menu(r_ui_t* this, r_ui_widget_t* parent) {
   widget->item_count = 0;
   widget->parent = parent;
 
-  r_memory_block_t* memory_block = this->memory_block;
-  r_ui_menu_t* menu = r_memory_block_push_struct(memory_block, r_ui_menu_t);
+  r_memory_arena_t* memory_arena = this->memory_arena;
+  r_ui_menu_t* menu = r_memory_arena_push_struct(memory_arena, r_ui_menu_t);
   menu->widget = widget;
   widget->data = menu;
 
@@ -34,8 +34,8 @@ r_ui_create_menu(r_ui_t* this, r_ui_widget_t* parent, const wchar_t* label) {
   widget->item_count = 0;
   widget->parent = parent;
 
-  r_memory_block_t* memory_block = this->memory_block;
-  r_ui_menu_t* menu = r_memory_block_push_struct(memory_block, r_ui_menu_t);
+  r_memory_arena_t* memory_arena = this->memory_arena;
+  r_ui_menu_t* menu = r_memory_arena_push_struct(memory_arena, r_ui_menu_t);
   r_string_w_copy(label, menu->label_wide);
   r_string_to_ansi(menu->label_wide, menu->label_ansi, SHORT_STRING_LENGTH);
   menu->widget = widget;
@@ -64,8 +64,8 @@ r_ui_create_menu_item(r_ui_t* this,
   widget->item_count = 0;
   widget->parent = parent;
 
-  r_memory_block_t* memory_block = this->memory_block;
-  r_ui_menu_item_t* menu_item = r_memory_block_push_struct(memory_block, r_ui_menu_item_t);
+  r_memory_arena_t* memory_arena = this->memory_arena;
+  r_ui_menu_item_t* menu_item = r_memory_arena_push_struct(memory_arena, r_ui_menu_item_t);
   r_string_w_copy(label, menu_item->label_wide);
   r_string_to_ansi(menu_item->label_wide, menu_item->label_ansi, SHORT_STRING_LENGTH);
   r_string_w_copy(shortcut, menu_item->shortcut_wide);
@@ -93,8 +93,8 @@ r_ui_create_frame(r_ui_t* this, r_ui_widget_t* parent, const wchar_t* title) {
   widget->item_count = 0;
   widget->parent = parent;
 
-  r_memory_block_t* memory_block = this->memory_block;
-  r_ui_frame_t* frame = r_memory_block_push_struct(memory_block, r_ui_frame_t);
+  r_memory_arena_t* memory_arena = this->memory_arena;
+  r_ui_frame_t* frame = r_memory_arena_push_struct(memory_arena, r_ui_frame_t);
 
   r_string_w_copy(title, frame->title_wide);
   r_string_to_ansi(frame->title_wide, frame->title_ansi, SHORT_STRING_LENGTH);
@@ -124,8 +124,8 @@ r_ui_create_button(r_ui_t* this,
   widget->item_count = 0;
   widget->parent = parent;
 
-  r_memory_block_t* memory_block = this->memory_block;
-  r_ui_button_t* button = r_memory_block_push_struct(memory_block, r_ui_button_t);
+  r_memory_arena_t* memory_arena = this->memory_arena;
+  r_ui_button_t* button = r_memory_arena_push_struct(memory_arena, r_ui_button_t);
   r_string_w_copy(label, button->label_wide);
   r_string_to_ansi(button->label_wide, button->label_ansi, SHORT_STRING_LENGTH);
   button->enabled = enabled;

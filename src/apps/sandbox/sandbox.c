@@ -11,7 +11,7 @@
 #include "engine/string/r_string_i.h"
 #include "engine/gfx/r_gfx_renderer.h"
 #include "engine/gfx/r_gfx_renderer_i.h"
-#include "engine/memory/r_memory_block.h"
+#include "engine/memory/r_memory_arena.h"
 #include "libs/r_logger_outputstring_device/r_logger_outputstring_device.h"
 #include "libs/r_ui_imgui/r_ui_imgui.h"
 #include "sandbox_ui.c"
@@ -56,7 +56,7 @@ sandbox_init(r_app_t* app, r_api_db_i* api_db) {
   this->string = api_db->find_by_name(api_db->instance, R_STRING_API_NAME);
   this->renderer = api_db->find_by_name(api_db->instance, R_GFX_RENDERER_API_NAME);
   this->ui_renderer = api_db->find_by_name(api_db->instance, R_UI_RENDERER_IMGUI_API_NAME);
-  sandbox_ui_init(this, app->memory_block);
+  sandbox_ui_init(this, app->memory_arena);
 }
 
 void //

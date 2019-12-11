@@ -3,7 +3,7 @@
 #include "engine/io/r_directory.h"
 #include "engine/io/r_path.h"
 #include "engine/io/r_file.h"
-#include "engine/memory/r_memory_block.h"
+#include "engine/memory/r_memory_arena.h"
 #include "r_plugin_manager.h"
 #include "r_plugin_loader.h"
 #include "r_plugin.h"

@@ -7,7 +7,7 @@ extern "C" {
 
 typedef struct r_api_db_t r_api_db_t;
 typedef struct r_app_t r_app_t;
-typedef struct r_memory_block_t r_memory_block_t;
+typedef struct r_memory_arena_t r_memory_arena_t;
 typedef struct r_app_load_info_t r_app_load_info_t;
 typedef struct r_frame_info_t r_frame_info_t;
 typedef struct r_app_load_info_t r_app_load_info_t;
@@ -39,7 +39,7 @@ typedef struct r_app_api_t {
 typedef struct r_app_t {
   r_lib_t lib;
   r_app_api_t api;
-  r_memory_block_t* memory_block;
+  r_memory_arena_t* memory_arena;
   void* state;
 } r_app_t;
 

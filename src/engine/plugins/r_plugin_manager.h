@@ -8,7 +8,7 @@ extern "C" {
 #define MAX_PLUGINS_COUNT 256
 
 typedef struct r_memory_t r_memory_t;
-typedef struct r_memory_block_t r_memory_block_t;
+typedef struct r_memory_arena_t r_memory_arena_t;
 typedef struct r_plugin_t r_plugin_t;
 
 typedef struct r_plugin_manager_t {
