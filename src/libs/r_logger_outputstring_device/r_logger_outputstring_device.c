@@ -1,4 +1,11 @@
+#include "engine\diagnostics\r_logger_device_i.h"
+#include "engine\diagnostics\r_logger_i.h"
+#include "engine\diagnostics\r_logger.h"
+#include "engine\app\r_api_db_i.h"
+#include "engine\app\r_api_db.h"
+
 #include "r_logger_outputstring_device.h"
+#include "r_logger_outputstring_device.impl.h"
 
 u32 //
 r_logger_outputstring_device_get_id(void) {
@@ -17,6 +24,19 @@ r_logger_outputstring_device_load(r_lib_load_info_t* load_info) {
       load_info->fn(load_info->handle, "r_logger_outputstring_device_init");
   lib->functions[lib->fn_count++] =
       load_info->fn(load_info->handle, "r_logger_outputstring_device_destroy");
+}
+
+void //
+r_logger_outputstring_device_init(r_logger_t* this, r_api_db_i* api_db) {
+  local r_logger_device_i api;
+  api.debug = &r_logger_outputstring_device_debug;
+  api.warn = &r_logger_outputstring_device_warn;
+  api.error = &r_logger_outputstring_device_error;
+  api_db->add(
+      api_db->instance, 
+      R_LOGGER_OUTPUTSTRING_DEVICE_API_ID, 
+      R_LOGGER_OUTPUTSTRING_DEVICE_API_NAME,
+      &api);
 }
 
 void //
