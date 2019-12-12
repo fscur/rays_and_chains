@@ -13,10 +13,9 @@
 #include "engine/gfx/r_gfx.windows.c"
 #include "engine/plugins/r_plugins.windows.c"
 #include "engine/lib_loader/r_lib_loader.windows.c"
-#include "engine/main/r_cmd_line.c"
+#include "engine/main/r_cmd_line.windows.c"
 #include "engine/main/r_main.c"
 #include "engine/main/r_console.c"
-#include "engine/core/r_core_buffer.h"
 #include <windows.h>
 void
 on_success(r_success_t* success) {
@@ -37,6 +36,8 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
     return 1;
 
   r_cmd_line_cmds_t cmd_line_cmds = {0};
+  r_string_a_copy(R_LOGGER_FILE_DEVICE_FILENAME, cmd_line_cmds.log_filename);
+
   if (!r_try_parse_cmd_line(argc, argv, &cmd_line_cmds))
     return 1;
 

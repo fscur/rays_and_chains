@@ -27,7 +27,7 @@ r_main(r_main_info_t* main_info,       //
   r_app_host_load_app(app_host, main_info->app_filename);
   r_app_host_init(app_host);
 
-  
+  r_logger_file_device_set_filename(main_info->log_filename);
 
   while (app_host->running) {
     r_logger_debug("Frame Start.");
