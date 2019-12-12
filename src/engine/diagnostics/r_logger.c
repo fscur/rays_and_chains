@@ -4,20 +4,20 @@
 
 void //
 r_logger_init(r_frame_info_t* frame_info) {
-  logger = (r_logger_t*)calloc(1, sizeof(r_logger_t));
-  logger->frame_info = frame_info;
+  logger_instance = (r_logger_t*)calloc(1, sizeof(r_logger_t));
+  logger_instance->frame_info = frame_info;
 }
 
 void //
 r_logger_add_device(const r_logger_device_i* device) {
-  assert(logger->device_count <= R_LOGGER_MAX_DEVICES);
-  logger->devices[logger->device_count++] = device;
+  assert(logger_instance->device_count <= R_LOGGER_MAX_DEVICES);
+  logger_instance->devices[logger_instance->device_count++] = device;
 }
 
 internal void //
 r_logger_print(const char* msg) {
-  for (i8 i = 0; i < logger->device_count; ++i) {
-    logger->devices[i]->print(msg);
+  for (i8 i = 0; i < logger_instance->device_count; ++i) {
+    logger_instance->devices[i]->print(msg);
   }
 }
 
@@ -33,8 +33,8 @@ r_logger_debug(const char* format, ...) {
   char output[2048] = {0};
   sprintf(output,
           "[%010I64d][%08.3f][DEBUG] %s\n",
-          logger->frame_info->frame_count,
-          logger->frame_info->now / 1000.0f,
+          logger_instance->frame_info->frame_count,
+          logger_instance->frame_info->now / 1000.0f,
           msg);
 
   r_logger_print(output);
@@ -53,8 +53,8 @@ r_logger_warn(const char* format, ...) {
   char output[2048] = {0};
   sprintf(output,
           "[%010I64d][%08.3f][WARN] %s\n",
-          logger->frame_info->frame_count,
-          logger->frame_info->now / 1000.0f,
+          logger_instance->frame_info->frame_count,
+          logger_instance->frame_info->now / 1000.0f,
           msg);
 
   r_logger_print(output);
@@ -71,8 +71,8 @@ r_logger_error(const char* format, ...) {
   char output[2048] = {0};
   sprintf(output,
           "[%010I64d][%08.3f][ERROR] %s\n",
-          logger->frame_info->frame_count,
-          logger->frame_info->now / 1000.0f,
+          logger_instance->frame_info->frame_count,
+          logger_instance->frame_info->now / 1000.0f,
           msg);
 
   r_logger_print(output);
@@ -80,7 +80,7 @@ r_logger_error(const char* format, ...) {
 
 void
 r_logger_destroy() {
-  assert(logger != NULL);
-  free(logger);
-  logger = NULL;
+  assert(logger_instance != NULL);
+  free(logger_instance);
+  logger_instance = NULL;
 }

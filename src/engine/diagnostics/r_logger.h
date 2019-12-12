@@ -15,7 +15,7 @@ typedef struct r_logger_t
   u8 device_count;
 } r_logger_t;
 
-global r_logger_t* logger = NULL;
+global r_logger_t* logger_instance = NULL;
 
 void //
 r_logger_init(r_frame_info_t* frame_info);
