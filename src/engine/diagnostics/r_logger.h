@@ -15,7 +15,6 @@ typedef struct r_logger_t
   u8 device_count;
 } r_logger_t;
 
-global char R_LOGGER_LOG_FILENAME[256] = "log.log";
 global r_logger_t* logger = NULL;
 
 void //

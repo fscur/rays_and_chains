@@ -15,6 +15,7 @@ extern "C" {
 //consts
 #define MAX_LIB_COUNT 256
 #define SHORT_STRING_LENGTH 256
+#define LONG_STRING_LENGTH 1024
 #define MAX_FUNCTION_COUNT 64
 
 //functions

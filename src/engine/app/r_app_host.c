@@ -11,10 +11,12 @@
 #include "engine/ui/r_ui.h"
 #include "engine/io/r_file.h"
 #include "engine/diagnostics/r_logger.h"
+#include "engine/diagnostics/r_logger_file_device.h"
 #include "engine/gfx/r_gfx_renderer.h"
 
 #include "engine/app/r_api_db_i.h"
 #include "engine/diagnostics/r_logger_i.h"
+#include "engine/diagnostics/r_logger_file_device_i.h"
 #include "engine/string/r_string_i.h"
 #include "engine/window/r_window_i.h"
 #include "engine/ui/r_ui_i.h"
@@ -45,6 +47,10 @@ r_app_host_init_apis(r_app_host_t* this) {
   debug_api.debug = &r_logger_debug;
   debug_api.warn = &r_logger_warn;
   debug_api.error = &r_logger_error;
+
+  local r_logger_file_device_i logger_file_device_api = {0};
+  logger_file_device_api.print = &r_logger_file_device_print;
+  logger_file_device_api.set_filename = &r_logger_file_device_set_filename;
 
   local r_window_i window_api = {0};
   window_api.instance = this->window;
@@ -77,6 +83,7 @@ r_app_host_init_apis(r_app_host_t* this) {
   this->api_db_api->instance = this->api_db;
 
   r_api_db_add(this->api_db, R_LOGGER_API_ID, R_LOGGER_API_NAME, &debug_api);
+  r_api_db_add(this->api_db, R_LOGGER_FILE_DEVICE_API_ID, R_LOGGER_FILE_DEVICE_API_NAME, &logger_file_device_api);
   r_api_db_add(this->api_db, R_WINDOW_API_ID, R_WINDOW_API_NAME, &window_api);
   r_api_db_add(this->api_db, R_STRING_API_ID, R_STRING_API_NAME, &string_api);
   r_api_db_add(this->api_db, R_UI_API_ID, R_UI_API_NAME, &ui_api);

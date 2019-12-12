@@ -4,6 +4,7 @@
 #include "engine/app/r_app_host.h"
 #include "engine/thread/r_thread.h"
 #include "engine/diagnostics/r_logger.h"
+#include "engine/diagnostics/r_logger.h"
 
 void                                   //
 r_main(r_main_info_t* main_info,       //
@@ -26,6 +27,8 @@ r_main(r_main_info_t* main_info,       //
   r_app_host_load_app(app_host, main_info->app_filename);
   r_app_host_init(app_host);
 
+  
+
   while (app_host->running) {
     r_logger_debug("Frame Start.");
     r_app_host_run(app_host);
@@ -46,7 +49,7 @@ r_main(r_main_info_t* main_info,       //
         frame_info.dt = r_datetime_now() - last;
       }
     } else if (frame_info.frame_count > 0) {
-      r_logger_debug("Frame lost! It took %5.2f ms.\n", frame_info.dt);
+      r_logger_debug("Frame lost! It took %5.2f ms.", frame_info.dt);
     }
 
     f64 end = r_datetime_now();

@@ -7,13 +7,7 @@ extern "C" {
 #include "engine/core/r_core_types.h"
 
 internal void //
-r_logger_outputstring_device_debug(const char* msg);
-
-internal void //
-r_logger_outputstring_device_warn(const char* msg);
-
-internal void //
-r_logger_outputstring_device_error(const char* msg);
+r_logger_outputstring_device_print(const char* msg);
 
 #ifdef __cplusplus
 }

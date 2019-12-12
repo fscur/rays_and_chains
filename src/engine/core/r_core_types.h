@@ -47,6 +47,7 @@ typedef struct r_frame_info_t {
 
 typedef struct r_app_info_t {
   wchar_t title[SHORT_STRING_LENGTH];
+  char log_filename[LONG_STRING_LENGTH];
   i32 width;
   i32 height;
   i32 x;

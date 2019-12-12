@@ -17,7 +17,7 @@
 #include "engine/main/r_main.c"
 #include "engine/main/r_console.c"
 #include "engine/core/r_core_buffer.h"
-#include<windows.h>
+#include <windows.h>
 void
 on_success(r_success_t* success) {
   r_logger_debug("All good.");
@@ -37,8 +37,6 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
     return 1;
 
   r_cmd_line_cmds_t cmd_line_cmds = {0};
-  r_string_a_copy(R_LOGGER_LOG_FILENAME, cmd_line_cmds.log_filename);
-
   if (!r_try_parse_cmd_line(argc, argv, &cmd_line_cmds))
     return 1;
 
@@ -48,9 +46,6 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
   r_string_a_copy(cmd_line_cmds.app_name, main_info.app_filename);
   r_string_a_cat(main_info.app_filename, ".dll");
   r_string_a_copy(cmd_line_cmds.log_filename, main_info.log_filename);
-
-  // todo: if file does not exists then we must not change default filename
-  r_string_a_copy(cmd_line_cmds.log_filename, R_LOGGER_LOG_FILENAME);
 
   r_main(&main_info, &on_success, &on_error);
 
