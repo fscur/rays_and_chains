@@ -14,18 +14,18 @@ typedef struct r_api_db_i r_api_db_i;
 
 typedef struct r_app_host_t {
   r_memory_t* memory;
-  r_window_t* window;
-  r_ui_t* ui;
+  // r_window_t* window;
+  // r_ui_t* ui;
+  // r_gfx_renderer_t* renderer;
   r_frame_info_t* frame_info;
   r_app_t* app;
   r_api_db_i* api_db_api;
   r_api_db_t* api_db;
-  r_gfx_renderer_t* renderer;
   bool running;
   char libs_path[SHORT_STRING_LENGTH];
-  r_lib_t libs[MAX_PLUGINS_COUNT];
+  r_lib_t libs[MAX_LIB_COUNT];
   i32 lib_count;
-  u8 reloaded_libs[MAX_PLUGINS_COUNT];
+  u8 reloaded_libs[MAX_LIB_COUNT];
   u8 reloaded_lib_count;
 } r_app_host_t;
 

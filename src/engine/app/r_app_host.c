@@ -1,27 +1,26 @@
 #include "engine/io/r_path.h"
 #include "engine/io/r_directory.h"
 #include "engine/memory/r_memory_arena.h"
-#include "engine/plugins/r_plugin_manager.h"
-#include "engine/plugins/r_plugin_loader.h"
 #include "engine/lib_loader/r_lib_loader.h"
-#include "engine/plugins/r_plugin.h"
 #include "engine/string/r_string.h"
 #include "engine/time/r_datetime.h"
-#include "engine/window/r_window.h"
-#include "engine/ui/r_ui.h"
 #include "engine/io/r_file.h"
+
 #include "engine/diagnostics/r_logger.h"
 #include "engine/diagnostics/r_logger_file_device.h"
-#include "engine/gfx/r_gfx_renderer.h"
-
-#include "engine/app/r_api_db_i.h"
 #include "engine/diagnostics/r_logger_i.h"
 #include "engine/diagnostics/r_logger_device_i.h"
 #include "engine/diagnostics/r_logger_file_device_i.h"
+
 #include "engine/string/r_string_i.h"
-#include "engine/window/r_window_i.h"
-#include "engine/ui/r_ui_i.h"
-#include "engine/gfx/r_gfx_renderer_i.h"
+#include "engine/app/r_api_db_i.h"
+
+// #include "engine/window/r_window.h"
+// #include "engine/ui/r_ui.h"
+// #include "engine/gfx/r_gfx_renderer.h"
+// #include "engine/window/r_window_i.h"
+// #include "engine/ui/r_ui_i.h"
+// #include "engine/gfx/r_gfx_renderer_i.h"
 
 #include "r_app.h"
 #include "r_api_db.c"
@@ -32,8 +31,7 @@ internal void //
 r_app_host_load_lib(r_file_info_a_t file_info, r_app_host_t* this) {
   r_lib_t lib = {0};
   r_lib_loader_load_lib(this->memory, &lib, file_info.full_name);
-  this->libs[lib.id - 256] = lib;
-  this->lib_count++;
+  this->libs[this->lib_count++] = lib;
 }
 
 internal void //
@@ -66,29 +64,29 @@ internal void //
 r_app_host_init_apis(r_app_host_t* this) {
   r_app_host_init_logger_apis(this);
 
-  local r_window_i window_api = {0};
-  window_api.instance = this->window;
-  window_api.set_back_color = &r_window_set_back_color;
-  window_api.set_title = &r_window_set_title;
+  // local r_window_i window_api = {0};
+  // window_api.instance = this->window;
+  // window_api.set_back_color = &r_window_set_back_color;
+  // window_api.set_title = &r_window_set_title;
 
   local r_string_i string_api = {0};
   string_api.to_ansi = &r_string_to_ansi;
 
-  local r_ui_i ui_api = {0};
-  ui_api.instance = this->ui;
-  ui_api.create_main_menu = &r_ui_create_main_menu;
-  ui_api.create_menu = &r_ui_create_menu;
-  ui_api.create_menu_item = &r_ui_create_menu_item;
-  ui_api.create_button = &r_ui_create_button;
-  ui_api.create_frame = &r_ui_create_frame;
+  // local r_ui_i ui_api = {0};
+  // ui_api.instance = this->ui;
+  // ui_api.create_main_menu = &r_ui_create_main_menu;
+  // ui_api.create_menu = &r_ui_create_menu;
+  // ui_api.create_menu_item = &r_ui_create_menu_item;
+  // ui_api.create_button = &r_ui_create_button;
+  // ui_api.create_frame = &r_ui_create_frame;
 
-  local r_gfx_renderer_i renderer_api = {0};
-  renderer_api.instance = this->renderer;
-  renderer_api.add_cmd = &r_gfx_renderer_add_cmd;
-  renderer_api.sort = &r_gfx_renderer_sort;
-  renderer_api.submit = &r_gfx_renderer_submit;
-  renderer_api.clear = &r_gfx_renderer_clear;
-  renderer_api.create_clear_color_cmd = &r_gfx_renderer_create_clear_color_buffer_cmd;
+  // local r_gfx_renderer_i renderer_api = {0};
+  // renderer_api.instance = this->renderer;
+  // renderer_api.add_cmd = &r_gfx_renderer_add_cmd;
+  // renderer_api.sort = &r_gfx_renderer_sort;
+  // renderer_api.submit = &r_gfx_renderer_submit;
+  // renderer_api.clear = &r_gfx_renderer_clear;
+  // renderer_api.create_clear_color_cmd = &r_gfx_renderer_create_clear_color_buffer_cmd;
 
   local r_api_db_i api_db_api = {0};
   api_db_api.add = &r_api_db_add;
@@ -96,10 +94,11 @@ r_app_host_init_apis(r_app_host_t* this) {
   this->api_db_api = &api_db_api;
   this->api_db_api->instance = this->api_db;
 
-  r_api_db_add(this->api_db, R_WINDOW_API_ID, R_WINDOW_API_NAME, &window_api);
   r_api_db_add(this->api_db, R_STRING_API_ID, R_STRING_API_NAME, &string_api);
-  r_api_db_add(this->api_db, R_UI_API_ID, R_UI_API_NAME, &ui_api);
-  r_api_db_add(this->api_db, R_GFX_RENDERER_API_ID, R_GFX_RENDERER_API_NAME, &renderer_api);
+
+  // r_api_db_add(this->api_db, R_WINDOW_API_ID, R_WINDOW_API_NAME, &window_api);
+  // r_api_db_add(this->api_db, R_UI_API_ID, R_UI_API_NAME, &ui_api);
+  // r_api_db_add(this->api_db, R_GFX_RENDERER_API_ID, R_GFX_RENDERER_API_NAME, &renderer_api);
 }
 
 size_t
@@ -107,11 +106,11 @@ r_app_host_get_size(void) {
   return sizeof(r_app_host_t) +     //
          sizeof(r_app_t) +          //
          sizeof(r_api_db_t) +       //
-         sizeof(r_ui_t) +           //
-         sizeof(r_window_t) +       //
          sizeof(r_frame_info_t) +   //
-         sizeof(r_gfx_renderer_t) + //
-         sizeof(r_lib_t) * MAX_PLUGINS_COUNT;
+        //  sizeof(r_ui_t) +           //
+        //  sizeof(r_window_t) +       //         
+        //  sizeof(r_gfx_renderer_t) + //
+         sizeof(r_lib_t) * MAX_LIB_COUNT;
 }
 
 r_app_host_t* //
@@ -122,10 +121,11 @@ r_app_host_create(r_memory_t* memory, r_frame_info_t* frame_info) {
 
   r_app_host_t* this = r_memory_arena_push_struct(memory_arena, r_app_host_t);
   this->app = r_memory_arena_push_struct(memory_arena, r_app_t);
-  this->window = r_memory_arena_push_struct(memory_arena, r_window_t);
-  this->ui = r_memory_arena_push_struct(memory_arena, r_ui_t);
   this->api_db = r_memory_arena_push_struct(memory_arena, r_api_db_t);
-  this->renderer = r_memory_arena_push_struct(memory_arena, r_gfx_renderer_t);
+
+  // this->window = r_memory_arena_push_struct(memory_arena, r_window_t);
+  // this->ui = r_memory_arena_push_struct(memory_arena, r_ui_t);
+  // this->renderer = r_memory_arena_push_struct(memory_arena, r_gfx_renderer_t);
 
   r_string_a_copy(".\\libs", this->libs_path);
 
@@ -135,14 +135,14 @@ r_app_host_create(r_memory_t* memory, r_frame_info_t* frame_info) {
   this->frame_info->desired_ms_per_frame = 1000.0 / 60.0;
   this->running = true;
 
-  r_window_t* window = this->window;
-  r_string_w_copy(L"title", window->title);
-  window->width = 1280;
-  window->height = 720;
-  window->back_color = R_COLOR_BLACK;
+  // r_window_t* window = this->window;
+  // r_string_w_copy(L"title", window->title);
+  // window->width = 1280;
+  // window->height = 720;
+  // window->back_color = R_COLOR_BLACK;
 
-  r_ui_t* ui = this->ui;
-  r_ui_set_theme(ui, 0);
+  // r_ui_t* ui = this->ui;
+  // r_ui_set_theme(ui, 0);
 
   return this;
 }
@@ -156,9 +156,10 @@ r_app_host_load_app(r_app_host_t* this, const char* filename) {
 
   r_app_info_t app_info = this->app->api.get_app_info();
   this->frame_info->desired_fps = app_info.desired_fps;
-  this->window->width = app_info.width;
-  this->window->height = app_info.height;
-  r_string_w_copy(app_info.title, this->window->title);
+
+  // this->window->width = app_info.width;
+  // this->window->height = app_info.height;
+  // r_string_w_copy(app_info.title, this->window->title);
 }
 
 void //
@@ -178,7 +179,7 @@ r_app_host_init(r_app_host_t* this) {
 void //
 r_app_host_run(r_app_host_t* this) {
   this->app->api.run(this->app->state, this->frame_info);
-  this->running = !this->window->should_close;
+  // this->running = !this->window->should_close;
 }
 
 void //

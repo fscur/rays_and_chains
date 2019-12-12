@@ -50,16 +50,16 @@ hammer_init(r_app_t* app, r_api_db_i* api_db) {
 
   this->debug_api->add_device(outputstring_device);
 
-  this->window_api = api_db->find_by_name(api_db->instance, R_WINDOW_API_NAME);
+  // this->window_api = api_db->find_by_name(api_db->instance, R_WINDOW_API_NAME);
 }
 
 void //
 hammer_run(hammer_t* this, r_frame_info_t* frame_info) {
   this->debug_api->debug("Running.");
-  r_window_t* window = this->window_api->instance;
-  this->window_api->input(window);
-  this->window_api->update(window);
-  this->window_api->swap_buffers(window);
+  // r_window_t* window = this->window_api->instance;
+  // this->window_api->input(window);
+  // this->window_api->update(window);
+  // this->window_api->swap_buffers(window);
 }
 
 void //
