@@ -1,6 +1,6 @@
-#include "engine\diagnostics\r_logger_device_i.h"
-#include "engine\diagnostics\r_logger_i.h"
-#include "engine\diagnostics\r_logger.h"
+#include "engine\logger\r_logger_device_i.h"
+#include "engine\logger\r_logger_i.h"
+#include "engine\logger\r_logger.h"
 #include "engine\app\r_api_db_i.h"
 #include "engine\app\r_api_db.h"
 
@@ -30,11 +30,10 @@ void //
 r_logger_outputstring_device_init(r_logger_t* this, r_api_db_i* api_db) {
   local r_logger_device_i api;
   api.print = &r_logger_outputstring_device_print;
-  api_db->add(
-      api_db->instance, 
-      R_LOGGER_OUTPUTSTRING_DEVICE_API_ID, 
-      R_LOGGER_OUTPUTSTRING_DEVICE_API_NAME,
-      &api);
+  api_db->add(api_db->instance,
+              R_LOGGER_OUTPUTSTRING_DEVICE_API_ID,
+              R_LOGGER_OUTPUTSTRING_DEVICE_API_NAME,
+              &api);
 }
 
 void //

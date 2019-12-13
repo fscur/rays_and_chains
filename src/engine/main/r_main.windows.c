@@ -1,7 +1,5 @@
-#include <windows.h>
-#include <stdio.h>
-
-#include "engine/diagnostics/r_logger.windows.c"
+#include "engine/core/r_core_types.windows.h"
+#include "engine/logger/r_logger.windows.c"
 #include "engine/window/r_window.windows.c"
 #include "engine/ui/r_ui.windows.c"
 #include "engine/memory/r_memory.windows.c"
@@ -29,6 +27,9 @@ on_error(r_error_t* error) {
 
 int CALLBACK
 WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {
+  __hInstance = hInstance;
+  __nShowCmd = nShowCmd;
+
   int argc = 0;
   char** argv = NULL;
 

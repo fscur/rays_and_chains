@@ -30,8 +30,8 @@ r_lib_loader_get_pdb_file_name(const char* file_name, char* pdb_file_name) {
   sprintf(pdb_file_name, "%s\\%s", pdb_file_name, ffd.cFileName);
 }
 
-void //
-r_lib_loader_load_lib(r_memory_t* memory, r_lib_t* lib, const char* file_name) {
+r_lib_t* //
+r_lib_loader_load_lib(r_memory_t* memory, const char* file_name) {
 
   char tmp_dll_file_name[SHORT_STRING_LENGTH] = {0};
   char tmp_pdb_file_name[SHORT_STRING_LENGTH] = {0};
@@ -41,52 +41,58 @@ r_lib_loader_load_lib(r_memory_t* memory, r_lib_t* lib, const char* file_name) {
   r_lib_loader_get_pdb_file_name(file_name, pdb_file_name);
   r_lib_loader_get_temp_file_name(pdb_file_name, tmp_pdb_file_name);
 
-  if (CopyFileA(file_name, tmp_dll_file_name, false)) {
-    CopyFileA(pdb_file_name, tmp_pdb_file_name, false);
-    DeleteFileA(pdb_file_name);
-    HMODULE lib_handle = LoadLibraryA(tmp_dll_file_name);
-    assert(lib_handle != NULL);
+  if (!CopyFileA(file_name, tmp_dll_file_name, false))
+    return NULL;
 
-    char lib_name[SHORT_STRING_LENGTH - 4] = {0};
+  CopyFileA(pdb_file_name, tmp_pdb_file_name, false);
+  DeleteFileA(pdb_file_name);
+  HMODULE lib_handle = LoadLibraryA(tmp_dll_file_name);
+  assert(lib_handle != NULL);
 
-    sprintf(lib_name, "%s", PathFindFileNameA(file_name));
-    PathRemoveExtensionA(lib_name);
+  char lib_name[SHORT_STRING_LENGTH - 4] = {0};
 
-    char load_fn_name[SHORT_STRING_LENGTH] = {0};
-    char get_size_fn_name[SHORT_STRING_LENGTH] = {0};
-    char get_id_fn_name[SHORT_STRING_LENGTH] = {0};
+  sprintf(lib_name, "%s", PathFindFileNameA(file_name));
+  PathRemoveExtensionA(lib_name);
 
-    sprintf(load_fn_name, "%s_%s", lib_name, "load");
-    sprintf(get_size_fn_name, "%s_%s", lib_name, "get_size");
-    sprintf(get_id_fn_name, "%s_%s", lib_name, "get_id");
+  char load_fn_name[SHORT_STRING_LENGTH] = {0};
+  char get_size_fn_name[SHORT_STRING_LENGTH] = {0};
+  char get_id_fn_name[SHORT_STRING_LENGTH] = {0};
 
-    R_LIB_LOAD load = (R_LIB_LOAD)r_lib_loader_fn(lib_handle, load_fn_name);
-    R_LIB_GET_SIZE get_size = (R_LIB_GET_SIZE)r_lib_loader_fn(lib_handle, get_size_fn_name);
-    R_LIB_GET_ID get_id = (R_LIB_GET_ID)r_lib_loader_fn(lib_handle, get_id_fn_name);
+  sprintf(load_fn_name, "%s_%s", lib_name, "load");
+  sprintf(get_size_fn_name, "%s_%s", lib_name, "get_size");
+  sprintf(get_id_fn_name, "%s_%s", lib_name, "get_id");
 
-    u32 id = get_id();
-    size_t memory_size = get_size();
-    r_memory_arena_t* lib_memory_arena = r_memory_add_arena(memory, memory_size);
-    void* state_memory_addr = r_memory_arena_push(lib_memory_arena, memory_size);
+  R_LIB_LOAD load = (R_LIB_LOAD)r_lib_loader_fn(lib_handle, load_fn_name);
+  R_LIB_GET_SIZE get_size = (R_LIB_GET_SIZE)r_lib_loader_fn(lib_handle, get_size_fn_name);
+  R_LIB_GET_ID get_id = (R_LIB_GET_ID)r_lib_loader_fn(lib_handle, get_id_fn_name);
 
-    r_lib_load_info_t load_info = {0};
-    load_info.fn = &r_lib_loader_fn;
-    load_info.handle = lib_handle;
-    load_info.lib_memory_addr = lib;
-    load_info.state_memory_addr = state_memory_addr;
+  u32 id = get_id();
+  size_t lib_size = sizeof(r_lib_t);
+  size_t memory_size = get_size();
+  r_memory_arena_t* lib_memory_arena = r_memory_add_arena(memory, memory_size + lib_size);
+  void* lib_memory_addr = r_memory_arena_push(lib_memory_arena, lib_size);
+  void* state_memory_addr = r_memory_arena_push(lib_memory_arena, memory_size);
 
-    lib->handle = lib_handle;
-    lib->id = id;
-    lib->memory_arena = lib_memory_arena;
-    lib->state = state_memory_addr;
+  r_lib_load_info_t load_info = {0};
+  load_info.fn = &r_lib_loader_fn;
+  load_info.handle = lib_handle;
+  load_info.lib_memory_addr = lib_memory_addr;
+  load_info.state_memory_addr = state_memory_addr;
 
-    r_string_a_copy(lib_name, lib->name);
-    r_string_a_copy(file_name, lib->file_name);
-    r_string_a_copy(tmp_dll_file_name, lib->tmp_file_name);
-    r_file_a_get_last_modification(lib->file_name, &lib->last_modification);
+  r_lib_t* lib = (r_lib_t*)lib_memory_addr;
 
-    load(&load_info);
-  }
+  lib->handle = lib_handle;
+  lib->id = id;
+  lib->memory_arena = lib_memory_arena;
+  lib->state = state_memory_addr;
+
+  r_string_a_copy(lib_name, lib->name);
+  r_string_a_copy(file_name, lib->file_name);
+  r_string_a_copy(tmp_dll_file_name, lib->tmp_file_name);
+  r_file_a_get_last_modification(lib->file_name, &lib->last_modification);
+
+  load(&load_info);
+  return lib;
 }
 
 void //

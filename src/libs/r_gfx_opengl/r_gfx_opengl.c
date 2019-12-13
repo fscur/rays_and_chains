@@ -4,7 +4,7 @@
 #include "engine/plugins/r_plugin.h"
 #include "engine/gfx/r_gfx_renderer.h"
 #include "engine/gfx/r_gfx_renderer_i.h"
-#include "engine/diagnostics/r_logger_i.h"
+#include "engine/logger/r_logger_i.h"
 #include "r_gfx_opengl.h"
 
 #pragma comment(lib, "opengl32.lib")

@@ -2,7 +2,7 @@
 #include "engine/app/r_app.h"
 #include "engine/app/r_api_db.h"
 #include "engine/app/r_api_db_i.h"
-#include "engine/diagnostics/r_logger_i.h"
+#include "engine/logger/r_logger_i.h"
 #include "engine/window/r_window.h"
 #include "engine/window/r_window_i.h"
 #include "engine/ui/r_ui.h"

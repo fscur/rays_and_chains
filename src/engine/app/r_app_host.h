@@ -6,21 +6,18 @@ extern "C" {
 #include "engine/core/r_core_types.h"
 
 typedef struct r_memory_t r_memory_t;
-typedef struct r_window_t r_window_t;
-typedef struct r_ui_t r_ui_t;
-typedef struct r_plugin_manager_t r_plugin_manager_t;
 typedef struct r_api_db_t r_api_db_t;
 typedef struct r_api_db_i r_api_db_i;
+typedef struct r_app_t r_app_t;
+typedef struct r_app_i r_app_i;
 
 typedef struct r_app_host_t {
   r_memory_t* memory;
-  // r_window_t* window;
-  // r_ui_t* ui;
-  // r_gfx_renderer_t* renderer;
-  r_frame_info_t* frame_info;
-  r_app_t* app;
+  r_frame_info_t* frame_info;  
   r_api_db_i* api_db_api;
   r_api_db_t* api_db;
+  r_app_i* app_api;
+  r_app_t* app;
   bool running;
   char libs_path[SHORT_STRING_LENGTH];
   r_lib_t libs[MAX_LIB_COUNT];

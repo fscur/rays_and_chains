@@ -27,6 +27,12 @@ r_window_set_title(r_window_t* this, const wchar_t* title);
 dll_export void //
 r_window_set_back_color(r_window_t* this, const r_color_t color);
 
+r_window_t* //
+r_window_create();
+
+void //
+r_window_show(r_window_t* window);
+
 #ifdef __cplusplus
 }
 #endif

@@ -6,7 +6,7 @@
 
 #include "engine/app/r_api_db.h"
 #include "engine/app/r_api_db_i.h"
-#include "engine/diagnostics/r_logger_i.h"
+#include "engine/logger/r_logger_i.h"
 #include "engine/window/r_window.h"
 #include "engine/window/r_window_i.h"
 #include "engine/ui/r_ui.h"
@@ -28,7 +28,7 @@
 
 internal void //
 r_ui_imgui_render(r_ui_renderer_t* this) {
-  
+
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
   igNewFrame();

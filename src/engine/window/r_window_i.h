@@ -10,6 +10,8 @@ extern "C" {
 
 typedef struct r_window_t r_window_t;
 
+typedef r_window_t* (*R_WINDOW_CREATE)();
+typedef void (*R_WINDOW_SHOW)(r_window_t* instance);
 typedef void (*R_WINDOW_SET_BACK_COLOR)(r_window_t* instance, const r_color_t color);
 typedef void (*R_WINDOW_SET_TITLE)(r_window_t* instance, const wchar_t* title);
 typedef void (*R_WINDOW_SWAP_BUFFERS)(const r_window_t* instance);
@@ -18,7 +20,8 @@ typedef void (*R_WINDOW_INPUT)(const r_window_t* instance);
 typedef void (*R_WINDOW_UPDATE)(r_window_t* instance);
 
 typedef struct r_window_i {
-  r_window_t* instance;
+  R_WINDOW_CREATE create;
+  R_WINDOW_SHOW show;
   R_WINDOW_SET_BACK_COLOR set_back_color;
   R_WINDOW_SET_TITLE set_title;
   R_WINDOW_SWAP_BUFFERS swap_buffers;

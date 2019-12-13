@@ -1,5 +1,6 @@
 #include "engine/core/r_core_types.h"
 #include "r_app_host.h"
+#include "r_app.h"
 
 internal bool //
 r_app_host_should_reload_lib(r_lib_t* lib) {
@@ -22,8 +23,8 @@ r_app_host_reload_libs(r_app_host_t* this) {
 }
 
 internal void //
-r_app_host_reload_app(r_app_host_t* this) {
-  r_lib_t* app_lib = &this->app->lib;
+r_app_host_reload_app(r_app_host_t* this, r_app_t* app) {
+  r_lib_t* app_lib = &app->lib;
   bool should_reload_app = r_app_host_should_reload_lib(app_lib);
 
   if (should_reload_app) {
@@ -48,5 +49,5 @@ r_app_host_reload(r_app_host_t* this) {
 
   this->reloaded_lib_count = 0;
 
-  r_app_host_reload_app(this);
+  r_app_host_reload_app(this, this->app);
 }

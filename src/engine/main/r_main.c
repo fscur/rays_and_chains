@@ -3,8 +3,8 @@
 #include "engine/time/r_datetime.h"
 #include "engine/app/r_app_host.h"
 #include "engine/thread/r_thread.h"
-#include "engine/diagnostics/r_logger.h"
-#include "engine/diagnostics/r_logger.h"
+#include "engine/logger/r_logger.h"
+#include "engine/logger/r_logger.h"
 
 void                                   //
 r_main(r_main_info_t* main_info,       //

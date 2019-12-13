@@ -4,7 +4,7 @@
 
 #include "engine/app/r_api_db_i.h"
 #include "engine/app/r_api_db.h"
-#include "engine/diagnostics/r_logger_i.h"
+#include "engine/logger/r_logger_i.h"
 #include "engine/string/r_string_i.h"
 #include "engine/window/r_window_i.h"
 #include "engine/window/r_window.h"
