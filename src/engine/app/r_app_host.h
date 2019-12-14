@@ -26,22 +26,19 @@ typedef struct r_app_host_t {
   u8 reloaded_lib_count;
 } r_app_host_t;
 
-dll_export size_t //
+size_t //
 r_app_host_get_size();
 
-dll_export r_app_host_t* //
+r_app_host_t* //
 r_app_host_create(r_memory_t* memory, r_frame_info_t* frame_info);
 
-dll_export void //
-r_app_host_load_app(r_app_host_t* this, const char* filename);
-
-dll_export void //
+void //
 r_app_host_run(r_app_host_t* this);
 
-dll_export void //
+void //
 r_app_host_init(r_app_host_t* this);
 
-dll_export void //
+void //
 r_app_host_destroy(const r_app_host_t* this);
 
 #ifdef __cplusplus

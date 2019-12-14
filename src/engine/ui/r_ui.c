@@ -36,7 +36,7 @@ r_ui_create_menu(r_ui_t* this, r_ui_widget_t* parent, const wchar_t* label) {
 
   r_memory_arena_t* memory_arena = this->memory_arena;
   r_ui_menu_t* menu = r_memory_arena_push_struct(memory_arena, r_ui_menu_t);
-  r_string_w_copy(label, menu->label_wide);
+  r_string_copy_wide(menu->label_wide, label);
   r_string_to_ansi(menu->label_wide, menu->label_ansi, SHORT_STRING_LENGTH);
   menu->widget = widget;
   widget->data = menu;
@@ -66,9 +66,9 @@ r_ui_create_menu_item(r_ui_t* this,
 
   r_memory_arena_t* memory_arena = this->memory_arena;
   r_ui_menu_item_t* menu_item = r_memory_arena_push_struct(memory_arena, r_ui_menu_item_t);
-  r_string_w_copy(label, menu_item->label_wide);
+  r_string_copy_wide(menu_item->label_wide, label);
   r_string_to_ansi(menu_item->label_wide, menu_item->label_ansi, SHORT_STRING_LENGTH);
-  r_string_w_copy(shortcut, menu_item->shortcut_wide);
+  r_string_copy_wide(menu_item->shortcut_wide, shortcut);
   r_string_to_ansi(menu_item->shortcut_wide, menu_item->shortcut_ansi, SHORT_STRING_LENGTH);
   menu_item->enabled = enabled;
   menu_item->callback = callback;
@@ -96,7 +96,7 @@ r_ui_create_frame(r_ui_t* this, r_ui_widget_t* parent, const wchar_t* title) {
   r_memory_arena_t* memory_arena = this->memory_arena;
   r_ui_frame_t* frame = r_memory_arena_push_struct(memory_arena, r_ui_frame_t);
 
-  r_string_w_copy(title, frame->title_wide);
+  r_string_copy_wide(frame->title_wide, title);
   r_string_to_ansi(frame->title_wide, frame->title_ansi, SHORT_STRING_LENGTH);
   frame->is_open = false;
   frame->widget = widget;
@@ -126,7 +126,7 @@ r_ui_create_button(r_ui_t* this,
 
   r_memory_arena_t* memory_arena = this->memory_arena;
   r_ui_button_t* button = r_memory_arena_push_struct(memory_arena, r_ui_button_t);
-  r_string_w_copy(label, button->label_wide);
+  r_string_copy_wide(button->label_wide, label);
   r_string_to_ansi(button->label_wide, button->label_ansi, SHORT_STRING_LENGTH);
   button->enabled = enabled;
   button->callback = callback;

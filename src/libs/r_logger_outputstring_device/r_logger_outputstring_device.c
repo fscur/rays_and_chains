@@ -20,10 +20,9 @@ r_logger_outputstring_device_get_size(void) {
 void //
 r_logger_outputstring_device_load(r_lib_load_info_t* load_info) {
   r_lib_t* lib = (r_lib_t*)load_info->lib_memory_addr;
-  lib->functions[lib->fn_count++] =
-      load_info->fn(load_info->handle, "r_logger_outputstring_device_init");
-  lib->functions[lib->fn_count++] =
-      load_info->fn(load_info->handle, "r_logger_outputstring_device_destroy");
+
+  lib->api.init = (R_LIB_INIT)load_info->fn(load_info->handle, "r_logger_outputstring_device_init");
+  lib->api.destroy = (R_LIB_DESTROY)load_info->fn(load_info->handle, "r_logger_outputstring_device_destroy");
 }
 
 void //

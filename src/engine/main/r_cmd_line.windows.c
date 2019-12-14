@@ -298,10 +298,10 @@ r_try_parse_cmd_line(int argc, char** argv, r_cmd_line_cmds_t* cmd_line_cmds) {
     goto exit;
   }
 
-  r_string_a_copy(app_name->sval[0], cmd_line_cmds->app_name);
+  r_string_copy_ansi(cmd_line_cmds->app_name, app_name->sval[0]);
 
   if (log_filename->count > 0) {
-    r_string_a_copy(log_filename->filename[0], cmd_line_cmds->log_filename);
+    r_string_copy_ansi(cmd_line_cmds->log_filename, log_filename->filename[0]);
   }
 
 exit:

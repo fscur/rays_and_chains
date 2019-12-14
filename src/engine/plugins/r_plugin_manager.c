@@ -76,7 +76,7 @@ r_plugin_manager_find_plugin(r_plugin_manager_t* this, const char* name) {
   r_plugin_t* plugin = NULL;
 
   for (u32 i = 0; i < this->plugin_count; ++i) {
-    if (!r_string_cmp(this->plugins[i].name, name)) {
+    if (!r_string_compare_ansi(this->plugins[i].name, name)) {
       plugin = &this->plugins[i];
       break;
     }

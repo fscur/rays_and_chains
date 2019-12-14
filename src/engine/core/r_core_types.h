@@ -53,6 +53,7 @@ typedef struct r_app_info_t {
   i32 x;
   i32 y;
   f64 desired_fps;
+  bool disable_log_to_file;
 } r_app_info_t;
 
 typedef struct r_success_t {
@@ -78,10 +79,9 @@ typedef struct r_lib_load_info_t r_lib_load_info_t;
 typedef struct r_api_db_i r_api_db_i;
 
 typedef void* (*R_LIB_LOADER_FN)(void*, const char*);
-
 typedef u32 (*R_LIB_GET_ID)();
-typedef u32 (*R_LIB_GET_FN_COUNT)();
 typedef size_t (*R_LIB_GET_SIZE)();
+typedef u32 (*R_LIB_GET_FN_COUNT)();
 typedef void* (*R_LIB_LOAD)(r_lib_load_info_t* load_info);
 typedef void* (*R_LIB_INIT)(void* lib_state, r_api_db_i* db);
 typedef void* (*R_LIB_DESTROY)(void* lib_state);
@@ -93,12 +93,19 @@ typedef struct r_lib_load_info_t {
   void* state_memory_addr;
 } r_lib_load_info_t;
 
+typedef struct r_lib_i {
+  R_LIB_GET_SIZE get_size;
+  R_LIB_INIT init;
+  R_LIB_DESTROY destroy;
+} r_lib_i;
+
 typedef struct r_lib_t {
   void* functions[MAX_FUNCTION_COUNT];     // 512
   char name[SHORT_STRING_LENGTH];          // 256
   char file_name[SHORT_STRING_LENGTH];     // 256
   char tmp_file_name[SHORT_STRING_LENGTH]; // 256
   r_datetime_t last_modification;          // 16
+  r_lib_i api;
   void* handle;                            // 8
   r_memory_arena_t* memory_arena;          // 8
   void* state;                             // 8

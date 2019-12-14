@@ -4,7 +4,6 @@
 #include "engine/app/r_app_host.h"
 #include "engine/thread/r_thread.h"
 #include "engine/logger/r_logger.h"
-#include "engine/logger/r_logger.h"
 
 void                                   //
 r_main(r_main_info_t* main_info,       //
@@ -19,16 +18,16 @@ r_main(r_main_info_t* main_info,       //
   last = start = r_datetime_now();
 
   r_frame_info_t frame_info = {0};
-  size_t total_app_memory = r_app_host_get_size();
-  r_memory_t memory = r_memory_create(total_app_memory + kilobytes(128));
+  size_t app_host_size = r_app_host_get_size();
+  r_memory_t memory = r_memory_create(app_host_size + kilobytes(128));
 
   r_app_host_t* app_host = r_app_host_create(&memory, &frame_info);
   r_logger_init(&frame_info);
   r_app_host_load_app(app_host, main_info->app_filename);
   r_app_host_init(app_host);
-
+  
   r_logger_file_device_set_filename(main_info->log_filename);
-
+  
   while (app_host->running) {
     r_logger_debug("Frame Start.");
     r_app_host_run(app_host);

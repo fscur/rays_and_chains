@@ -86,9 +86,9 @@ r_lib_loader_load_lib(r_memory_t* memory, const char* file_name) {
   lib->memory_arena = lib_memory_arena;
   lib->state = state_memory_addr;
 
-  r_string_a_copy(lib_name, lib->name);
-  r_string_a_copy(file_name, lib->file_name);
-  r_string_a_copy(tmp_dll_file_name, lib->tmp_file_name);
+  r_string_copy_ansi(lib->name, lib_name);
+  r_string_copy_ansi(lib->file_name, file_name);
+  r_string_copy_ansi(lib->tmp_file_name, tmp_dll_file_name);
   r_file_a_get_last_modification(lib->file_name, &lib->last_modification);
 
   load(&load_info);

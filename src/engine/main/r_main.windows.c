@@ -37,7 +37,7 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
     return 1;
 
   r_cmd_line_cmds_t cmd_line_cmds = {0};
-  r_string_a_copy(R_LOGGER_FILE_DEVICE_FILENAME, cmd_line_cmds.log_filename);
+  r_string_copy_ansi(cmd_line_cmds.log_filename, R_LOGGER_FILE_DEVICE_FILENAME);
 
   if (!r_try_parse_cmd_line(argc, argv, &cmd_line_cmds))
     return 1;
@@ -45,9 +45,9 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
   r_free_cmd_line(argv);
 
   r_main_info_t main_info = {0};
-  r_string_a_copy(cmd_line_cmds.app_name, main_info.app_filename);
-  r_string_a_cat(main_info.app_filename, ".dll");
-  r_string_a_copy(cmd_line_cmds.log_filename, main_info.log_filename);
+  r_string_copy_ansi(main_info.app_filename, cmd_line_cmds.app_name);
+  r_string_concat_ansi(main_info.app_filename, ".dll");
+  r_string_copy_ansi(main_info.log_filename, cmd_line_cmds.log_filename);
 
   r_main(&main_info, &on_success, &on_error);
 

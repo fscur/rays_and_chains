@@ -11,7 +11,7 @@ r_window_set_back_color(r_window_t* this, const r_color_t color) {
 
 void //
 r_window_set_title(r_window_t* this, const wchar_t* title) {
-  r_string_w_copy(title, this->title);
+  r_string_copy_wide(this->title, title);
 
   if (this->title_changed_callback)
     this->title_changed_callback(this);
