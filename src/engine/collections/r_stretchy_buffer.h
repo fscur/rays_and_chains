@@ -3,7 +3,7 @@
 extern "C" {
 #endif
 
-#include "r_core_types.h"
+#include "engine/core/r_core_types.h"
 
 #include <stdio.h>
 #include <stddef.h>
@@ -40,15 +40,16 @@ typedef struct r_buffer_header {
 #define r_buffer__fits(b, n) (r_buffer_length(b) + (n) <= r_buffer_capacity(b))
 #define r_buffer__grow(b, n) ((b) = r_buffer_grow((b), r_buffer_length(b) + (n), sizeof(*(b))))
 #define r_buffer__fit(b, n) (r_buffer__fits(b, n) ? 0 : (r_buffer__grow(b, n)))
-#define r_buffer_length(b) ((b) ? r_buffer__header(b)->length : 0)
-#define r_buffer_capacity(b) ((b) ? r_buffer__header(b)->capacity : 0)
-#define r_buffer_push(b, x) (r_buffer__fit(b, 1), (b)[r_buffer_length(b)->length++] = (x))
-#define buffer_free(b) ((b) ? free(r_buffer__header(b)), (b) = NULL : 0)
+
+#define r_stretchy_buffer_length(b) ((b) ? r_buffer__header(b)->length : 0)
+#define r_stretchy_buffer_capacity(b) ((b) ? r_buffer__header(b)->capacity : 0)
+#define r_stretchy_buffer_push(b, x) (r_buffer__fit(b, 1), (b)[r_buffer_length(b)->length++] = (x))
+#define r_stretchy_buffer_free(b) ((b) ? free(r_buffer__header(b)), (b) = NULL : 0)
 // clang-format on
 
-void*
+internal void*
 r_buffer_grow(const void* buffer, size_t new_length, size_t element_count) {
-  size_t new_capacity = MAX(1 + 2 * r_buffer_capacity(buffer), new_length);
+  size_t new_capacity = MAX(1 + 2 * r_stretchy_buffer_capacity(buffer), new_length);
   assert(new_length <= new_capacity);
 
   size_t new_size = offsetof(r_buffer_header, buffer) + new_capacity * element_count;
