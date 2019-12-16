@@ -15,6 +15,9 @@ dll_export void //
 r_logger_outputstring_device_load(r_lib_load_info_t* load_info);
 
 dll_export size_t //
+r_logger_outputstring_device_get_api_size();
+
+dll_export size_t //
 r_logger_outputstring_device_get_size();
 
 dll_export u32 //

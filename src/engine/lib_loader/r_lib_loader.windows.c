@@ -55,34 +55,40 @@ r_lib_loader_load_lib(r_memory_t* memory, const char* file_name) {
   PathRemoveExtensionA(lib_name);
 
   char load_fn_name[SHORT_STRING_LENGTH] = {0};
+  char get_api_size_fn_name[SHORT_STRING_LENGTH] = {0};
   char get_size_fn_name[SHORT_STRING_LENGTH] = {0};
   char get_id_fn_name[SHORT_STRING_LENGTH] = {0};
 
   sprintf(load_fn_name, "%s_%s", lib_name, "load");
+  sprintf(get_api_size_fn_name, "%s_%s", lib_name, "get_api_size");
   sprintf(get_size_fn_name, "%s_%s", lib_name, "get_size");
   sprintf(get_id_fn_name, "%s_%s", lib_name, "get_id");
 
   R_LIB_LOAD load = (R_LIB_LOAD)r_lib_loader_fn(lib_handle, load_fn_name);
+  R_LIB_GET_SIZE get_api_size = (R_LIB_GET_SIZE)r_lib_loader_fn(lib_handle, get_api_size_fn_name);
   R_LIB_GET_SIZE get_size = (R_LIB_GET_SIZE)r_lib_loader_fn(lib_handle, get_size_fn_name);
   R_LIB_GET_ID get_id = (R_LIB_GET_ID)r_lib_loader_fn(lib_handle, get_id_fn_name);
 
   u32 id = get_id();
   size_t lib_size = sizeof(r_lib_t);
-  size_t memory_size = get_size();
-  r_memory_arena_t* lib_memory_arena = r_memory_add_arena(memory, memory_size + lib_size);
+  size_t api_size = get_api_size();
+  size_t state_size = get_size();
+  r_memory_arena_t* lib_memory_arena = r_memory_add_arena(memory, state_size + api_size + lib_size);
+  void* api_memory_addr = r_memory_arena_push(lib_memory_arena, api_size);
   void* lib_memory_addr = r_memory_arena_push(lib_memory_arena, lib_size);
-  void* state_memory_addr = r_memory_arena_push(lib_memory_arena, memory_size);
+  void* state_memory_addr = r_memory_arena_push(lib_memory_arena, state_size);
 
   r_lib_load_info_t load_info = {0};
   load_info.fn = &r_lib_loader_fn;
   load_info.handle = lib_handle;
+  load_info.api_memory_addr = api_memory_addr;
   load_info.lib_memory_addr = lib_memory_addr;
   load_info.state_memory_addr = state_memory_addr;
 
   r_lib_t* lib = (r_lib_t*)lib_memory_addr;
-
   lib->handle = lib_handle;
   lib->id = id;
+  lib->api = api_memory_addr;
   lib->memory_arena = lib_memory_arena;
   lib->state = state_memory_addr;
 
@@ -97,11 +103,8 @@ r_lib_loader_load_lib(r_memory_t* memory, const char* file_name) {
 
 void //
 r_lib_loader_destroy_lib(r_lib_t* lib) {
-  if (lib->functions[3]) {
-    R_LIB_DESTROY destroy_fn = (R_LIB_DESTROY)lib->functions[3];
-    destroy_fn(lib->state);
-  }
-  lib->fn_count = 0;
+  r_lib_i* lib_api = (r_lib_i*)lib->api;
+  lib_api->destroy(lib->state);
   FreeLibrary(lib->handle);
 }
 

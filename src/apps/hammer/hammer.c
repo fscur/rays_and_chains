@@ -1,5 +1,6 @@
 #include "hammer.h"
 #include "engine/app/r_app.h"
+#include "engine/app/r_app_i.h"
 #include "engine/app/r_api_db_i.h"
 
 #include "engine/string/r_string_i.h"
@@ -23,6 +24,11 @@ hammer_get_id(void) {
 }
 
 size_t //
+hammer_get_api_size(void) {
+  return sizeof(r_app_i);
+}
+
+size_t //
 hammer_get_size(void) {
   return sizeof(hammer_t);
 }
@@ -41,15 +47,11 @@ hammer_get_app_info(void) {
 
 void //
 hammer_load(r_lib_load_info_t* load_info) {
-  r_lib_t* lib = (r_lib_t*)load_info->lib_memory_addr;
-
-  lib->api.init = load_info->fn(load_info->handle, "hammer_init");
-  lib->api.destroy = load_info->fn(load_info->handle, "hammer_destroy");
-
-  lib->functions[lib->fn_count++] = load_info->fn(load_info->handle, "hammer_get_app_info");
-  lib->functions[lib->fn_count++] = lib->api.init;
-  lib->functions[lib->fn_count++] = load_info->fn(load_info->handle, "hammer_run");
-  lib->functions[lib->fn_count++] = lib->api.destroy;
+  r_app_i* app_api = (r_app_i*)load_info->api_memory_addr;
+  app_api->get_app_info = (R_APP_GET_APP_INFO)load_info->fn(load_info->handle, "hammer_get_app_info");
+  app_api->init = (R_APP_INIT)load_info->fn(load_info->handle, "hammer_init");
+  app_api->run = (R_APP_RUN)load_info->fn(load_info->handle, "hammer_run");
+  app_api->destroy = (R_APP_DESTROY)load_info->fn(load_info->handle, "hammer_destroy");
 }
 
 internal void //

@@ -26,6 +26,9 @@ dll_export void //
 hammer_load(r_lib_load_info_t* load_info);
 
 dll_export size_t //
+hammer_get_api_size();
+
+dll_export size_t //
 hammer_get_size();
 
 dll_export u32 //

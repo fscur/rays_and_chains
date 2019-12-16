@@ -48,7 +48,7 @@ r_app_host_init_logger_apis(r_app_host_t* this) {
   logger_file_device.print = &r_logger_file_device_print;
   logger_file_device.set_filename = &r_logger_file_device_set_filename;
 
-  //logger.add_device((r_logger_device_i*)&logger_file_device);
+  // logger.add_device((r_logger_device_i*)&logger_file_device);
 
   r_api_db_add(this->api_db, R_LOGGER_API_ID, R_LOGGER_API_NAME, &logger);
   r_api_db_add(this->api_db,
@@ -114,7 +114,6 @@ r_app_host_get_size(void) {
   return sizeof(r_app_host_t) +   //
          sizeof(r_api_db_t) +     //
          sizeof(r_frame_info_t) + //
-         sizeof(r_lib_t) +        // app_lib
          sizeof(r_lib_t) * MAX_LIB_COUNT;
 }
 
@@ -128,7 +127,7 @@ r_app_host_create(r_memory_t* memory, r_frame_info_t* frame_info) {
 
   r_string_copy_ansi(this->libs_path, ".\\libs");
 
-  this->memory = memory; 
+  this->memory = memory;
   this->frame_info = frame_info;
   this->frame_info->desired_fps = 60.0;
   this->frame_info->desired_ms_per_frame = 1000.0 / 60.0;
@@ -145,7 +144,7 @@ r_app_host_load_app(r_app_host_t* this, const char* filename) {
   this->app = app;
   this->app->lib = *lib;
   this->app->memory_arena = lib->memory_arena;
-  this->app_api = (r_app_i*)lib->functions;
+  this->app_api = (r_app_i*)lib->api;
 
   r_app_info_t app_info = this->app_api->get_app_info();
   this->frame_info->desired_fps = app_info.desired_fps;
@@ -158,7 +157,8 @@ r_app_host_init(r_app_host_t* this) {
 
   for (i32 i = 0; i < this->lib_count; ++i) {
     r_lib_t lib = this->libs[i];
-    lib.api.init(lib.state, this->api_db_api);
+    r_lib_i* api = (r_lib_i*)lib.api;
+    api->init(lib.state, this->api_db_api);
   }
 
   this->app_api->init(this->app, this->api_db_api);
@@ -174,7 +174,8 @@ void //
 r_app_host_destroy(const r_app_host_t* this) {
   for (i32 i = 0; i < this->lib_count; ++i) {
     r_lib_t lib = this->libs[i];
-    lib.api.destroy(lib.state);
+    r_lib_i* api = (r_lib_i*)lib.api;
+    api->destroy(lib.state);
   }
 
   this->app_api->destroy(this->app);

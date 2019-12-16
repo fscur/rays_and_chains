@@ -89,6 +89,7 @@ typedef void* (*R_LIB_DESTROY)(void* lib_state);
 typedef struct r_lib_load_info_t {
   R_LIB_LOADER_FN fn;
   void* handle;
+  void* api_memory_addr;
   void* lib_memory_addr;
   void* state_memory_addr;
 } r_lib_load_info_t;
@@ -100,19 +101,17 @@ typedef struct r_lib_i {
 } r_lib_i;
 
 typedef struct r_lib_t {
-  void* functions[MAX_FUNCTION_COUNT];     // 512
   char name[SHORT_STRING_LENGTH];          // 256
   char file_name[SHORT_STRING_LENGTH];     // 256
   char tmp_file_name[SHORT_STRING_LENGTH]; // 256
   r_datetime_t last_modification;          // 16
-  r_lib_i api;
   void* handle;                            // 8
   r_memory_arena_t* memory_arena;          // 8
+  void* api;                               // 8
   void* state;                             // 8
   i32 version;                             // 4
   u32 id;                                  // 4
-  u32 fn_count;                            // 4
-} r_lib_t;                                 // 1332
+} r_lib_t;
 
 #ifdef __cplusplus
 }
