@@ -3,7 +3,7 @@
 #include "r_logger_device_i.h"
 
 void //
-r_logger_init(r_frame_info_t* frame_info) {
+r_logger_create(r_frame_info_t* frame_info) {
   logger_instance = (r_logger_t*)calloc(1, sizeof(r_logger_t));
   logger_instance->frame_info = frame_info;
 }

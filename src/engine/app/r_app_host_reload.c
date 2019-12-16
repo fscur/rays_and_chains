@@ -1,6 +1,7 @@
 #include "engine/core/r_core_types.h"
 #include "r_app_host.h"
 #include "r_app.h"
+#include "r_app_i.h"
 
 internal bool //
 r_app_host_should_reload_lib(r_lib_t* lib) {

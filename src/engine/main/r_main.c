@@ -22,11 +22,11 @@ r_main(r_main_info_t* main_info,       //
   r_memory_t memory = r_memory_create(app_host_size + kilobytes(128));
 
   r_app_host_t* app_host = r_app_host_create(&memory, &frame_info);
-  r_logger_init(&frame_info);
+  r_logger_create(&frame_info);
+  r_logger_file_device_set_filename(main_info->log_filename);
+
   r_app_host_load_app(app_host, main_info->app_filename);
   r_app_host_init(app_host);
-  
-  r_logger_file_device_set_filename(main_info->log_filename);
   
   while (app_host->running) {
     r_logger_debug("Frame Start.");
@@ -67,5 +67,6 @@ r_main(r_main_info_t* main_info,       //
     frame_info.frame_count++;
   }
 
+  r_logger_destroy();
   r_app_host_destroy(app_host);
 }
