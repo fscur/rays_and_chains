@@ -41,6 +41,26 @@
       ]
     },
     {
+      "label": "build launcher : debug",
+      "type": "shell",
+      "windows": {
+        "options": {
+          "cwd": "p:\\scripts\\windows"
+        },
+        "command": "p:\\scripts\\windows\\engine\\build_launcher_debug.bat"
+      },
+      "linux": {
+        "command": "./scripts/linux/engine/build_laucher_debug.sh"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [
+        "$msCompile"
+      ]
+    },
+    {
       "label": "build sandbox : debug",
       "type": "shell",
       "windows": {

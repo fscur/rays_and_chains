@@ -242,26 +242,33 @@ r_try_parse_cmd_line(int argc, char** argv, r_cmd_line_cmds_t* cmd_line_cmds) {
   const char* prog_name = PROG_NAME;
   const char* prog_version = PROG_VERSION;
 
+  struct arg_lit* attach = arg_lit0("a", "attach", "\t\tdisplay a message box at the start");
+
   struct arg_str* app_name =
-      arg_strn(NULL, NULL, "<app_name>", 1, 1, "name of the application to run");
+      arg_strn(NULL, NULL, "<app_name>", 1, 1, "\t\tname of the application to run");
 
-  struct arg_file* log_filename = arg_file0(NULL, "log", "<log_filename>", "log file path");
+  struct arg_file* log_filename = arg_file0(NULL, "log", "<filename>", "\tlog file path");
 
-  struct arg_lit* help = arg_lit0("h", "help", "print this help and exit");
-  struct arg_lit* version = arg_lit0("v", "version", "print version information and exit");
+  struct arg_lit* help = arg_lit0("h", "help", "\t\tprint this help and exit");
+  struct arg_lit* version = arg_lit0("v", "version", "\tprint version information and exit");
 
   struct arg_end* end = arg_end(2);
-  void* argtable[] = {help, version, app_name, log_filename, end};
+
+  void* argtable[] = {help, //
+                      version,
+                      attach,
+                      app_name,
+                      log_filename,
+                      end};
   int nerrors;
   int exitcode = 1;
 
   /* verify the argtable[] entries were allocated sucessfully */
   if (arg_nullcheck(argtable) != 0) {
     // important: maybe the cmd should use r_logger_log to log the errors?
-    freopen(cmd_line_cmds->log_filename, "w", stdout);
     /* NULL entries were detected, some allocations must have failed */
     printf("%s: insufficient memory\n", prog_name);
-    fclose(stdout);
+    fflush(stdout);
     exitcode = 0;
     goto exit;
   }
@@ -269,31 +276,31 @@ r_try_parse_cmd_line(int argc, char** argv, r_cmd_line_cmds_t* cmd_line_cmds) {
   /* Parse the command line as defined by argtable[] */
   nerrors = arg_parse(argc, argv, argtable);
 
+  cmd_line_cmds->show_attach_msg = attach->count>0;
+  
   /* special case: '--help' takes precedence over error reporting */
   if (help->count > 0) {
-    freopen(cmd_line_cmds->log_filename, "w", stdout);
     print_help(prog_name, argtable);
-    fclose(stdout);
+    fflush(stdout);
     exitcode = 0;
     goto exit;
   }
 
   /* special case: '--version' takes precedence error reporting */
   if (version->count > 0) {
-    freopen(cmd_line_cmds->log_filename, "w", stdout);
     printf("%s version %s", prog_name, prog_version);
-    fclose(stdout);
+    fflush(stdout);
     exitcode = 0;
     goto exit;
   }
 
   /* If the parser returned any errors then display them and exit */
   if (nerrors > 0) {
-    freopen(cmd_line_cmds->log_filename, "w", stdout);
+
     /* Display the error details contained in the arg_end struct.*/
     arg_print_errors(stdout, end, prog_name);
     printf("Try '%s --help' for more information.\n", prog_name);
-    fclose(stdout);
+    fflush(stdout);
     exitcode = 0;
     goto exit;
   }

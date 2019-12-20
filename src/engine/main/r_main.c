@@ -29,6 +29,7 @@ r_main(r_main_info_t* main_info,       //
   r_app_host_init(app_host);
   
   while (app_host->running) {
+    r_logger_file_open();
     r_logger_debug("Frame Start.");
     r_app_host_run(app_host);
 
@@ -65,6 +66,7 @@ r_main(r_main_info_t* main_info,       //
     }
 
     frame_info.frame_count++;
+    r_logger_file_close();
   }
 
   r_logger_destroy();

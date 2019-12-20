@@ -40,7 +40,7 @@ hammer_get_app_info(void) {
                            .width = 1280,
                            .height = 720,
                            .desired_fps = 60.0,
-                           .disable_log_to_file = true};
+                           .disable_log_to_file = false};
 
   return app_info;
 }
@@ -48,7 +48,8 @@ hammer_get_app_info(void) {
 void //
 hammer_load(r_lib_load_info_t* load_info) {
   r_app_i* app_api = (r_app_i*)load_info->api_memory_addr;
-  app_api->get_app_info = (R_APP_GET_APP_INFO)load_info->fn(load_info->handle, "hammer_get_app_info");
+  app_api->get_app_info =
+      (R_APP_GET_APP_INFO)load_info->fn(load_info->handle, "hammer_get_app_info");
   app_api->init = (R_APP_INIT)load_info->fn(load_info->handle, "hammer_init");
   app_api->run = (R_APP_RUN)load_info->fn(load_info->handle, "hammer_run");
   app_api->destroy = (R_APP_DESTROY)load_info->fn(load_info->handle, "hammer_destroy");
@@ -59,7 +60,9 @@ hammer_init_logger(r_api_db_i* api_db) {
   r_logger_device_i* outputstring_device =
       api_db->find_by_name(api_db->instance, R_LOGGER_OUTPUTSTRING_DEVICE_API_NAME);
 
-  _logger->add_device(outputstring_device);
+  if (outputstring_device) {
+    _logger->add_device(outputstring_device);
+  }
 }
 
 internal void //

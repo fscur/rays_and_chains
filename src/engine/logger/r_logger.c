@@ -16,6 +16,9 @@ r_logger_add_device(const r_logger_device_i* device) {
 
 internal void //
 r_logger_print(const char* msg) {
+  printf(msg);
+  fflush(stdout);
+
   for (i8 i = 0; i < logger_instance->device_count; ++i) {
     logger_instance->devices[i]->print(msg);
   }

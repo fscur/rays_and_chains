@@ -28,31 +28,51 @@ on_error(r_error_t* error) {
   r_logger_debug("No good.");
 }
 
+void
+redirect_stdout() {
+  char name[256];
+  int pid = GetCurrentProcessId();
+  sprintf(name, "\\\\.\\pipe\\cout%d", pid);
+  freopen(name, "a", stdout);
+}
+
 int CALLBACK
 WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {
   __hInstance = hInstance;
   __nShowCmd = nShowCmd;
 
-  // int argc = 0;
-  // char** argv = NULL;
+  int argc = 0;
+  char** argv = NULL;
 
-  // if (!r_try_get_cmd_line(&argc, &argv))
-  //   return 1;
+  if (!r_try_get_cmd_line(&argc, &argv))
+    return 1;
+  MessageBoxA(NULL, "attach", "attach", MB_OK);
 
-  // r_cmd_line_cmds_t cmd_line_cmds = {0};
-  // r_string_copy_ansi(cmd_line_cmds.log_filename, R_LOGGER_FILE_DEVICE_FILENAME);
+  if (strcmp(argv[argc - 1], "launcher") == 0) {
+    redirect_stdout();
+    argc--;
+  }
 
-  // if (!r_try_parse_cmd_line(argc, argv, &cmd_line_cmds))
-  //   return 1;
+  r_cmd_line_cmds_t cmd_line_cmds = {0};
+  r_string_copy_ansi(cmd_line_cmds.log_filename, R_LOGGER_FILE_DEVICE_FILENAME);
 
-  // r_free_cmd_line(argv);
+  if (!r_try_parse_cmd_line(argc, argv, &cmd_line_cmds))
+    return 1;
 
-  // r_main_info_t main_info = {0};
-  // r_string_copy_ansi(main_info.app_filename, cmd_line_cmds.app_name);
-  // r_string_concat_ansi(main_info.app_filename, ".dll");
-  // r_string_copy_ansi(main_info.log_filename, cmd_line_cmds.log_filename);
+  r_free_cmd_line(argv);
 
-  // r_main(&main_info, &on_success, &on_error);
+#if _DEBUG
+  if (cmd_line_cmds.show_attach_msg) {
+    MessageBoxA(NULL, "attach", "attach", MB_OK);
+  }
+#endif
+
+  r_main_info_t main_info = {0};
+  r_string_copy_ansi(main_info.app_filename, cmd_line_cmds.app_name);
+  r_string_concat_ansi(main_info.app_filename, ".dll");
+  r_string_copy_ansi(main_info.log_filename, cmd_line_cmds.log_filename);
+
+  r_main(&main_info, &on_success, &on_error);
 
   return 0;
 }

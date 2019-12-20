@@ -9,6 +9,7 @@ extern "C" {
 typedef struct r_cmd_line_cmds_t {
   char app_name[SHORT_STRING_LENGTH];
   char log_filename[SHORT_STRING_LENGTH];
+  bool show_attach_msg;
 } r_cmd_line_cmds_t;
 
 bool //
