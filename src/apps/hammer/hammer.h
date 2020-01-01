@@ -31,9 +31,6 @@ hammer_get_api_size();
 dll_export size_t //
 hammer_get_size();
 
-dll_export u32 //
-hammer_get_id();
-
 dll_export r_app_info_t //
 hammer_get_app_info();
 

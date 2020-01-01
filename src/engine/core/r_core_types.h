@@ -46,8 +46,8 @@ typedef struct r_frame_info_t {
 } r_frame_info_t;
 
 typedef struct r_app_info_t {
-  wchar_t title[SHORT_STRING_LENGTH];
-  char log_filename[LONG_STRING_LENGTH];
+  wchar_t title[R_SHORT_STRING_LENGTH];
+  char log_filename[R_LONG_STRING_LENGTH];
   i32 width;
   i32 height;
   i32 x;
@@ -61,7 +61,7 @@ typedef struct r_success_t {
 } r_success_t;
 
 typedef struct r_error_t {
-  u8 message[SHORT_STRING_LENGTH];
+  u8 message[R_SHORT_STRING_LENGTH];
   u64 code;
   void* data;
 } r_error_t;
@@ -101,16 +101,15 @@ typedef struct r_lib_i {
 } r_lib_i;
 
 typedef struct r_lib_t {
-  char name[SHORT_STRING_LENGTH];          // 256
-  char file_name[SHORT_STRING_LENGTH];     // 256
-  char tmp_file_name[SHORT_STRING_LENGTH]; // 256
+  char name[R_SHORT_STRING_LENGTH];          // 256
+  char file_name[R_SHORT_STRING_LENGTH];     // 256
+  char tmp_file_name[R_SHORT_STRING_LENGTH]; // 256
   r_datetime_t last_modification;          // 16
   void* handle;                            // 8
   r_memory_arena_t* memory_arena;          // 8
   void* api;                               // 8
   void* state;                             // 8
   i32 version;                             // 4
-  u32 id;                                  // 4
 } r_lib_t;
 
 #ifdef __cplusplus

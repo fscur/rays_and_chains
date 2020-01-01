@@ -59,7 +59,7 @@ int
 main(int argc, char* argv[]) {
 
   wchar_t FileName[MAX_PATH] = {0};
-  mbstowcs(FileName, argv[1], SHORT_STRING_LENGTH);
+  mbstowcs(FileName, argv[1], R_SHORT_STRING_LENGTH);
 
   if (FileName == 0)
     return 0;
@@ -420,7 +420,7 @@ DumpCodeViewDebugInfo(LPBYTE pDebugInfo, DWORD DebugInfoSize) {
     if (IsBadStringPtrA((CHAR*)pCvInfo->PdbFileName, UINT_MAX))
       return;
 
-    char file_name[SHORT_STRING_LENGTH - 4] = {0};
+    char file_name[R_SHORT_STRING_LENGTH - 4] = {0};
     size_t len_before = strlen(pCvInfo->PdbFileName);
     sprintf(file_name, "%s", PathFindFileNameA(pCvInfo->PdbFileName));
     PathRemoveExtensionA(file_name);

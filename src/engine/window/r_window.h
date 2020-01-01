@@ -28,7 +28,7 @@ typedef enum r_window_state_e {
 } r_window_state_e;
 
 typedef struct r_window_desc_t {
-  wchar_t title[SHORT_STRING_LENGTH];
+  wchar_t title[R_SHORT_STRING_LENGTH];
   i32 x;
   i32 y;
   i32 width;
@@ -41,7 +41,7 @@ typedef struct r_window_desc_t {
 
 typedef struct r_window_t {
   void* handle;
-  wchar_t title[SHORT_STRING_LENGTH];
+  wchar_t title[R_SHORT_STRING_LENGTH];
   i32 x;
   i32 y;
   i32 width;

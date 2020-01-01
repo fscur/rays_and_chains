@@ -1,11 +1,6 @@
 #include "engine/plugins/r_plugin.h"
 #include "r_ui_imgui.h"
 
-u32 //
-r_ui_imgui_get_id(void) {
-  return R_UI_RENDERER_IMGUI_API_ID;
-}
-
 size_t //
 r_ui_imgui_get_size(void) {
   return sizeof(r_ui_renderer_t);

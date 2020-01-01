@@ -8,7 +8,6 @@ extern "C" {
 
 typedef struct r_api_db_i r_api_db_i;
 
-#define R_LOGGER_OUTPUTSTRING_DEVICE_API_ID 259
 #define R_LOGGER_OUTPUTSTRING_DEVICE_API_NAME "r_logger_outputstring_device"
 
 dll_export void //
@@ -19,9 +18,6 @@ r_logger_outputstring_device_get_api_size();
 
 dll_export size_t //
 r_logger_outputstring_device_get_size();
-
-dll_export u32 //
-r_logger_outputstring_device_get_id();
 
 dll_export void //
 r_logger_outputstring_device_init(void* this, r_api_db_i* api_db);

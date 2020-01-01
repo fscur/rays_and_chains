@@ -7,8 +7,8 @@ extern "C" {
 #include "engine/core/r_core_types.h"
 
 typedef struct r_cmd_line_cmds_t {
-  char app_name[SHORT_STRING_LENGTH];
-  char log_filename[SHORT_STRING_LENGTH];
+  char app_name[R_SHORT_STRING_LENGTH];
+  char log_filename[R_SHORT_STRING_LENGTH];
   bool show_attach_msg;
 } r_cmd_line_cmds_t;
 

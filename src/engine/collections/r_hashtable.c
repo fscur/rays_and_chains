@@ -12,8 +12,15 @@ typedef struct r_hashtable_t {
   r_hashtable_item_t* items[R_HASHTABLE_MAX_ITEMS];
 } r_hashtable_t;
 
+r_hashtable_t* //
+r_hashtable_create() {
+  return calloc(1, sizeof(r_hashtable_t));
+}
+
 void //
-r_hashtable_add(r_hashtable_t* hashtable, char* key, void* data) {
+r_hashtable_add(r_hashtable_t* hashtable, const char* key, void* data) {
+  assert(r_string_length_ansi(key) < R_HASHTABLE_MAX_KEY_LENGTH);
+
   u32 index =
       r_murmur3_32(key, r_string_length_ansi(key), R_HASHTABLE_SEED) % R_HASHTABLE_MAX_ITEMS;
 
@@ -34,7 +41,7 @@ r_hashtable_add(r_hashtable_t* hashtable, char* key, void* data) {
 }
 
 void* //
-r_hashtable_find(r_hashtable_t* hashtable, char* key) {
+r_hashtable_find(r_hashtable_t* hashtable, const char* key) {
   u32 index =
       r_murmur3_32(key, r_string_length_ansi(key), R_HASHTABLE_SEED) % R_HASHTABLE_MAX_ITEMS;
 
@@ -58,7 +65,7 @@ r_hashtable_find(r_hashtable_t* hashtable, char* key) {
 }
 
 void //
-r_hashtable_remove(r_hashtable_t* hashtable, char* key) {
+r_hashtable_remove(r_hashtable_t* hashtable, const char* key) {
   u32 index =
       r_murmur3_32(key, r_string_length_ansi(key), R_HASHTABLE_SEED) % R_HASHTABLE_MAX_ITEMS;
 
@@ -88,4 +95,24 @@ r_hashtable_remove(r_hashtable_t* hashtable, char* key) {
   }
 
   free(current);
+}
+
+void //
+r_hashtable_destroy(r_hashtable_t* hashtable) {
+  for (size_t i = 0; i < R_HASHTABLE_MAX_ITEMS; i++) {
+    r_hashtable_item_t* current = hashtable->items[i];
+
+    if (current == NULL)
+      continue;
+
+    r_hashtable_item_t* next = current->next;
+
+    while (next != NULL) {
+      free(current);
+      current = next;
+      next = current->next;
+    }
+    free(current);
+  }
+  free(hashtable);
 }

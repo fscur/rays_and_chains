@@ -18,11 +18,6 @@ internal r_window_i* _window = NULL;
 internal r_string_i* _string = NULL;
 internal hammer_t* _this = NULL;
 
-u32 //
-hammer_get_id(void) {
-  return 0;
-}
-
 size_t //
 hammer_get_api_size(void) {
   return sizeof(r_app_i);

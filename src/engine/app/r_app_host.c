@@ -48,11 +48,8 @@ r_app_host_init_logger_apis(r_app_host_t* this) {
   logger_file_device.print = &r_logger_file_device_print;
   logger_file_device.set_filename = &r_logger_file_device_set_filename;
 
-  r_api_db_add(this->api_db, R_LOGGER_API_ID, R_LOGGER_API_NAME, &logger);
-  r_api_db_add(this->api_db,
-               R_LOGGER_FILE_DEVICE_API_ID,
-               R_LOGGER_FILE_DEVICE_API_NAME,
-               &logger_file_device);
+  r_api_db_add(this->api_db, R_LOGGER_API_NAME, &logger);
+  r_api_db_add(this->api_db, R_LOGGER_FILE_DEVICE_API_NAME, &logger_file_device);
 }
 
 internal void //
@@ -64,7 +61,7 @@ r_app_host_init_window_apis(r_app_host_t* this) {
   window.show = &r_window_show;
   window.process_input = &r_window_process_input;
 
-  r_api_db_add(this->api_db, R_WINDOW_API_ID, R_WINDOW_API_NAME, &window);
+  r_api_db_add(this->api_db, R_WINDOW_API_NAME, &window);
 }
 
 internal void //
@@ -73,7 +70,7 @@ r_app_host_init_string_apis(r_app_host_t* this) {
   string_api.to_ansi = &r_string_to_ansi;
   string_api.copy_ansi = &r_string_copy_ansi;
   string_api.copy_wide = &r_string_copy_wide;
-  r_api_db_add(this->api_db, R_STRING_API_ID, R_STRING_API_NAME, &string_api);
+  r_api_db_add(this->api_db, R_STRING_API_NAME, &string_api);
 }
 
 internal void //
@@ -112,7 +109,7 @@ r_app_host_get_size(void) {
   return sizeof(r_app_host_t) +   //
          sizeof(r_api_db_t) +     //
          sizeof(r_frame_info_t) + //
-         sizeof(r_lib_t) * MAX_LIB_COUNT;
+         sizeof(r_lib_t) * R_MAX_LIB_COUNT;
 }
 
 r_app_host_t* //
@@ -121,7 +118,7 @@ r_app_host_create(r_memory_t* memory, r_frame_info_t* frame_info) {
   size_t total_memory = r_app_host_get_size();
   r_memory_arena_t* memory_arena = r_memory_add_arena(memory, total_memory);
   r_app_host_t* this = r_memory_arena_push_struct(memory_arena, r_app_host_t);
-  this->api_db = r_memory_arena_push_struct(memory_arena, r_api_db_t);
+  this->api_db = r_api_db_create();
 
   r_string_copy_ansi(this->libs_path, ".\\libs");
 
@@ -150,9 +147,9 @@ r_app_host_load_app(r_app_host_t* this, const char* filename) {
   r_app_info_t app_info = this->app_api->get_app_info();
   this->frame_info->desired_fps = app_info.desired_fps;
 
-  if (!app_info.disable_log_to_file)
-  {
-    r_logger_file_device_i* logger_file_device = r_api_db_find_by_name(this->api_db, R_LOGGER_FILE_DEVICE_API_NAME);
+  if (!app_info.disable_log_to_file) {
+    r_logger_file_device_i* logger_file_device =
+        r_api_db_find_by_name(this->api_db, R_LOGGER_FILE_DEVICE_API_NAME);
     r_logger_add_device((r_logger_device_i*)logger_file_device);
   }
 }

@@ -31,7 +31,7 @@ typedef struct r_plugin_load_info_t {
 } r_plugin_load_info_t;
 
 typedef struct r_plugin_t {
-  char name[SHORT_STRING_LENGTH];
+  char name[R_SHORT_STRING_LENGTH];
   u32 id;
   int version;
   size_t memory_size;
@@ -45,8 +45,8 @@ typedef struct r_plugin_t {
   R_PLUGIN_RENDER render;
   R_PLUGIN_UNLOAD unload;
   R_PLUGIN_DESTROY destroy;
-  char file_name[SHORT_STRING_LENGTH];
-  char tmp_file_name[SHORT_STRING_LENGTH];
+  char file_name[R_SHORT_STRING_LENGTH];
+  char tmp_file_name[R_SHORT_STRING_LENGTH];
   r_datetime_t last_modification;
 } r_plugin_t;
 

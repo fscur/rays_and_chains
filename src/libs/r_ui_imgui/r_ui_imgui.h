@@ -18,7 +18,6 @@ typedef struct r_plugin_t r_plugin_t;
 typedef struct ImGuiContext ImGuiContext;
 typedef struct ImGuiIO ImGuiIO;
 
-#define R_UI_RENDERER_IMGUI_API_ID 257
 #define R_UI_RENDERER_IMGUI_API_NAME "r_ui_renderer_imgui"
 
 typedef struct r_ui_renderer_t {
@@ -36,9 +35,6 @@ r_ui_imgui_load(r_lib_load_info_t* load_info);
 
 dll_export size_t //
 r_ui_imgui_get_size();
-
-dll_export u32 //
-r_ui_imgui_get_id();
 
 dll_export void //
 r_ui_imgui_init(r_ui_renderer_t* this, r_api_db_i* api_db);

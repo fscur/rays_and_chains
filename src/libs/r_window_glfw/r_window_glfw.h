@@ -29,9 +29,6 @@ r_window_glfw_load(r_lib_load_info_t* load_info);
 dll_export size_t //
 r_window_glfw_get_size();
 
-dll_export u32 //
-r_window_glfw_get_id();
-
 dll_export void //
 r_window_glfw_init(glfw_t* this, r_api_db_i* api_db);
 

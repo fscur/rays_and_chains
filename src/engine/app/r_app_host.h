@@ -19,10 +19,10 @@ typedef struct r_app_host_t {
   r_app_i* app_api;
   r_app_t* app;
   bool running;
-  char libs_path[SHORT_STRING_LENGTH];
-  r_lib_t libs[MAX_LIB_COUNT];
+  char libs_path[R_SHORT_STRING_LENGTH];
+  r_lib_t libs[R_MAX_LIB_COUNT];
   i32 lib_count;
-  u8 reloaded_libs[MAX_LIB_COUNT];
+  u8 reloaded_libs[R_MAX_LIB_COUNT];
   u8 reloaded_lib_count;
 } r_app_host_t;
 

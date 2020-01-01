@@ -6,7 +6,7 @@ extern "C" {
 
 #include "engine/core/r_core_types.h"
 
-global char R_LOGGER_FILE_DEVICE_FILENAME[LONG_STRING_LENGTH] = "log.log";
+global char R_LOGGER_FILE_DEVICE_FILENAME[R_LONG_STRING_LENGTH] = "log.log";
 global FILE* log_file = NULL;
 
 void //

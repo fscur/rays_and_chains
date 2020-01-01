@@ -9,11 +9,6 @@
 
 #pragma comment(lib, "opengl32.lib")
 
-u32 //
-r_gfx_opengl_get_id(void) {
-  return OPENGL_API_ID;
-}
-
 size_t //
 r_gfx_opengl_get_size(void) {
   return sizeof(opengl_t);

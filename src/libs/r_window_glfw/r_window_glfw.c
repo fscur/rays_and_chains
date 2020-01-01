@@ -1,11 +1,6 @@
 #include "engine/plugins/r_plugin.h"
 #include "r_window_glfw.h"
 
-u32 //
-r_window_glfw_get_id(void) {
-  return GLFW_API_ID;
-}
-
 size_t //
 r_window_glfw_get_size(void) {
   return sizeof(glfw_t);

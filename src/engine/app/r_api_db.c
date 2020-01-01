@@ -1,18 +1,31 @@
 #include "r_api_db.h"
 #include "engine\string\r_string.h"
+#include "engine\collections\r_hashtable.h"
+
+typedef struct r_api_db_t {
+  r_hashtable_t* apis;
+} r_api_db_t;
+
+r_api_db_t* //
+r_api_db_create() {
+  r_hashtable_t* apis = r_hashtable_create();
+  r_api_db_t* db = calloc(1, sizeof(r_api_db_t));
+  db->apis = apis;
+  return db;
+}
 
 void //
-r_api_db_add(r_api_db_t* db, u32 api_id, const char* api_name, void* api_handle) {
-  assert(r_string_length_ansi(api_name) < MAX_API_NAME_LENGTH);
-  r_string_copy_ansi(db->names[api_id], api_name);
-  db->apis[api_id] = api_handle;
+r_api_db_add(r_api_db_t* db, const char* api_name, void* api_handle) {
+  r_hashtable_add(db->apis, api_name, api_handle);
 }
 
 void* //
 r_api_db_find_by_name(const r_api_db_t* db, const char* api_name) {
-  for (int i = 0; i < MAX_APIS; ++i) {
-    if (r_string_compare_ansi(db->names[i], api_name) == 0)
-      return db->apis[i];
-  }
-  return NULL;
+  return r_hashtable_find(db->apis, api_name);
+}
+
+void //
+r_api_db_destroy(r_api_db_t* db) {
+  r_hashtable_destroy(db->apis);
+  free(db);
 }

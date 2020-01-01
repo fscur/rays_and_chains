@@ -7,14 +7,14 @@ extern "C" {
 #include "engine/core/r_core_types.h"
 
 typedef struct r_file_info_w_t {
-  wchar_t name[SHORT_STRING_LENGTH];
-  wchar_t full_name[SHORT_STRING_LENGTH];
+  wchar_t name[R_SHORT_STRING_LENGTH];
+  wchar_t full_name[R_SHORT_STRING_LENGTH];
   size_t size;
 } r_file_info_w_t;
 
 typedef struct r_file_info_a_t {
-  char name[SHORT_STRING_LENGTH];
-  char full_name[SHORT_STRING_LENGTH];
+  char name[R_SHORT_STRING_LENGTH];
+  char full_name[R_SHORT_STRING_LENGTH];
   size_t size;
 } r_file_info_a_t;
 

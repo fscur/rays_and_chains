@@ -50,7 +50,6 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
 
   if (!r_try_get_cmd_line(&argc, &argv))
     return 1;
-  MessageBoxA(NULL, "attach", "attach", MB_OK);
 
   if (strcmp(argv[argc - 1], "launcher") == 0) {
     redirect_stdout();
