@@ -18,6 +18,8 @@
 
 #include "engine/algorithms/r_murmur3.c"
 
+#pragma warning(disable : 4311)
+
 void
 on_success(r_success_t* success) {
   r_logger_debug("All good.");
@@ -35,6 +37,8 @@ redirect_stdout() {
   sprintf(name, "\\\\.\\pipe\\cout%d", pid);
   freopen(name, "a", stdout);
 }
+
+#include "engine/collections/r_hashtable.c"
 
 int CALLBACK
 WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {
