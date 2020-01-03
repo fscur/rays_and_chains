@@ -8,7 +8,7 @@ extern "C" {
 #define R_STRING_API_ID 3
 #define R_STRING_API_NAME "r_string"
 
-typedef void (*R_STRING_TO_ANSI)(wchar_t* wide_string, char* ansi_string, size_t length);
+typedef void (*R_STRING_TO_ANSI)(const wchar_t* wide_string, char* ansi_string, size_t length);
 typedef void (*R_STRING_COPY_WIDE)(wchar_t* destination, const wchar_t* source);
 typedef void (*R_STRING_COPY_ANSI)(char* destination, const char* source);
 

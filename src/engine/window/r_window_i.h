@@ -5,7 +5,6 @@ extern "C" {
 
 #include "engine/core/r_core_types.h"
 
-#define R_WINDOW_API_ID 2
 #define R_WINDOW_API_NAME "r_window"
 
 typedef struct r_window_t r_window_t;

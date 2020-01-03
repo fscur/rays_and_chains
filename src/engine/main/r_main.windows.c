@@ -13,12 +13,7 @@
 #include "engine/lib_loader/r_lib_loader.windows.c"
 #include "engine/main/r_cmd_line.windows.c"
 #include "engine/main/r_main.c"
-#include "engine/main/r_console.c"
 #include <windows.h>
-
-#include "engine/algorithms/r_murmur3.c"
-
-#pragma warning(disable : 4311)
 
 void
 on_success(r_success_t* success) {
@@ -37,8 +32,6 @@ redirect_stdout() {
   sprintf(name, "\\\\.\\pipe\\cout%d", pid);
   freopen(name, "a", stdout);
 }
-
-#include "engine/collections/r_hashtable.c"
 
 int CALLBACK
 WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {

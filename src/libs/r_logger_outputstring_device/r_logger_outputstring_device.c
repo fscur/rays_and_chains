@@ -19,10 +19,12 @@ r_logger_outputstring_device_get_api_size(void) {
 
 void //
 r_logger_outputstring_device_load(r_lib_load_info_t* load_info) {
+  R_LIB_LOADER_FN fn = load_info->fn;
+  void* handle = load_info->handle;
+
   r_lib_i* lib_api = (r_lib_i*)load_info->api_memory_addr;
-  lib_api->init = (R_LIB_INIT)load_info->fn(load_info->handle, "r_logger_outputstring_device_init");
-  lib_api->destroy =
-      (R_LIB_DESTROY)load_info->fn(load_info->handle, "r_logger_outputstring_device_destroy");
+  lib_api->init = (R_LIB_INIT)fn(handle, "r_logger_outputstring_device_init");
+  lib_api->destroy = (R_LIB_DESTROY)fn(handle, "r_logger_outputstring_device_destroy");
 }
 
 void //

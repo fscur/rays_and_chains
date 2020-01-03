@@ -5,6 +5,10 @@
 #include "engine/thread/r_thread.h"
 #include "engine/logger/r_logger.h"
 
+#include "engine/main/r_console.c"
+#include "engine/algorithms/r_murmur3.c"
+#include "engine/collections/r_hashtable.c"
+
 void                                   //
 r_main(r_main_info_t* main_info,       //
        R_RESULT_ON_SUCCESS on_success, //

@@ -13,6 +13,8 @@
 #include "engine/window/r_window.h"
 #include "engine/window/r_window_i.h"
 
+#include "libs/r_window_glfw/r_window_glfw.h"
+
 internal r_logger_i* _logger = NULL;
 internal r_window_i* _window = NULL;
 internal r_string_i* _string = NULL;
@@ -77,7 +79,7 @@ hammer_init_window() {
 internal void //
 hammer_init_globals(hammer_t* this, r_api_db_i* api_db) {
   _this = this;
-  _window = api_db->find_by_name(api_db->instance, R_WINDOW_API_NAME);
+  _window = api_db->find_by_name(api_db->instance, R_WINDOW_GLFW_API_NAME);
   _string = api_db->find_by_name(api_db->instance, R_STRING_API_NAME);
   _logger = api_db->find_by_name(api_db->instance, R_LOGGER_API_NAME);
 }
@@ -92,9 +94,10 @@ hammer_init(hammer_t* this, r_api_db_i* api_db) {
 
 void //
 hammer_run(hammer_t* this, r_frame_info_t* frame_info) {
-
   _logger->debug("Running.");
   _window->process_input(this->main_window);
+  _window->set_back_color(this->main_window, (r_color_t){1.0f, 0.0f, 0.0f, 1.0f});
+  _window->swap_buffers(this->main_window);
   this->running = !this->main_window->should_close;
 }
 
