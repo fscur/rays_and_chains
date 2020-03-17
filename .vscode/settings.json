@@ -1,64 +1,64 @@
 {
-    "files.autoSave": "afterDelay",
-    "files.autoSaveDelay": 500,
-    "editor.formatOnSave": true,
-    "editor.tabSize": 2,
-    "editor.fontSize": 15,
-    "clang-format.executable": "clang-format",
-    "editor.renderIndentGuides": false,
-    "files.associations": {
-      "cimgui.h": "c",
-      "stdio.h": "c",
-      "stdbool.h": "c",
-      "r_core_types.h": "c",
-      "r_app_window.h": "c",
-      "glfw3.h": "c",
-      "string": "c",
-      "r_app.h": "c",
-      "r_plugin.h": "c",
-      "r_logger_i.h": "c",
-      "r_api_db.h": "c",
-      "sandbox.h": "c",
-      "system_error": "c",
-      "xlocale": "c"
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 500,
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "editor.fontSize": 15,
+  "clang-format.executable": "clang-format",
+  "editor.renderIndentGuides": false,
+  "files.associations": {
+    "cimgui.h": "c",
+    "stdio.h": "c",
+    "stdbool.h": "c",
+    "r_core_types.h": "c",
+    "r_app_window.h": "c",
+    "glfw3.h": "c",
+    "string": "c",
+    "r_app.h": "c",
+    "r_plugin.h": "c",
+    "r_logger_i.h": "c",
+    "r_api_db.h": "c",
+    "sandbox.h": "c",
+    "system_error": "c",
+    "xlocale": "c"
+  },
+  "editor.wordWrapColumn": 100,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true
+  },
+  "todohighlight.defaultStyle": {
+    "backgroundColor": "rgba(0,0,0,.2)",
+    "cursor": "pointer",
+    "isWholeLine": true,
+  },
+  "todohighlight.isEnable": true,
+  "todohighlight.isCaseSensitive": true,
+  "todohighlight.keywords": [{
+      "text": "important:",
+      "color": "red",
     },
-    "editor.wordWrapColumn": 100,
-    "files.exclude": {
-        "**/.git": true,
-        "**/.svn": true,
-        "**/.hg": true,
-        "**/CVS": true,
-        "**/.DS_Store": true
+    {
+      "text": "hack:",
+      "color": "red",
     },
-    "todohighlight.defaultStyle": {
-        "backgroundColor": "rgba(0,0,0,.2)",
-        "cursor": "pointer",
-        "isWholeLine": true,
+    {
+      "text": "note:",
+      "color": "#0cf"
     },
-    "todohighlight.isEnable": true,
-    "todohighlight.isCaseSensitive": true,
-    "todohighlight.keywords": [
-        {
-            "text": "important:",
-            "color": "red",
-        },
-        {
-            "text": "hack:",
-            "color": "red",
-        },
-        {
-            "text": "note:",
-            "color": "#0cf"
-        },
-        {
-            "text": "info:",
-            "color": "#0fc"
-        },
-        {
-            "text": "todo:",
-            "color": "#fc0",
-        }
-    ],
-    "terminal.integrated.cursorStyle": "line",
-    "cmake.configureOnOpen": false
+    {
+      "text": "info:",
+      "color": "#0fc"
+    },
+    {
+      "text": "todo:",
+      "color": "#fc0",
+    }
+  ],
+  "terminal.integrated.cursorStyle": "line",
+  "terminal.integrated.shell.windows": "C:\\Windows\\System32\\cmd.exe",
+  "cmake.configureOnOpen": false
 }

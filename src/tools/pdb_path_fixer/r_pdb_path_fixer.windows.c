@@ -16,7 +16,7 @@
 #define MakePtr(cast, ptr, addValue) (cast)((DWORD_PTR)(ptr) + (DWORD_PTR)(addValue))
 #define CV_SIGNATURE_NB10 '01BN'
 #define CV_SIGNATURE_RSDS 'SDSR'
-#define SHORT_STRING_LENGTH 256
+#define R_SHORT_STRING_LENGTH 256
 
 struct CV_HEADER {
   DWORD CvSignature;

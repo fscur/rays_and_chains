@@ -2,7 +2,7 @@
 #include <stdio.h>
 #pragma comment(lib, "user32.lib")
 
-#define SHORT_STRING_LENGTH 256
+#define R_SHORT_STRING_LENGTH 256
 
 typedef struct version {
   int major;

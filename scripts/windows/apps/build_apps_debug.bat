@@ -1,6 +1,6 @@
 cls
 @echo off
-set "ROOT=..\.."
+set "ROOT=..\..\.."
 set "APP_NAME=%1"
 set "DEFINES=/DUNICODE /D_DEBUG /DWIN32 /D_CRT_SECURE_NO_WARNINGS /DGLFW_INCLUDE_NONE /DCIMGUI_DEFINE_ENUMS_AND_STRUCTS /DIMGUI_IMPL_OPENGL_LOADER_GLAD"
 set "WARNINGS=/WX /W4 /wd4100 /wd4204 /wd4312 /wd4201 /wd4055 /wd4054"
@@ -18,6 +18,8 @@ del build\apps\%APP_NAME%*.* /Q
 del build\apps\%APP_NAME%\%APP_NAME%* /Q
 if not exist build mkdir build
 cd build
+if not exist windows mkdir windows
+cd windows
 if not exist apps mkdir apps
 cd apps
 if not exist %APP_NAME% mkdir %APP_NAME%
@@ -38,19 +40,19 @@ rc /d DEBUG ".\src\apps\%APP_NAME%\version.rc"
 popd
 
 call log [info] "Compiling %APP_NAME%"
-pushd %ROOT%\build\apps
+pushd %ROOT%\build\windows\apps
 cl %INCLUDE_DIRS% %COMMON_COMPILER_FLAGS% "%ROOT%\src\apps\%APP_NAME%\%APP_NAME%.windows.c" /Fe"%APP_NAME%\%APP_NAME%.dll" /Fm"%APP_NAME%\%APP_NAME%.map" /Fo"%APP_NAME%\%APP_NAME%.obj" /link /DLL /PDB:"%APP_NAME%\%APP_NAME%.%TAG%.pdb" %COMMON_LINKER_FLAGS% "%ROOT%\src\apps\%APP_NAME%\version.res"
 popd
 echo.
 
 call log [info] "Fixing %APP_NAME%.dll pdb path"
 pushd %ROOT%
-.\tools\pdb_path_fixer\pdb_path_fixer.exe ".\build\apps\%APP_NAME%\%APP_NAME%.dll"
+.\tools\pdb_path_fixer\pdb_path_fixer.exe ".\build\windows\apps\%APP_NAME%\%APP_NAME%.dll"
 popd 
 echo.
 
 call log [info] "Copying output to bin"
 pushd %ROOT%
-robocopy .\build\apps\%APP_NAME% .\bin %APP_NAME%.*.pdb /xo /njh /njs /ndl /nc /ns /nfl
-robocopy .\build\apps\%APP_NAME% .\bin %APP_NAME%.dll /xo /njh /njs /ndl /nc /ns /nfl
+robocopy .\build\windows\apps\%APP_NAME% .\bin\windows %APP_NAME%.*.pdb /xo /njh /njs /ndl /nc /ns /nfl
+robocopy .\build\windows\apps\%APP_NAME% .\bin\windows %APP_NAME%.dll /xo /njh /njs /ndl /nc /ns /nfl
 popd
