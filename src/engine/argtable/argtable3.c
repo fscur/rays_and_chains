@@ -29,7 +29,10 @@
  ******************************************************************************/
 
 #include "argtable3.h"
-
+#ifdef __linux__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
+#endif
 #define ARG_AMALGAMATION
 
 /*******************************************************************************
@@ -6237,4 +6240,8 @@ DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
   UNREFERENCED_PARAMETER(hinstDLL);
   UNREFERENCED_PARAMETER(lpvReserved);
 }
+#endif
+
+#ifdef __linux__
+#pragma GCC diagnostic pop
 #endif

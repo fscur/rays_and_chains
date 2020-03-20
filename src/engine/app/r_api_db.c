@@ -1,6 +1,9 @@
 #include "r_api_db.h"
-#include "engine\string\r_string.h"
-#include "engine\collections\r_hashtable.h"
+#include "engine/string/r_string.h"
+#include "engine/collections/r_hashtable.h"
+#include <stdlib.h>
+
+typedef struct r_hashtable_t r_hashtable_t;
 
 typedef struct r_api_db_t {
   r_hashtable_t* apis;

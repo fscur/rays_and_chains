@@ -20,7 +20,8 @@
     "r_api_db.h": "c",
     "sandbox.h": "c",
     "system_error": "c",
-    "xlocale": "c"
+    "xlocale": "c",
+    "time.h": "c"
   },
   "editor.wordWrapColumn": 100,
   "files.exclude": {
@@ -37,7 +38,8 @@
   },
   "todohighlight.isEnable": true,
   "todohighlight.isCaseSensitive": true,
-  "todohighlight.keywords": [{
+  "todohighlight.keywords": [
+    {
       "text": "important:",
       "color": "red",
     },
@@ -59,6 +61,8 @@
     }
   ],
   "terminal.integrated.cursorStyle": "line",
-  "terminal.integrated.shell.windows": "C:\\Windows\\System32\\cmd.exe",
-  "cmake.configureOnOpen": false
+  "terminal.integrated.shell.windows": "C:\\Windows\\System32\\bash.exe",
+  "cmake.configureOnOpen": false,
+  "C_Cpp.intelliSenseEngineFallback": "Enabled",
+  "C_Cpp.loggingLevel": "Debug"
 }

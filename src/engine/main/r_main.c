@@ -1,13 +1,9 @@
 #include "r_main.h"
-#include "engine/memory/r_memory.h"
+#include "engine/logger/r_logger.h"
 #include "engine/time/r_datetime.h"
 #include "engine/app/r_app_host.h"
 #include "engine/thread/r_thread.h"
-#include "engine/logger/r_logger.h"
-
-#include "engine/main/r_console.c"
-#include "engine/algorithms/r_murmur3.c"
-#include "engine/collections/r_hashtable.c"
+#include "engine/memory/r_memory.h"
 
 void                                   //
 r_main(r_main_info_t* main_info,       //
@@ -20,7 +16,6 @@ r_main(r_main_info_t* main_info,       //
   r_thread_set_sleep_granularity(1);
   r_clock_init();
   last = start = r_datetime_now();
-
   r_frame_info_t frame_info = {0};
   size_t app_host_size = r_app_host_get_size();
   r_memory_t memory = r_memory_create(app_host_size + kilobytes(128));

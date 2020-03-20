@@ -12,6 +12,7 @@
 #include "engine/plugins/r_plugins.windows.c"
 #include "engine/lib_loader/r_lib_loader.windows.c"
 #include "engine/main/r_cmd_line.windows.c"
+#include "engine/main/r_console.windows.c"
 #include "engine/main/r_main.c"
 #include <windows.h>
 

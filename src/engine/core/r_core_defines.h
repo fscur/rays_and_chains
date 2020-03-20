@@ -6,6 +6,8 @@ extern "C" {
 // keywords
 #if defined(WIN32)
 #define dll_export __declspec(dllexport)
+#else 
+#define dll_export
 #endif
 
 #define local static

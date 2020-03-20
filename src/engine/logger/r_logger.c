@@ -16,7 +16,7 @@ r_logger_add_device(const r_logger_device_i* device) {
 
 internal void //
 r_logger_print(const char* msg) {
-  printf(msg);
+  printf("%s", msg);
   fflush(stdout);
 
   for (i8 i = 0; i < logger_instance->device_count; ++i) {
@@ -35,7 +35,7 @@ r_logger_debug(const char* format, ...) {
 
   char output[2048] = {0};
   sprintf(output,
-          "[%010I64d][%08.3f][DEBUG] %s\n",
+          "[%010ld][%08.3f][DEBUG] %s\n",
           logger_instance->frame_info->frame_count,
           logger_instance->frame_info->now / 1000.0f,
           msg);
@@ -55,7 +55,7 @@ r_logger_warn(const char* format, ...) {
 
   char output[2048] = {0};
   sprintf(output,
-          "[%010I64d][%08.3f][WARN] %s\n",
+          "[%010ld][%08.3f][WARN] %s\n",
           logger_instance->frame_info->frame_count,
           logger_instance->frame_info->now / 1000.0f,
           msg);
@@ -73,7 +73,7 @@ r_logger_error(const char* format, ...) {
 
   char output[2048] = {0};
   sprintf(output,
-          "[%010I64d][%08.3f][ERROR] %s\n",
+          "[%010ld][%08.3f][ERROR] %s\n",
           logger_instance->frame_info->frame_count,
           logger_instance->frame_info->now / 1000.0f,
           msg);

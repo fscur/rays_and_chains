@@ -7,6 +7,8 @@ extern "C" {
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <wchar.h>
+#include <stdio.h>
 
 #include "r_core_version.h"
 #include "r_core_defines.h"
@@ -25,17 +27,6 @@ typedef float f32;
 typedef double f64;
 
 #include "r_core_math_types.h"
-
-typedef struct r_datetime_t {
-  i16 year;
-  i16 month;
-  i16 day_of_week;
-  i16 day;
-  i16 hour;
-  i16 minute;
-  i16 second;
-  i16 milli_seconds;
-} r_datetime_t;
 
 typedef struct r_frame_info_t {
   f64 desired_fps;
@@ -99,18 +90,6 @@ typedef struct r_lib_i {
   R_LIB_INIT init;
   R_LIB_DESTROY destroy;
 } r_lib_i;
-
-typedef struct r_lib_t {
-  char name[R_SHORT_STRING_LENGTH];          // 256
-  char file_name[R_SHORT_STRING_LENGTH];     // 256
-  char tmp_file_name[R_SHORT_STRING_LENGTH]; // 256
-  r_datetime_t last_modification;          // 16
-  void* handle;                            // 8
-  r_memory_arena_t* memory_arena;          // 8
-  void* api;                               // 8
-  void* state;                             // 8
-  i32 version;                             // 4
-} r_lib_t;
 
 #ifdef __cplusplus
 }

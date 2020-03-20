@@ -7,6 +7,7 @@ extern "C" {
 
 typedef struct r_memory_t r_memory_t;
 typedef struct r_api_db_t r_api_db_t;
+typedef struct r_lib_t r_lib_t;
 
 dll_export r_lib_t* //
 r_lib_loader_load_lib(r_memory_t* memory, const char* filename);
