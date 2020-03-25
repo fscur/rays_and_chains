@@ -1,4 +1,7 @@
 #include "engine/io/r_file.h"
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct r_datetime_t r_datetime_t;
 

@@ -1,8 +1,8 @@
-#include "engine\logger\r_logger_device_i.h"
-#include "engine\logger\r_logger_i.h"
-#include "engine\logger\r_logger.h"
-#include "engine\app\r_api_db_i.h"
-#include "engine\app\r_api_db.h"
+#include "engine/logger/r_logger_device_i.h"
+#include "engine/logger/r_logger_i.h"
+#include "engine/logger/r_logger.h"
+#include "engine/app/r_api_db_i.h"
+#include "engine/app/r_api_db.h"
 
 #include "r_logger_outputstring_device.h"
 #include "r_logger_outputstring_device.impl.h"
@@ -28,7 +28,7 @@ r_logger_outputstring_device_load(r_lib_load_info_t* load_info) {
 }
 
 void //
-r_logger_outputstring_device_init(r_logger_t* this, r_api_db_i* api_db) {
+r_logger_outputstring_device_init(void* this, r_api_db_i* api_db) {
   local r_logger_device_i api;
   api.print = &r_logger_outputstring_device_print;
   api_db->add(api_db->instance, R_LOGGER_OUTPUTSTRING_DEVICE_API_NAME, &api);

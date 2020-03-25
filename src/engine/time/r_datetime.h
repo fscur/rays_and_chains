@@ -18,7 +18,7 @@ typedef struct r_datetime_t {
 } r_datetime_t;
 
 f64 //
-r_datetime_now();
+r_datetime_now_milliseconds();
 
 i32 //
 r_datetime_compare(r_datetime_t* a, r_datetime_t* b);

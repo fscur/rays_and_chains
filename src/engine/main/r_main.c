@@ -15,9 +15,10 @@ r_main(r_main_info_t* main_info,       //
 
   r_thread_set_sleep_granularity(1);
   r_clock_init();
-  last = start = r_datetime_now();
+  last = start = r_datetime_now_milliseconds();
   r_frame_info_t frame_info = {0};
   size_t app_host_size = r_app_host_get_size();
+
   r_memory_t memory = r_memory_create(app_host_size + kilobytes(128));
 
   r_app_host_t* app_host = r_app_host_create(&memory, &frame_info);
@@ -26,14 +27,14 @@ r_main(r_main_info_t* main_info,       //
 
   r_app_host_load_app(app_host, main_info->app_filename);
   r_app_host_init(app_host);
-  
+
   while (app_host->running) {
     r_logger_file_open();
     r_logger_debug("Frame Start.");
     r_app_host_run(app_host);
 
-    // todo: make timings be measured in seconds
-    frame_info.dt = r_datetime_now() - last;
+    // todo: make timings be measured in seconds?
+    frame_info.dt = r_datetime_now_milliseconds() - last;
 
     // note: hold your horses, not so fast!
     if (frame_info.dt < frame_info.desired_ms_per_frame) {
@@ -45,13 +46,13 @@ r_main(r_main_info_t* main_info,       //
 
       assert(frame_info.dt < frame_info.desired_ms_per_frame);
       while (frame_info.dt < frame_info.desired_ms_per_frame) {
-        frame_info.dt = r_datetime_now() - last;
+        frame_info.dt = r_datetime_now_milliseconds() - last;
       }
     } else if (frame_info.frame_count > 0) {
       r_logger_debug("Frame lost! It took %5.2f ms.", frame_info.dt);
     }
 
-    f64 end = r_datetime_now();
+    f64 end = r_datetime_now_milliseconds();
     frame_info.dt = end - last;
     last = end;
     frame_info.now = last - start;

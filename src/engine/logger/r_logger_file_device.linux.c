@@ -2,7 +2,7 @@
 
 #include "r_logger_file_device.h"
 
-char R_LOGGER_FILE_DEVICE_FILENAME[R_LONG_STRING_LENGTH] = "log.log";
+char R_LOGGER_FILE_DEVICE_FILENAME[R_LONG_STRING_LENGTH] = "./log.log";
 FILE* log_file = NULL;
 
 void //

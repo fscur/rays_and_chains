@@ -35,35 +35,35 @@ on_error(r_error_t* error) {
 //   freopen(name, "a", stdout);
 // }
 
+#include <unistd.h>
 
 int
 main(int argc, char** argv) {
+  // if (strcmp(argv[argc - 1], "launcher") == 0) {
+  //   redirect_stdout();
+  //   argc--;
+  // }
 
-    // if (strcmp(argv[argc - 1], "launcher") == 0) {
-    //   redirect_stdout();
-    //   argc--;
-    // }
+  r_cmd_line_cmds_t cmd_line_cmds = {0};
+  r_string_copy_ansi(cmd_line_cmds.log_filename, R_LOGGER_FILE_DEVICE_FILENAME);
 
-    r_cmd_line_cmds_t cmd_line_cmds = {0};
-    r_string_copy_ansi(cmd_line_cmds.log_filename, R_LOGGER_FILE_DEVICE_FILENAME);
+  if (!r_try_parse_cmd_line(argc, argv, &cmd_line_cmds))
+    return 1;
 
-    if (!r_try_parse_cmd_line(argc, argv, &cmd_line_cmds))
-      return 1;
-
-  #if _DEBUG
+#if _DEBUG
     // if (cmd_line_cmds.show_attach_msg) {
     //   MessageBoxA(NULL, "attach", "attach", MB_OK);
     // }
-  #endif
+#endif
 
-    r_main_info_t main_info = {0};
-    r_string_copy_ansi(main_info.app_filename, cmd_line_cmds.app_name);
-    r_string_concat_ansi(main_info.app_filename, ".so");
-    r_string_copy_ansi(main_info.log_filename, cmd_line_cmds.log_filename);
+  r_main_info_t main_info = {0};
+  // todo: string.format
+  sprintf(main_info.app_filename, "./%s.so", cmd_line_cmds.app_name);
+  r_string_copy_ansi(main_info.log_filename, cmd_line_cmds.log_filename);
 
-    r_main(&main_info, &on_success, &on_error);
+  r_main(&main_info, &on_success, &on_error);
 
-    return 0;
+  return 0;
 }
 
 // #include "engine/io/r_io.linux.c"
@@ -74,10 +74,15 @@ main(int argc, char** argv) {
 // #include "engine/app/r_api_db.h"
 // #include "engine/app/r_api_db.c"
 // #include "engine/app/r_app_host.c"
+// #include <string.h>
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include "engine/time/r_time.linux.c"
 
 // int
 // main(int argc, char** argv) {
-//   r_app_host_get_size();
-//   r_api_db_t* db = r_api_db_create();
-//   r_api_db_add(db, "filipe", NULL);
+//   float last = r_datetime_now_milliseconds();
+//   while (true) {
+//     printf("time: %f\n", r_datetime_now_milliseconds()-last);
+//   }
 // }

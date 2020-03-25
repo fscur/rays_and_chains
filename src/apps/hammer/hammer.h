@@ -12,11 +12,10 @@ typedef struct r_logger_i r_logger_i;
 typedef struct r_window_i r_window_i;
 typedef struct r_string_i r_string_i;
 typedef struct r_window_t r_window_t;
-typedef struct r_window_t r_window_t;
 typedef struct r_lib_t r_lib_t;
 
 typedef struct hammer_t {
-  r_lib_t lib;
+  r_lib_t* lib;
   r_memory_arena_t* memory_arena;
   bool running;
   r_window_t* main_window;

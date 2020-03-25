@@ -61,46 +61,46 @@
     //     "$msCompile"
     //   ]
     // },
-    // {
-    //   "label": "build sandbox : debug",
-    //   "type": "shell",
-    //   "windows": {
-    //     "options": {
-    //       "cwd": "p:\\scripts\\windows"
-    //     },
-    //     "command": "p:\\scripts\\windows\\apps\\build_apps_debug.bat sandbox"
-    //   },
-    //   "linux": {
-    //     "command": "./scripts/linux/apps/build_apps_debug.sh"
-    //   },
-    //   "group": {
-    //     "kind": "build",
-    //     "isDefault": true
-    //   },
-    //   "problemMatcher": [
-    //     "$msCompile"
-    //   ]
-    // },
-    // {
-    //   "label": "build hammer : debug",
-    //   "type": "shell",
-    //   "windows": {
-    //     "options": {
-    //       "cwd": "p:\\scripts\\windows"
-    //     },
-    //     "command": "p:\\scripts\\windows\\apps\\build_apps_debug.bat hammer"
-    //   },
-    //   "linux": {
-    //     "command": "./scripts/linux/apps/build_apps_debug.sh"
-    //   },
-    //   "group": {
-    //     "kind": "build",
-    //     "isDefault": true
-    //   },
-    //   "problemMatcher": [
-    //     "$msCompile"
-    //   ]
-    // },
+    {
+      "label": "build sandbox : debug",
+      "type": "shell",
+      "windows": {
+        "options": {
+          "cwd": "p:\\scripts\\windows"
+        },
+        "command": "p:\\scripts\\windows\\apps\\build_apps_debug.bat sandbox"
+      },
+      "linux": {
+        "command": "./scripts/linux/apps/build_apps_debug.sh sandbox"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [
+        "$msCompile"
+      ]
+    },
+    {
+      "label": "build hammer : debug",
+      "type": "shell",
+      "windows": {
+        "options": {
+          "cwd": "p:\\scripts\\windows"
+        },
+        "command": "p:\\scripts\\windows\\apps\\build_apps_debug.bat hammer"
+      },
+      "linux": {
+        "command": "./scripts/linux/apps/build_apps_debug.sh hammer"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [
+        "$msCompile"
+      ]
+    },
     // {
     //   "label": "build bumpver : debug",
     //   "type": "shell",
@@ -141,26 +141,26 @@
     //     "$msCompile"
     //   ]
     // },
-    // {
-    //   "label": "build r_window_glfw lib : debug",
-    //   "type": "shell",
-    //   "windows": {
-    //     "options": {
-    //       "cwd": "p:\\scripts\\windows"
-    //     },
-    //     "command": "p:\\scripts\\windows\\libs\\build_libs_debug.bat r_window_glfw"
-    //   },
-    //   "linux": {
-    //     "command": "./scripts/linux/libs/build_libs_debug.sh r_window_glfw"
-    //   },
-    //   "group": {
-    //     "kind": "build",
-    //     "isDefault": true
-    //   },
-    //   "problemMatcher": [
-    //     "$msCompile"
-    //   ]
-    // },
+    {
+      "label": "build r_window_glfw lib : debug",
+      "type": "shell",
+      "windows": {
+        "options": {
+          "cwd": "p:\\scripts\\windows"
+        },
+        "command": "p:\\scripts\\windows\\libs\\build_window_glfw.bat r_window_glfw"
+      },
+      "linux": {
+        "command": "./scripts/linux/libs/build_window_glfw.sh r_window_glfw"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [
+        "$msCompile"
+      ]
+    },
     // {
     //   "label": "build r_ui_imgui lib : debug",
     //   "type": "shell",

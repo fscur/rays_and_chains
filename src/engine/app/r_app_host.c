@@ -1,11 +1,6 @@
 #include "engine/time/r_datetime.h"
 #include "engine/io/r_file.h"
-
-#include "r_app_host.h"
-#include "r_api_db.h"
-#include "r_app.h"
-#include "r_app_i.h"
-#include "r_api_db_i.h"
+#include "engine/io/r_file_info.h"
 
 #include "engine/logger/r_logger.h"
 #include "engine/logger/r_logger_i.h"
@@ -18,6 +13,12 @@
 
 #include "engine/string/r_string.h"
 #include "engine/string/r_string_i.h"
+
+#include "r_api_db.h"
+#include "r_app.h"
+#include "r_app_i.h"
+#include "r_api_db_i.h"
+#include "r_app_host.h"
 
 size_t
 r_app_host_get_size(void) {
@@ -85,7 +86,7 @@ r_app_host_load_lib(r_file_info_a_t file_info, r_app_host_t* this) {
 
 internal void //
 r_app_host_load_libs(r_app_host_t* this) {
-  r_directory_a_foreach_file(this->libs_path, "*.so", (void*)r_app_host_load_lib, this);
+  r_directory_a_foreach_file(this->libs_path, ".so", (void*)r_app_host_load_lib, this);
 }
 
 internal void //
@@ -163,7 +164,7 @@ r_app_host_create(r_memory_t* memory, r_frame_info_t* frame_info) {
   r_app_host_t* this = r_memory_arena_push_struct(memory_arena, r_app_host_t);
   this->api_db = r_api_db_create();
 
-  r_string_copy_ansi(this->libs_path, ".\\libs");
+  r_string_copy_ansi(this->libs_path, "./libs");
 
   this->memory = memory;
   this->frame_info = frame_info;

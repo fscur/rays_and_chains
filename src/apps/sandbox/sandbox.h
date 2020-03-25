@@ -22,17 +22,17 @@ typedef struct r_gfx_renderer_i r_gfx_renderer_i;
 typedef struct r_ui_renderer_i r_ui_renderer_i;
 
 typedef struct sandbox_t {
-  r_api_db_i* api_db;
-  r_logger_i* debug;
-  r_window_i* window;
-  r_ui_i* ui;
-  r_string_i* string;
-  r_gfx_renderer_i* renderer;
-  r_ui_renderer_i* ui_renderer;
+  r_lib_t* lib;
+  r_memory_arena_t* memory_arena;
+  bool running;
+  r_window_t* main_window;
 } sandbox_t;
 
 dll_export void //
 sandbox_load(r_lib_load_info_t* load_info);
+
+dll_export size_t //
+sandbox_get_api_size();
 
 dll_export size_t //
 sandbox_get_size();

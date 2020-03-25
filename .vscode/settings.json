@@ -21,7 +21,8 @@
     "sandbox.h": "c",
     "system_error": "c",
     "xlocale": "c",
-    "time.h": "c"
+    "time.h": "c",
+    "r_lib_loader.h": "c"
   },
   "editor.wordWrapColumn": 100,
   "files.exclude": {
