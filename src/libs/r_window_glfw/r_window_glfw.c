@@ -39,7 +39,7 @@ r_window_glfw_create(r_window_desc_t* window_descriptor) {
   window->should_close = false;
   String->copy_wide(window_descriptor->title, window->title);
 
-  glfwSetWindowPos(window->handle, window_descriptor->x, window_descriptor->y);
+  //glfwSetWindowPos(window->handle, window_descriptor->x, window_descriptor->y);
   glfwMakeContextCurrent(window->handle);
 
   i32 success = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);

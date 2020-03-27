@@ -14,8 +14,8 @@ echo.
 
 pushd %ROOT%
 del bin\%APP_NAME%*.* /Q
-del build\apps\%APP_NAME%*.* /Q
-del build\apps\%APP_NAME%\%APP_NAME%* /Q
+del build\windows\apps\%APP_NAME%*.* /Q
+del build\windows\apps\%APP_NAME%\%APP_NAME%* /Q
 if not exist build mkdir build
 cd build
 if not exist windows mkdir windows

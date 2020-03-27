@@ -3,16 +3,23 @@
 extern "C" {
 #endif
 
-// keywords
-#if defined(WIN32)
-#define dll_export __declspec(dllexport)
-#else 
-#define dll_export
-#endif
-
 #define local static
 #define internal static
 #define global extern
+
+// keywords
+#if defined(WIN32)
+#include <windows.h>
+#define R_LIBS_DIRECTORY ".\\libs"
+#define R_LIBS_EXTENSION ".dll"
+#define dll_export __declspec(dllexport)
+global HINSTANCE __hInstance = 0;
+global int __nShowCmd = 0;
+#else
+#define R_LIBS_DIRECTORY "./libs"
+#define R_LIBS_EXTENSION ".so"
+#define dll_export
+#endif
 
 // consts
 #define R_MAX_LIB_COUNT 256
@@ -23,9 +30,9 @@ extern "C" {
 
 // functions
 #if _DEBUG
-#define assert(expression)                                                                         \
-  if (!(expression)) {                                                                             \
-    *(int*)0 = 0;                                                                                  \
+#define assert(expression)                                                                                             \
+  if (!(expression)) {                                                                                                 \
+    *(int*)0 = 0;                                                                                                      \
   }
 #else
 #define assert(expression)

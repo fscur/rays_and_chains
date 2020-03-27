@@ -19,63 +19,11 @@
 #include "r_app_i.h"
 #include "r_api_db_i.h"
 #include "r_app_host.h"
+#include "r_app_host_reload.c"
 
 size_t
 r_app_host_get_size(void) {
-  return sizeof(r_app_host_t) +
-         sizeof(r_api_db_t) +
-         sizeof(r_frame_info_t) +
-         sizeof(r_lib_t) * R_MAX_LIB_COUNT;
-}
-
-internal bool //
-r_app_host_should_reload_lib(r_lib_t* lib) {
-  r_datetime_t last_modification = {0};
-  if (r_file_a_get_last_modification(lib->file_name, &last_modification))
-    return r_datetime_compare(lib->last_modification, &last_modification) != 0;
-  return false;
-}
-
-internal void //
-r_app_host_reload_libs(r_app_host_t* this) {
-  for (u8 i = 0; i < this->lib_count; ++i) {
-    r_lib_t* lib = &this->libs[i];
-    if (r_app_host_should_reload_lib(lib)) {
-      r_lib_loader_destroy_lib(lib);
-      r_lib_loader_reload_lib(lib);
-      this->reloaded_libs[this->reloaded_lib_count++] = i;
-    }
-  }
-}
-
-internal void //
-r_app_host_reload_app(r_app_host_t* this, r_app_t* app) {
-  r_lib_t* lib = (r_lib_t*)&app->lib;
-  bool should_reload_app = r_app_host_should_reload_lib(lib);
-
-  if (should_reload_app) {
-    r_app_i* app_api = (r_app_i*)lib->api;
-    app_api->destroy(app);
-    r_lib_loader_reload_lib(lib);
-    app_api->init(this->app, this->api_db_api);
-  }
-}
-
-internal void //
-r_app_host_reload(r_app_host_t* this) {
-
-  r_app_host_reload_libs(this);
-
-  for (u32 i = 0; i < this->reloaded_lib_count; ++i) {
-    u8 index = this->reloaded_libs[i];
-    r_lib_t lib = this->libs[index];
-    r_lib_i* lib_api = (r_lib_i*)lib.api;
-    lib_api->init(lib.state, this->api_db_api);
-  }
-
-  this->reloaded_lib_count = 0;
-
-  r_app_host_reload_app(this, this->app);
+  return sizeof(r_app_host_t) + sizeof(r_api_db_t) + sizeof(r_frame_info_t) + sizeof(r_lib_t) * R_MAX_LIB_COUNT;
 }
 
 internal void //
@@ -86,7 +34,7 @@ r_app_host_load_lib(r_file_info_a_t file_info, r_app_host_t* this) {
 
 internal void //
 r_app_host_load_libs(r_app_host_t* this) {
-  r_directory_a_foreach_file(this->libs_path, ".so", (void*)r_app_host_load_lib, this);
+  r_directory_a_foreach_file(this->libs_path, R_LIBS_EXTENSION, (void*)r_app_host_load_lib, this);
 }
 
 internal void //
@@ -164,7 +112,7 @@ r_app_host_create(r_memory_t* memory, r_frame_info_t* frame_info) {
   r_app_host_t* this = r_memory_arena_push_struct(memory_arena, r_app_host_t);
   this->api_db = r_api_db_create();
 
-  r_string_copy_ansi(this->libs_path, "./libs");
+  r_string_copy_ansi(this->libs_path, R_LIBS_DIRECTORY);
 
   this->memory = memory;
   this->frame_info = frame_info;
@@ -192,8 +140,7 @@ r_app_host_load_app(r_app_host_t* this, const char* filename) {
   this->frame_info->desired_fps = app_info.desired_fps;
 
   if (!app_info.disable_log_to_file) {
-    r_logger_file_device_i* logger_file_device =
-        r_api_db_find_by_name(this->api_db, R_LOGGER_FILE_DEVICE_API_NAME);
+    r_logger_file_device_i* logger_file_device = r_api_db_find_by_name(this->api_db, R_LOGGER_FILE_DEVICE_API_NAME);
     r_logger_add_device((r_logger_device_i*)logger_file_device);
   }
 }

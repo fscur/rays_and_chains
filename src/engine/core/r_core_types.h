@@ -28,6 +28,17 @@ typedef double f64;
 
 #include "r_core_math_types.h"
 
+typedef struct r_datetime_t {
+  i16 year;
+  i16 month;
+  i16 day_of_week;
+  i16 day;
+  i16 hour;
+  i16 minute;
+  i16 second;
+  i16 milli_seconds;
+} r_datetime_t;
+
 typedef struct r_frame_info_t {
   f64 desired_fps;
   f64 desired_ms_per_frame;

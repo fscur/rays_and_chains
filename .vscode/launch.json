@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "(gdb) Client",
+      "name": "(Linux) Launch Hammer",
       "type": "cppdbg",
       "request": "launch",
       "program": "${workspaceFolder}/bin/linux/r_engine",
@@ -36,12 +36,12 @@
       "name": "(Windows) Launch Hammer",
       "type": "cppvsdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/bin/r_engine.exe",
+      "program": "${workspaceFolder}/bin/windows/r_engine.exe",
       "args": [
         "hammer"
       ],
       "stopAtEntry": true,
-      "cwd": "${workspaceFolder}/bin",
+      "cwd": "${workspaceFolder}/bin/windows",
       "environment": [],
       "externalConsole": true
     },
@@ -49,7 +49,7 @@
       "name": "(Windows) Launch Launcher",
       "type": "cppvsdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/bin/r_launcher.exe",
+      "program": "${workspaceFolder}/bin/windows/r_launcher.exe",
       "args": [],
       "stopAtEntry": true,
       "cwd": "${workspaceFolder}/bin",

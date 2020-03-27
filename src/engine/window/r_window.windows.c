@@ -1,9 +1,10 @@
 #include "r_window.c"
-#include "r_window.windows.h"
 
 #ifndef UNICODE
 #define UNICODE
 #endif
+
+#pragma comment(lib, "user32.lib")
 
 #include <windows.h>
 

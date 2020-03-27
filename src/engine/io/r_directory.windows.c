@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include <strsafe.h>
 
-#include "engine/io/r_directory.h"
+#include "r_directory.h"
+#include "r_file_info.h"
 
 #pragma comment(lib, "user32.lib")
 
@@ -55,7 +56,7 @@ r_directory_a_foreach_file(char* path, char* filter, void* callback, void* data)
   DWORD dwError = 0;
   LARGE_INTEGER filesize;
   char query[R_SHORT_STRING_LENGTH] = {0};
-  sprintf(query, "%s\\%s", path, filter);
+  sprintf(query, "%s\\*%s", path, filter);
 
   hFind = FindFirstFileA(query, &ffd);
 

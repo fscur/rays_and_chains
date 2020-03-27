@@ -5,6 +5,9 @@
 #include "engine/memory/r_memory_arena.h"
 #include "engine/lib_loader/r_lib_loader.h"
 #include "engine/io/r_file.h"
+#include "r_lib.h"
+
+#pragma comment(lib, "Shlwapi.lib")
 
 internal void //
 r_lib_loader_get_temp_file_name(const char* file_name, char* tmp_file_name) {
@@ -17,7 +20,12 @@ r_lib_loader_get_temp_file_name(const char* file_name, char* tmp_file_name) {
 }
 
 internal void
-r_lib_loader_get_pdb_file_name(const char* file_name, char* pdb_file_name) {
+r_lib_loader_get_pdb_file_name(const char* file_name, char* pdb_file_name) {  
+  char path[R_LONG_STRING_LENGTH];
+  sprintf(path, "%s", file_name);
+
+  PathRemoveFileSpecA(path);
+
   sprintf(pdb_file_name, "%s", file_name);
   PathRemoveExtensionA(pdb_file_name);
   sprintf(pdb_file_name, "%s.*.pdb", pdb_file_name);
@@ -26,8 +34,10 @@ r_lib_loader_get_pdb_file_name(const char* file_name, char* pdb_file_name) {
   HANDLE hFind = INVALID_HANDLE_VALUE;
   hFind = FindFirstFileA(pdb_file_name, &ffd);
   FindClose(hFind);
-  PathRemoveFileSpecA(pdb_file_name);
-  sprintf(pdb_file_name, "%s\\%s", pdb_file_name, ffd.cFileName);
+  if (strlen(path) == 0)
+    sprintf(pdb_file_name, "%s", ffd.cFileName);
+  else
+    sprintf(pdb_file_name, "%s\\%s", path, ffd.cFileName);
 }
 
 r_lib_t* //
@@ -90,6 +100,7 @@ r_lib_loader_load_lib(r_memory_t* memory, const char* file_name) {
   r_string_copy_ansi(lib->name, lib_name);
   r_string_copy_ansi(lib->file_name, file_name);
   r_string_copy_ansi(lib->tmp_file_name, tmp_dll_file_name);
+  
   r_file_a_get_last_modification(lib->file_name, &lib->last_modification);
 
   load(&load_info);

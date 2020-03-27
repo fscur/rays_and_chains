@@ -6,7 +6,6 @@ extern "C" {
 #include "engine/core/r_core_types.h"
 
 typedef struct r_memory_t r_memory_t;
-typedef struct r_api_db_t r_api_db_t;
 typedef struct r_lib_t r_lib_t;
 
 dll_export r_lib_t* //

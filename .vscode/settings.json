@@ -62,7 +62,7 @@
     }
   ],
   "terminal.integrated.cursorStyle": "line",
-  "terminal.integrated.shell.windows": "C:\\Windows\\System32\\bash.exe",
+  "terminal.integrated.shell.windows": "C:\\Windows\\System32\\cmd.exe",
   "cmake.configureOnOpen": false,
   "C_Cpp.intelliSenseEngineFallback": "Enabled",
   "C_Cpp.loggingLevel": "Debug"

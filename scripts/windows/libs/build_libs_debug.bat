@@ -13,8 +13,8 @@ call log [info] "DEBUG"
 echo.
 
 pushd %ROOT%
-del bin\libs\%LIB_NAME%* /Q
-del build\libs\%LIB_NAME%\*.* /Q
+del bin\windows\libs\%LIB_NAME%* /Q
+del build\windows\libs\%LIB_NAME%\*.* /Q
 
 if not exist build mkdir build
 cd build
