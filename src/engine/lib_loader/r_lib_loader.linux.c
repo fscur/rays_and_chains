@@ -20,7 +20,7 @@ load_lib(const char* lib_name) {
 }
 
 r_lib_t* //
-r_lib_loader_load_lib(r_memory_t* memory, const char* file_name) { 
+r_lib_loader_load_lib(r_memory_t* memory, const char* file_name) {
   void* lib_handle = load_lib(file_name);
   assert(lib_handle != NULL);
 
@@ -44,9 +44,9 @@ r_lib_loader_load_lib(r_memory_t* memory, const char* file_name) {
   size_t api_size = get_api_size();
   size_t state_size = get_size();
   r_memory_arena_t* lib_memory_arena = r_memory_add_arena(memory, state_size + api_size + lib_size);
+  void* state_memory_addr = r_memory_arena_push(lib_memory_arena, state_size);
   void* api_memory_addr = r_memory_arena_push(lib_memory_arena, api_size);
   void* lib_memory_addr = r_memory_arena_push(lib_memory_arena, lib_size);
-  void* state_memory_addr = r_memory_arena_push(lib_memory_arena, state_size);
 
   r_lib_load_info_t load_info = {0};
   load_info.fn = &r_lib_loader_fn;
@@ -63,7 +63,7 @@ r_lib_loader_load_lib(r_memory_t* memory, const char* file_name) {
 
   r_string_copy_ansi(lib->name, lib_name);
   r_string_copy_ansi(lib->file_name, file_name);
-  r_file_a_get_last_modification(lib->file_name, lib->last_modification);
+  r_file_a_get_last_modification(lib->file_name, &lib->last_modification);
 
   load(&load_info);
   return lib;

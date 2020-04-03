@@ -10,10 +10,9 @@
 #include "engine/lib_loader/r_lib_loader.linux.c"
 #include "engine/app/r_api_db.c"
 #include "engine/app/r_app.linux.c"
-
 #include "engine/window/r_window.linux.c"
-// #include "engine/ui/r_ui.windows.c"
-// #include "engine/gfx/r_gfx.windows.c"
+#include "engine/ui/r_ui.linux.c"
+#include "engine/gfx/r_gfx.linux.c"
 
 #include "engine/main/r_main.c"
 

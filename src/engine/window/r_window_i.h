@@ -8,21 +8,15 @@ extern "C" {
 #define R_WINDOW_API_NAME "r_window"
 
 typedef struct r_window_t r_window_t;
-
-typedef void (*R_WINDOW_SET_BACK_COLOR)(r_window_t* window, const r_color_t color);
-typedef void (*R_WINDOW_SET_TITLE)(r_window_t* window, const wchar_t* title);
-typedef r_window_t* (*R_WINDOW_CREATE)();
-typedef void (*R_WINDOW_SHOW)(r_window_t* window);
-typedef void (*R_WINDOW_PROCESS_INPUT)(r_window_t* window);
-typedef void (*R_WINDOW_SWAP_BUFFERS)(const r_window_t* window);
+typedef struct r_window_desc_t r_window_desc_t;
 
 typedef struct r_window_i {
-  R_WINDOW_CREATE create;
-  R_WINDOW_SHOW show;
-  R_WINDOW_PROCESS_INPUT process_input;
-  R_WINDOW_SWAP_BUFFERS swap_buffers;
-  R_WINDOW_SET_BACK_COLOR set_back_color;
-  R_WINDOW_SET_TITLE set_title;
+  r_window_t* (*create)(r_window_desc_t* window_description);
+  void (*show)(r_window_t* window);
+  void (*process_input)(r_window_t* window);
+  void (*swap_buffers)(const r_window_t* window);
+  void (*set_backcolor)(r_window_t* window, const r_color_t color);
+  void (*set_title)(r_window_t* window, const wchar_t* title);
 } r_window_i;
 
 #ifdef __cplusplus

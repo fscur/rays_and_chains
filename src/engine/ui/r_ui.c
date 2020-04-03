@@ -1,6 +1,11 @@
 #include "engine/ui/r_ui.h"
 #include "engine/string/r_string_i.h"
 #include "engine/memory/r_memory_arena.h"
+#include <stdlib.h>
+
+r_ui_t* r_ui_create() {
+  return calloc(1, sizeof(r_ui_t));
+}
 
 r_ui_menu_t* //
 r_ui_create_main_menu(r_ui_t* this, r_ui_widget_t* parent) {

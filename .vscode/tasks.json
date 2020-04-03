@@ -151,7 +151,7 @@
         "command": "p:\\scripts\\windows\\libs\\build_libs_debug.bat r_window_glfw"
       },
       "linux": {
-        "command": "./scripts/linux/libs/build_window_glfw.sh r_window_glfw"
+        "command": "./scripts/linux/libs/build_window_glfw.sh"
       },
       "group": {
         "kind": "build",
@@ -162,16 +162,16 @@
       ]
     },
     {
-      "label": "build r_ui_imgui lib : debug",
+      "label": "build r_ui_renderer_imgui lib : debug",
       "type": "shell",
       "windows": {
         "options": {
           "cwd": "p:\\scripts\\windows"
         },
-        "command": "p:\\scripts\\windows\\libs\\build_libs_debug.bat r_ui_imgui"
+        "command": "p:\\scripts\\windows\\libs\\build_libs_debug.bat r_ui_renderer_imgui"
       },
       "linux": {
-        "command": "./scripts/linux/libs/build_libs_debug.sh r_ui_imgui"
+        "command": "./scripts/linux/libs/build_ui_imgui.sh"
       },
       "group": {
         "kind": "build",
@@ -191,7 +191,7 @@
         "command": "p:\\scripts\\windows\\libs\\build_libs_debug.bat r_gfx_opengl"
       },
       "linux": {
-        "command": "./scripts/linux/libs/build_libs_debug.sh r_gfx_opengl"
+        "command": "./scripts/linux/libs/build_gfx_opengl.sh"
       },
       "group": {
         "kind": "build",

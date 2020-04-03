@@ -13,19 +13,16 @@ typedef struct r_app_t r_app_t;
 typedef struct r_window_t r_window_t;
 typedef struct r_lib_t r_lib_t;
 typedef struct r_gfx_renderer_t r_gfx_renderer_t;
-typedef struct r_api_db_i r_api_db_i;
-typedef struct r_logger_i r_logger_i;
-typedef struct r_window_i r_window_i;
-typedef struct r_ui_i r_ui_i;
-typedef struct r_string_i r_string_i;
-typedef struct r_gfx_renderer_i r_gfx_renderer_i;
-typedef struct r_ui_renderer_i r_ui_renderer_i;
+typedef struct r_ui_t r_ui_t;
+typedef struct r_ui_renderer_t r_ui_renderer_t;
 
 typedef struct sandbox_t {
   r_lib_t* lib;
   r_memory_arena_t* memory_arena;
   bool running;
   r_window_t* main_window;
+  r_ui_t* ui;
+  r_ui_renderer_t* ui_renderer;
 } sandbox_t;
 
 dll_export void //
@@ -44,7 +41,7 @@ dll_export r_app_info_t //
 sandbox_get_app_info();
 
 dll_export void //
-sandbox_init(r_app_t* app, r_api_db_i* api_db);
+sandbox_init(sandbox_t* this, r_api_db_i* api_db);
 
 dll_export void //
 sandbox_run(sandbox_t* this, r_frame_info_t* frame_info);

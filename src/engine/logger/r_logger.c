@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <inttypes.h>
 #include "r_logger.h"
 #include "r_logger_device_i.h"
 
@@ -16,9 +17,6 @@ r_logger_add_device(const r_logger_device_i* device) {
 
 internal void //
 r_logger_print(const char* msg) {
-  // printf("%s", msg);
-  // fflush(stdout);
-
   for (i8 i = 0; i < logger_instance->device_count; ++i) {
     logger_instance->devices[i]->print(msg);
   }
@@ -35,7 +33,7 @@ r_logger_debug(const char* format, ...) {
 
   char output[2048] = {0};
   sprintf(output,
-          "[%010lld][%08.3f][DEBUG] %s\n",
+          "[%010" PRId64 "][%08.3f][DEBUG] %s\n",
           logger_instance->frame_info->frame_count,
           logger_instance->frame_info->now / 1000.0f,
           msg);
@@ -55,7 +53,7 @@ r_logger_warn(const char* format, ...) {
 
   char output[2048] = {0};
   sprintf(output,
-          "[%010lld][%08.3f][WARN] %s\n",
+          "[%010" PRId64 "][%08.3f][WARN] %s\n",
           logger_instance->frame_info->frame_count,
           logger_instance->frame_info->now / 1000.0f,
           msg);
@@ -73,7 +71,25 @@ r_logger_error(const char* format, ...) {
 
   char output[2048] = {0};
   sprintf(output,
-          "[%010lld][%08.3f][ERROR] %s\n",
+          "[%010" PRId64 "][%08.3f][ERROR] %s\n",
+          logger_instance->frame_info->frame_count,
+          logger_instance->frame_info->now / 1000.0f,
+          msg);
+
+  r_logger_print(output);
+}
+
+void //
+r_logger_fatal(const char* format, ...) {
+  char msg[1024] = {0};
+  va_list vl;
+  va_start(vl, format);
+  vsprintf(msg, format, vl);
+  va_end(vl);
+
+  char output[2048] = {0};
+  sprintf(output,
+          "[%010" PRId64 "][%08.3f][FATAL] %s\n",
           logger_instance->frame_info->frame_count,
           logger_instance->frame_info->now / 1000.0f,
           msg);

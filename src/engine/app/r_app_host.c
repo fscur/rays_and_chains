@@ -14,6 +14,9 @@
 #include "engine/string/r_string.h"
 #include "engine/string/r_string_i.h"
 
+#include "engine/ui/r_ui.h"
+#include "engine/ui/r_ui_i.h"
+
 #include "r_api_db.h"
 #include "r_app.h"
 #include "r_app_i.h"
@@ -40,10 +43,11 @@ r_app_host_load_libs(r_app_host_t* this) {
 internal void //
 r_app_host_init_logger_apis(r_app_host_t* this) {
   local r_logger_i logger = {0};
-  logger.add_device = (R_LOGGER_ADD_DEVICE)&r_logger_add_device;
+  logger.add_device = &r_logger_add_device;
   logger.debug = &r_logger_debug;
   logger.warn = &r_logger_warn;
   logger.error = &r_logger_error;
+  logger.fatal = &r_logger_fatal;
 
   local r_logger_file_device_i logger_file_device = {0};
   logger_file_device.print = &r_logger_file_device_print;
@@ -56,7 +60,7 @@ r_app_host_init_logger_apis(r_app_host_t* this) {
 internal void //
 r_app_host_init_window_apis(r_app_host_t* this) {
   local r_window_i window = {0};
-  window.set_back_color = &r_window_set_back_color;
+  window.set_backcolor = &r_window_set_backcolor;
   window.set_title = &r_window_set_title;
   window.create = &r_window_create;
   window.show = &r_window_show;
@@ -74,20 +78,24 @@ r_app_host_init_string_apis(r_app_host_t* this) {
   r_api_db_add(this->api_db, R_STRING_API_NAME, &string_api);
 }
 
+internal void
+r_app_host_init_ui_apis(r_app_host_t* this) {
+  local r_ui_i ui_api = {0};
+  ui_api.create = &r_ui_create;
+  ui_api.create_main_menu = &r_ui_create_main_menu;
+  ui_api.create_menu = &r_ui_create_menu;
+  ui_api.create_menu_item = &r_ui_create_menu_item;
+  ui_api.create_button = &r_ui_create_button;
+  ui_api.create_frame = &r_ui_create_frame;
+  r_api_db_add(this->api_db, R_UI_API_NAME, &ui_api);
+}
+
 internal void //
 r_app_host_init_apis(r_app_host_t* this) {
   r_app_host_init_logger_apis(this);
   r_app_host_init_string_apis(this);
   r_app_host_init_window_apis(this);
-
-  // local r_ui_i ui_api = {0};
-  // ui_api.instance = this->ui;
-  // ui_api.create_main_menu = &r_ui_create_main_menu;
-  // ui_api.create_menu = &r_ui_create_menu;
-  // ui_api.create_menu_item = &r_ui_create_menu_item;
-  // ui_api.create_button = &r_ui_create_button;
-  // ui_api.create_frame = &r_ui_create_frame;
-  // r_api_db_add(this->api_db, R_UI_API_ID, R_UI_API_NAME, &ui_api);
+  r_app_host_init_ui_apis(this);
 
   // local r_gfx_renderer_i renderer_api = {0};
   // renderer_api.instance = this->renderer;
@@ -152,7 +160,7 @@ r_app_host_init(r_app_host_t* this) {
   for (i32 i = 0; i < this->lib_count; ++i) {
     r_lib_t lib = this->libs[i];
     r_lib_i* api = (r_lib_i*)lib.api;
-    api->init(lib.state, this->api_db_api);
+    api->init(api, this->api_db_api);
   }
 
   this->app_api->init(this->app, this->api_db_api);

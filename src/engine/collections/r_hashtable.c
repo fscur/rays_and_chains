@@ -51,8 +51,8 @@ r_hashtable_find(r_hashtable_t* hashtable, const char* key) {
 
   r_hashtable_item_t* current = hashtable->items[index];
 
-  // todo: implement string interning to perform fast string comparisons
-  // (filipe.scur@gmail.com | 1/1/2020)
+  // todo: filipe.scur@gmail.com | 1/1/2020
+  //implement string interning to perform fast string comparisons
 
   while (r_string_compare_ansi(key, current->key) != 0) {
     current = current->next;

@@ -5,6 +5,28 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "(Linux) Launch Sandbox",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/bin/linux/r_engine",
+      "args": [
+        "sandbox",
+      ],
+      "stopAtEntry": true,
+      "cwd": "${workspaceFolder}/bin/linux",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    },
+    {
       "name": "(Linux) Launch Hammer",
       "type": "cppdbg",
       "request": "launch",

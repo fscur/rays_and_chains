@@ -2,19 +2,19 @@
 
 #include "engine/ui/r_ui.h"
 #include "engine/ui/r_ui_i.h"
-#include "r_ui_imgui.h"
+#include "r_ui_renderer_imgui.h"
 
-#define MAIN_BG_COLOR                                                                              \
+#define MAIN_BG_COLOR                                                                                                  \
   (ImVec4) { 0.12f, 0.14f, 0.18f, 1.00f }
 
-#define MAIN_MENU_BG_COLOR                                                                         \
+#define MAIN_MENU_BG_COLOR                                                                                             \
   (ImVec4) { 0.101f, 0.113f, 0.149f, 1.00f }
 
-#define BORDER_COLOR                                                                               \
+#define BORDER_COLOR                                                                                                   \
   (ImVec4) { 0.04f, 0.04f, 0.04f, 0.80f }
 
 internal void //
-r_ui_imgui_init_theme(r_ui_t* ui) {
+r_ui_renderer_imgui_init_theme(r_ui_t* ui) {
   r_ui_theme_t* theme = ui->active_theme;
 
   struct ImGuiStyle* style = igGetStyle();
@@ -135,12 +135,13 @@ render_menu(r_ui_renderer_t* this, r_ui_t* ui, r_ui_menu_t* menu) {
 
   igPushStyleVarFloat(ImGuiStyleVar_PopupBorderSize, theme->border_size);
   igPushStyleVarFloat(ImGuiStyleVar_WindowRounding, 0.0f);
-  igPushStyleColor(ImGuiCol_Border, from_color(theme->border_color));
-  igPushStyleColor(ImGuiCol_WindowBg, from_color(theme->menu_background_color));
-  igPushStyleColor(ImGuiCol_PopupBg, from_color(theme->menu_background_color));
+  igPushStyleColorVec4(ImGuiCol_Border, from_color(theme->border_color));
+  igPushStyleColorVec4(ImGuiCol_WindowBg, from_color(theme->menu_background_color));
+  igPushStyleColorVec4(ImGuiCol_PopupBg, from_color(theme->menu_background_color));
 
   local bool is_open = true;
-  if (igBeginMenu(menu->label_ansi, &is_open)) {
+  is_open = igBeginMenu(menu->label_ansi, is_open); 
+  if (is_open) {
     for (size_t i = 0; i < menu->widget->item_count; i++) {
       render_widget(this, ui, menu->widget->items[i]);
     }
@@ -158,9 +159,9 @@ render_main_menu(r_ui_renderer_t* this, r_ui_t* ui, r_ui_menu_t* menu) {
 
   igPushStyleVarFloat(ImGuiStyleVar_PopupBorderSize, theme->border_size);
   igPushStyleVarFloat(ImGuiStyleVar_WindowRounding, 0.0f);
-  igPushStyleColor(ImGuiCol_Border, from_color(theme->border_color));
-  igPushStyleColor(ImGuiCol_WindowBg, from_color(theme->menu_background_color));
-  igPushStyleColor(ImGuiCol_PopupBg, from_color(theme->menu_background_color));
+  igPushStyleColorVec4(ImGuiCol_Border, from_color(theme->border_color));
+  igPushStyleColorVec4(ImGuiCol_WindowBg, from_color(theme->menu_background_color));
+  igPushStyleColorVec4(ImGuiCol_PopupBg, from_color(theme->menu_background_color));
 
   if (igBeginMainMenuBar()) {
 
@@ -220,6 +221,8 @@ render_widget(r_ui_renderer_t* this, r_ui_t* ui, r_ui_widget_t* widget) {
     break;
   case R_UI_WIDGET_TYPE_BUTTON:
     render_button(this, ui, (r_ui_button_t*)widget->data);
+    break;    
+  default:
     break;
   }
 }

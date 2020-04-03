@@ -13,12 +13,20 @@
 #include "engine/window/r_window.h"
 #include "engine/window/r_window_i.h"
 
+#include "engine/ui/r_ui.h"
+#include "engine/ui/r_ui_i.h"
+
 #include "libs/r_window_glfw/r_window_glfw.h"
 
-internal r_logger_i* _logger = NULL;
-internal r_window_i* _window = NULL;
-internal r_string_i* _string = NULL;
+internal r_logger_i* Logger = NULL;
+internal r_window_i* Window = NULL;
+internal r_string_i* String = NULL;
+internal r_ui_i* Ui = NULL;
+
 internal hammer_t* _this = NULL;
+
+float t = 0.0f;
+bool invert = true;
 
 size_t //
 hammer_get_api_size(void) {
@@ -57,7 +65,7 @@ hammer_init_logger(r_api_db_i* api_db) {
       api_db->find_by_name(api_db->instance, R_LOGGER_OUTPUTSTRING_DEVICE_API_NAME);
 
   if (outputstring_device) {
-    _logger->add_device(outputstring_device);
+    Logger->add_device(outputstring_device);
   }
 }
 
@@ -70,17 +78,18 @@ hammer_init_window() {
                                  .height = app_info.height,
                                  .back_color = (r_color_t){0.0f, 0.0f, 0.0f, 1.0f}};
 
-  _string->copy_wide(window_desc.title, app_info.title);
-  _this->main_window = _window->create(&window_desc);
-  _window->show(_this->main_window);
+  String->copy_wide(window_desc.title, app_info.title);
+  _this->main_window = Window->create(&window_desc);
+  Window->show(_this->main_window);
 }
 
 internal void //
 hammer_init_globals(hammer_t* this, r_api_db_i* api_db) {
   _this = this;
-  _window = api_db->find_by_name(api_db->instance, R_WINDOW_GLFW_API_NAME);
-  _string = api_db->find_by_name(api_db->instance, R_STRING_API_NAME);
-  _logger = api_db->find_by_name(api_db->instance, R_LOGGER_API_NAME);
+  Window = api_db->find_by_name(api_db->instance, R_WINDOW_GLFW_API_NAME);
+  String = api_db->find_by_name(api_db->instance, R_STRING_API_NAME);
+  Logger = api_db->find_by_name(api_db->instance, R_LOGGER_API_NAME);
+  Ui = api_db->find_by_name(api_db->instance, R_UI_API_NAME);
 }
 
 void //
@@ -91,14 +100,12 @@ hammer_init(hammer_t* this, r_api_db_i* api_db) {
   this->running = true;
 }
 
-float t = 0.0f;
-bool invert = true;
 void //
 hammer_run(hammer_t* this, r_frame_info_t* frame_info) {
-  _logger->debug("Running.");
-  _window->process_input(this->main_window);
-  _window->set_back_color(this->main_window, (r_color_t){t, 0.0f, 0.0f, 1.0f});
-  _window->swap_buffers(this->main_window);
+  Logger->debug("Running.");
+  Window->process_input(this->main_window);
+  Window->set_backcolor(this->main_window, (r_color_t){t, 0.0f, 0.0f, 1.0f});
+  Window->swap_buffers(this->main_window);
   this->running = !this->main_window->should_close;
 
   if (invert) {

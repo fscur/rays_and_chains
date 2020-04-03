@@ -5,6 +5,9 @@ extern "C" {
 
 #include "engine/ui/r_ui_types.h"
 
+dll_export r_ui_t* //
+r_ui_create();
+
 dll_export r_ui_frame_t* //
 r_ui_create_frame(r_ui_t* this, r_ui_widget_t* parent, const wchar_t* title);
 

@@ -40,7 +40,8 @@ r_memory_delete_arena(r_memory_t* memory, r_memory_arena_t* arena) {
   assert(arena->base_addr >= memory->base_addr);
   assert(arena->base_addr < memory->current_addr);
 
-  // note: (filipe.scur) we have to do a bit of pointer magic here :(
+  // note: filipe.scur@gmail.com
+  // we have to do a bit of pointer magic here :(
   // subtract arena size to be deleted from all addresses to the right
 
   size_t arena_size = arena->size;
@@ -50,10 +51,12 @@ r_memory_delete_arena(r_memory_t* memory, r_memory_arena_t* arena) {
     current->base_addr = (u8*)current->base_addr - arena_size;
     current->current_addr = (u8*)current->current_addr - arena_size;
     current = (r_memory_arena_t*)((u8*)current + current->size);
-    // todo: (filipe.scur) assert we didnt go out of bounds
+    // todo: filipe.scur@gmail.com
+    // assert we didnt go out of bounds
   }
 
-  // note: (filipe.scur) now, the good thing is we can move the memory to the right all at once!
+  // note: filipe.scur@gmail.com
+  // now, the good thing is we can move the memory to the right all at once!
   size_t move_size = (u8*)memory->current_addr - (u8*)arena->current_addr;
   r_memory_move(arena->base_addr, arena->current_addr, move_size);
   memory->current_addr = (u8*)memory->current_addr - arena_size;

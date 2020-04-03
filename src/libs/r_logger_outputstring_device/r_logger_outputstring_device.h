@@ -14,10 +14,10 @@ dll_export void //
 r_logger_outputstring_device_load(r_lib_load_info_t* load_info);
 
 dll_export size_t //
-r_logger_outputstring_device_get_api_size();
+r_logger_outputstring_device_get_api_size(void);
 
 dll_export size_t //
-r_logger_outputstring_device_get_size();
+r_logger_outputstring_device_get_size(void);
 
 dll_export void //
 r_logger_outputstring_device_init(void* this, r_api_db_i* api_db);

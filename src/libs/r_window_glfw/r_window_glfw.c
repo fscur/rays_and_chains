@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "glad.c"
 #include <GLFW/glfw3.h>
 #include "engine/app/r_api_db_i.h"
@@ -9,6 +8,9 @@
 #include "engine/window/r_window.h"
 #include "engine/string/r_string.h"
 #include "r_window_glfw.h"
+
+r_logger_i* Logger = NULL;
+r_string_i* String = NULL;
 
 internal void //
 r_window_glfw_error_callback(const int error, const char* description) {
@@ -22,8 +24,10 @@ r_window_glfw_create(r_window_desc_t* window_descriptor) {
 
   glfwSetErrorCallback(r_window_glfw_error_callback);
 
-  if (!glfwInit())
-    return NULL;
+  if (!glfwInit()) {
+    Logger->fatal("[glfw] glfwInit failed.");
+    exit(1);
+  }
 
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -39,13 +43,15 @@ r_window_glfw_create(r_window_desc_t* window_descriptor) {
   window->should_close = false;
   String->copy_wide(window_descriptor->title, window->title);
 
-  //glfwSetWindowPos(window->handle, window_descriptor->x, window_descriptor->y);
+  // glfwSetWindowPos(window->handle, window_descriptor->x, window_descriptor->y);
   glfwMakeContextCurrent(window->handle);
 
   i32 success = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
-  if (!success)
-    printf("[ERROR] Could not load glad.");
+  if (!success) {
+    Logger->fatal("[glfw] Could not load glad.");
+    exit(1);
+  }
 
   glfwSwapInterval(0);
 
@@ -74,7 +80,7 @@ r_window_glfw_set_title(r_window_t* window, const wchar_t* title) {
 }
 
 internal void //
-r_window_glfw_set_back_color(r_window_t* window, const r_color_t color) {
+r_window_glfw_set_backcolor(r_window_t* window, const r_color_t color) {
   // todo: filipe.scur@gmail.com | 1/3/2020
   // remove dependency and use gfx renderer functions
   glViewport(0, 0, window->width, window->height);
@@ -85,11 +91,6 @@ r_window_glfw_set_back_color(r_window_t* window, const r_color_t color) {
 internal void //
 r_window_glfw_swap_buffers(const r_window_t* window) {
   glfwSwapBuffers(window->handle);
-}
-
-internal void //
-r_window_glfw_destroy_impl() {
-  glfwTerminate();
 }
 
 size_t //
@@ -112,23 +113,22 @@ r_window_glfw_load(r_lib_load_info_t* load_info) {
 }
 
 void //
-r_window_glfw_init(r_window_t* window, r_api_db_i* api_db) {
+r_window_glfw_init(r_window_i* api, r_api_db_i* api_db) {
+  
+  api->create = &r_window_glfw_create;
+  api->show = &r_window_glfw_show;
+  api->set_title = &r_window_glfw_set_title;
+  api->set_backcolor = &r_window_glfw_set_backcolor;
+  api->process_input = &r_window_glfw_process_input;
+  api->swap_buffers = &r_window_glfw_swap_buffers;
 
-  local r_window_i api;
-  api.create = &r_window_glfw_create;
-  api.show = &r_window_glfw_show;
-  api.set_title = &r_window_glfw_set_title;
-  api.set_back_color = &r_window_glfw_set_back_color;
-  api.process_input = &r_window_glfw_process_input;
-  api.swap_buffers = &r_window_glfw_swap_buffers;
+  api_db->add(api_db->instance, R_WINDOW_GLFW_API_NAME, api);
 
-  api_db->add(api_db->instance, R_WINDOW_GLFW_API_NAME, &api);
-
-  String = (r_string_i*)api_db->find_by_name(api_db->instance, "r_string");
-  Logger = (r_logger_i*)api_db->find_by_name(api_db->instance, "r_logger");
+  String = (r_string_i*)api_db->find_by_name(api_db->instance, R_STRING_API_NAME);
+  Logger = (r_logger_i*)api_db->find_by_name(api_db->instance, R_LOGGER_API_NAME);
 }
 
 void //
 r_window_glfw_destroy(r_window_t* window) {
-  r_window_glfw_destroy_impl();
+  glfwTerminate();
 }

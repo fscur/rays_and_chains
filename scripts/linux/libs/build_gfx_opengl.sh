@@ -13,6 +13,8 @@ cd linux
 mkdir libs -p
 cd ../..
 
-gcc $compiler_flags -o $bin_dir/$1.so $src_dir/libs/$1/$1.linux.c -shared -fPIC \
+gcc $compiler_flags -o $bin_dir/r_gfx_opengl.so $src_dir/libs/r_gfx_opengl/r_gfx_opengl.linux.c -shared -fPIC \
 $inc_dir \
--L$lib_dir -L$bin_dir
+-L$lib_dir -L$bin_dir \
+-lGL \
+`pkg-config --cflags glfw3` `pkg-config --static --libs glfw3`

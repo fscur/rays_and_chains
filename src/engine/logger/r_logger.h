@@ -8,8 +8,7 @@ extern "C" {
 #define R_LOGGER_MAX_DEVICES 2
 
 typedef struct r_logger_device_i r_logger_device_i;
-typedef struct r_logger_t
-{
+typedef struct r_logger_t {
   r_frame_info_t* frame_info;
   const r_logger_device_i* devices[R_LOGGER_MAX_DEVICES];
   u8 device_count;
@@ -31,6 +30,9 @@ r_logger_warn(const char* format, ...);
 
 void //
 r_logger_error(const char* format, ...);
+
+void //
+r_logger_fatal(const char* format, ...);
 
 void //
 r_logger_destroy();

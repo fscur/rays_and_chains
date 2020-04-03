@@ -69,7 +69,7 @@ void //
 r_window_set_title(r_window_t* window, const wchar_t* title);
 
 void //
-r_window_set_back_color(r_window_t* window, const r_color_t color);
+r_window_set_backcolor(r_window_t* window, const r_color_t color);
 
 #ifdef __cplusplus
 }

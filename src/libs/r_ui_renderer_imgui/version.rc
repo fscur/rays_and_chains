@@ -22,11 +22,11 @@ BEGIN
         BLOCK "040904E4"
         BEGIN
             VALUE "CompanyName",      "Vector"
-            VALUE "FileDescription",  "r_ui_imgui"
+            VALUE "FileDescription",  "r_ui_renderer_imgui"
             VALUE "FileVersion",      VER_FILEVERSION_STR
-            VALUE "InternalName",     "r_ui_imgui"
+            VALUE "InternalName",     "r_ui_renderer_imgui"
             VALUE "LegalCopyright",   "Copyright 2019 (c). All rights reserved."
-            VALUE "ProductName",      "r_ui_imgui"
+            VALUE "ProductName",      "r_ui_renderer_imgui"
             VALUE "ProductVersion",   VER_PRODUCTVERSION_STR
         END
     END

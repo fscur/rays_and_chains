@@ -13,7 +13,7 @@
 #include "engine/gfx/r_gfx_renderer_i.h"
 #include "engine/memory/r_memory_arena.h"
 #include "libs/r_logger_outputstring_device/r_logger_outputstring_device.h"
-#include "libs/r_ui_imgui/r_ui_imgui.h"
+#include "libs/r_ui_renderer_imgui/r_ui_renderer_imgui.h"
 #include "sandbox_ui.c"
 
 u32 //
@@ -39,8 +39,7 @@ sandbox_load(r_lib_load_info_t* load_info) {
 r_app_info_t //
 sandbox_get_app_info(void) {
 
-  r_app_info_t app_info = {
-      .title = L"sandbox app", .width = 1280, .height = 720, .desired_fps = 30.0};
+  r_app_info_t app_info = {.title = L"sandbox app", .width = 1280, .height = 720, .desired_fps = 30.0};
 
   return app_info;
 }

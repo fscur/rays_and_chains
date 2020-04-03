@@ -74,7 +74,10 @@
         "${workspaceFolder}/src/**"
       ],
       "defines": [
-        "_DEBUG"
+        "_DEBUG",
+        "GLFW_INCLUDE_NONE",
+        "CIMGUI_DEFINE_ENUMS_AND_STRUCTS",
+        "IMGUI_IMPL_OPENGL_LOADER_GLAD"
       ],
       "intelliSenseMode": "gcc-x64",
       "browse": {
