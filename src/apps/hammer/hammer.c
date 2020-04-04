@@ -5,10 +5,11 @@
 
 #include "engine/string/r_string_i.h"
 
+#include "engine/lib/r_lib.h"
+
 #include "engine/logger/r_logger_i.h"
 #include "engine/logger/r_logger_device_i.h"
 #include "engine/logger/r_logger_file_device_i.h"
-#include "libs/r_logger_outputstring_device/r_logger_outputstring_device.h"
 
 #include "engine/window/r_window.h"
 #include "engine/window/r_window_i.h"
@@ -17,6 +18,7 @@
 #include "engine/ui/r_ui_i.h"
 
 #include "libs/r_window_glfw/r_window_glfw.h"
+#include "libs/r_logger_outputstring_device/r_logger_outputstring_device.h"
 
 internal r_logger_i* Logger = NULL;
 internal r_window_i* Window = NULL;

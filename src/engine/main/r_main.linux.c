@@ -7,7 +7,7 @@
 #include "engine/algorithms/r_murmur3.c"
 #include "engine/collections/r_hashtable.c"
 #include "engine/io/r_io.linux.c"
-#include "engine/lib_loader/r_lib_loader.linux.c"
+#include "engine/lib/r_lib_loader.linux.c"
 #include "engine/app/r_api_db.c"
 #include "engine/app/r_app.linux.c"
 #include "engine/window/r_window.linux.c"

@@ -140,8 +140,7 @@ render_menu(r_ui_renderer_t* this, r_ui_t* ui, r_ui_menu_t* menu) {
   igPushStyleColorVec4(ImGuiCol_PopupBg, from_color(theme->menu_background_color));
 
   local bool is_open = true;
-  is_open = igBeginMenu(menu->label_ansi, is_open); 
-  if (is_open) {
+  if (igBeginMenu(menu->label_ansi, is_open)) {
     for (size_t i = 0; i < menu->widget->item_count; i++) {
       render_widget(this, ui, menu->widget->items[i]);
     }

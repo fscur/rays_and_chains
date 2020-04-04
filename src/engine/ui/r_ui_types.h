@@ -83,6 +83,8 @@ typedef struct r_ui_frame_t {
   r_ui_frame_style_t frame_style;
 } r_ui_frame_t;
 
+typedef struct r_memory_arena_t r_memory_arena_t;
+
 typedef struct r_ui_t {
   r_memory_arena_t* memory_arena;
   u32 widget_count;

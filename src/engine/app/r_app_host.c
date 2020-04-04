@@ -32,6 +32,8 @@ r_app_host_get_size(void) {
 internal void //
 r_app_host_load_lib(r_file_info_a_t file_info, r_app_host_t* this) {
   r_lib_t* lib = r_lib_loader_load_lib(this->memory, file_info.full_name);
+  r_lib_i* api = lib->api;
+  r_api_db_add(this->api_db, api->get_api_name(), api);
   this->libs[this->lib_count++] = *lib;
 }
 

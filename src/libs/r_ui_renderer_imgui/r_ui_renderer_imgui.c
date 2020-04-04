@@ -11,8 +11,10 @@
 #include "engine/ui/r_ui_i.h"
 #include "engine/ui/r_ui.h"
 #include "engine/ui/r_ui_renderer_i.h"
+#include "engine/lib/r_lib.h"
 
 #include "r_ui_renderer_imgui.h"
+#include "r_ui_renderer_imgui_i.h"
 
 typedef struct ImGuiContext ImGuiContext;
 typedef struct ImGuiIO ImGuiIO;
@@ -24,7 +26,6 @@ typedef struct r_ui_renderer_t {
 } r_ui_renderer_t;
 
 r_logger_i* Logger = NULL;
-r_window_i* Window = NULL;
 r_ui_i* Ui = NULL;
 
 internal void //
@@ -37,15 +38,12 @@ r_ui_renderer_imgui_render(r_ui_renderer_t* this, r_ui_t* ui) {
   r_ui_renderer_imgui_init_theme(ui);
   render_widgets(this, ui);
 
-  // if (ui->show_demo) {
-  //   bool open = true;
-  //   igShowDemoWindow(&open);
-  // }
-  
-  bool open;
-  igShowDemoWindow(&open);
+  if (ui->show_demo) {
+    igShowDemoWindow(&ui->show_demo);
+  }
+
   igRender();
-  
+
   ImGui_ImplOpenGL3_RenderDrawData(igGetDrawData());
 }
 
@@ -62,11 +60,10 @@ r_ui_renderer_imgui_create(r_window_t* window) {
   ImFontAtlas_AddFontFromFileTTF(ui_renderer->io->Fonts, "../../res/fonts/SegoeUI-Regular.ttf", 18.0f, 0, 0);
 
   if (!glfwInit()) {
-     exit(1);
+    exit(1);
   }
-  
-  if (!gladLoadGL())
-  {
+
+  if (!gladLoadGL()) {
     exit(1);
   }
 
@@ -76,38 +73,12 @@ r_ui_renderer_imgui_create(r_window_t* window) {
   const char* glsl_version = "#version 130";
   ImGui_ImplOpenGL3_Init(glsl_version);
 
-
   return ui_renderer;
 }
 
-size_t //
-r_ui_renderer_imgui_get_size(void) {
-  return sizeof(r_ui_renderer_t);
-}
-
-size_t //
-r_ui_renderer_imgui_get_api_size(void) {
-  return sizeof(r_ui_renderer_i);
-}
-
 void //
-r_ui_renderer_imgui_load(r_lib_load_info_t* load_info) {
-  R_LIB_LOADER_FN fn = load_info->fn;
-  void* handle = load_info->handle;
-  r_lib_i* lib_api = (r_lib_i*)load_info->api_memory_addr;
-  lib_api->init = (R_LIB_INIT)fn(handle, "r_ui_renderer_imgui_init");
-  lib_api->destroy = (R_LIB_DESTROY)fn(handle, "r_ui_renderer_imgui_destroy");
-}
-
-void //
-r_ui_renderer_imgui_init(r_ui_renderer_i* api, r_api_db_i* api_db) {
-  api->render = &r_ui_renderer_imgui_render;
-  api->create = &r_ui_renderer_imgui_create;
-
-  api_db->add(api_db->instance, R_UI_RENDERER_IMGUI_API_NAME, api);
-
+r_ui_renderer_imgui_init(r_ui_renderer_imgui_i* api, r_api_db_i* api_db) {
   Logger = (r_logger_i*)api_db->find_by_name(api_db->instance, R_LOGGER_API_NAME);
-  Window = (r_window_i*)api_db->find_by_name(api_db->instance, R_WINDOW_API_NAME);
   Ui = (r_ui_i*)api_db->find_by_name(api_db->instance, R_UI_API_NAME);
 }
 
@@ -116,4 +87,29 @@ r_ui_renderer_imgui_destroy(r_ui_renderer_t* this) {
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplGlfw_Shutdown();
   igDestroyContext(this->context);
+}
+
+size_t //
+r_ui_renderer_imgui_get_size(void) {
+  return 0;
+}
+
+char* //
+r_ui_renderer_imgui_get_api_name(void) {
+  return R_UI_RENDERER_IMGUI_API_NAME;
+}
+
+size_t //
+r_ui_renderer_imgui_get_api_size(void) {
+  return sizeof(r_ui_renderer_imgui_i);
+}
+
+void //
+r_ui_renderer_imgui_load(r_lib_load_info_t* load_info) {
+  r_ui_renderer_imgui_i* api = (r_ui_renderer_imgui_i*)load_info->api_memory_addr;
+  api->get_api_name = &r_ui_renderer_imgui_get_api_name;
+  api->init = &r_ui_renderer_imgui_init;
+  api->destroy = &r_ui_renderer_imgui_destroy;
+  api->render = &r_ui_renderer_imgui_render;
+  api->create = &r_ui_renderer_imgui_create;
 }

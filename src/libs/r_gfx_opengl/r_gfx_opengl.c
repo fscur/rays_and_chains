@@ -10,6 +10,7 @@
 #include "engine/gfx/r_gfx_renderer_i.h"
 #include "r_gfx_opengl_i.h"
 #include "r_gfx_opengl.h"
+#include "engine/lib/r_lib.h"
 
 r_logger_i* Logger = NULL;
 r_string_i* String = NULL;
@@ -31,25 +32,6 @@ r_gfx_opengl_bind(r_gfx_renderer_t* renderer) {
   renderer->clear_color_dispatcher = &r_gfx_opengl_clear_color_dispatcher;
 }
 
-size_t //
-r_gfx_opengl_get_size(void) {
-  return 0;
-}
-
-size_t //
-r_gfx_opengl_get_api_size() {
-  return sizeof(r_gfx_opengl_i);
-}
-
-void //
-r_gfx_opengl_load(r_lib_load_info_t* load_info) {
-  R_LIB_LOADER_FN fn = load_info->fn;
-  void* handle = load_info->handle;
-  r_lib_i* lib_api = (r_lib_i*)load_info->api_memory_addr;
-  lib_api->init = (R_LIB_INIT)fn(handle, "r_gfx_opengl_init");
-  lib_api->destroy = (R_LIB_DESTROY)fn(handle, "r_gfx_opengl_destroy");
-}
-
 void //
 r_gfx_opengl_init(r_gfx_opengl_i* api, r_api_db_i* api_db) {
 
@@ -60,13 +42,34 @@ r_gfx_opengl_init(r_gfx_opengl_i* api, r_api_db_i* api_db) {
   //   exit(1);
   // }
 
-  api->bind = &r_gfx_opengl_bind;
-
-  api_db->add(api_db->instance, R_GFX_OPENGL_API_NAME, api);
-
   String = (r_string_i*)api_db->find_by_name(api_db->instance, R_STRING_API_NAME);
   Logger = (r_logger_i*)api_db->find_by_name(api_db->instance, R_LOGGER_API_NAME);
 }
 
 void //
 r_gfx_opengl_destroy(void* this) {}
+
+size_t //
+r_gfx_opengl_get_size(void) {
+  return 0;
+}
+
+char* //
+r_gfx_opengl_get_api_name(void) {
+  return R_GFX_OPENGL_API_NAME;
+}
+
+size_t //
+r_gfx_opengl_get_api_size() {
+  return sizeof(r_gfx_opengl_i);
+}
+
+void //
+r_gfx_opengl_load(r_lib_load_info_t* load_info) {
+  r_gfx_opengl_i* api = (r_gfx_opengl_i*)load_info->api_memory_addr;
+  
+  api->get_api_name = &r_gfx_opengl_get_api_name;
+  api->init = &r_gfx_opengl_init;
+  api->destroy = &r_gfx_opengl_destroy;
+  api->bind = &r_gfx_opengl_bind;
+}

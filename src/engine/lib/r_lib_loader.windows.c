@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "engine/memory/r_memory.h"
 #include "engine/memory/r_memory_arena.h"
-#include "engine/lib_loader/r_lib_loader.h"
+#include "engine/lib/r_lib_loader.h"
 #include "engine/io/r_file.h"
 #include "r_lib.h"
 
@@ -20,7 +20,7 @@ r_lib_loader_get_temp_file_name(const char* file_name, char* tmp_file_name) {
 }
 
 internal void
-r_lib_loader_get_pdb_file_name(const char* file_name, char* pdb_file_name) {  
+r_lib_loader_get_pdb_file_name(const char* file_name, char* pdb_file_name) {
   char path[R_LONG_STRING_LENGTH];
   sprintf(path, "%s", file_name);
 
@@ -100,7 +100,7 @@ r_lib_loader_load_lib(r_memory_t* memory, const char* file_name) {
   r_string_copy_ansi(lib->name, lib_name);
   r_string_copy_ansi(lib->file_name, file_name);
   r_string_copy_ansi(lib->tmp_file_name, tmp_dll_file_name);
-  
+
   r_file_a_get_last_modification(lib->file_name, &lib->last_modification);
 
   load(&load_info);

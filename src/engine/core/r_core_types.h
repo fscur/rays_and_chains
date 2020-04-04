@@ -76,31 +76,17 @@ typedef struct r_result_t {
   R_RESULT_ON_ERROR on_error;
 } r_result_t;
 
-typedef struct r_memory_arena_t r_memory_arena_t;
 typedef struct r_lib_load_info_t r_lib_load_info_t;
 typedef struct r_api_db_i r_api_db_i;
-
-typedef void* (*R_LIB_LOADER_FN)(void*, const char*);
-typedef u32 (*R_LIB_GET_ID)();
-typedef size_t (*R_LIB_GET_SIZE)();
-typedef u32 (*R_LIB_GET_FN_COUNT)();
-typedef void* (*R_LIB_LOAD)(r_lib_load_info_t* load_info);
-typedef void* (*R_LIB_INIT)(void* lib_state, r_api_db_i* db);
-typedef void* (*R_LIB_DESTROY)(void* lib_state);
-
-typedef struct r_lib_load_info_t {
-  R_LIB_LOADER_FN fn;
-  void* handle;
-  void* api_memory_addr;
-  void* lib_memory_addr;
-  void* state_memory_addr;
-} r_lib_load_info_t;
-
-typedef struct r_lib_i {
-  R_LIB_GET_SIZE get_size;
-  R_LIB_INIT init;
-  R_LIB_DESTROY destroy;
-} r_lib_i;
+typedef struct r_api_db_t r_api_db_t;
+typedef struct r_app_api_t r_app_api_t;
+typedef struct r_app_t r_app_t;
+typedef struct r_window_t r_window_t;
+typedef struct r_lib_t r_lib_t;
+typedef struct r_gfx_renderer_t r_gfx_renderer_t;
+typedef struct r_ui_t r_ui_t;
+typedef struct r_ui_renderer_t r_ui_renderer_t;
+typedef struct r_memory_arena_t r_memory_arena_t;
 
 #ifdef __cplusplus
 }

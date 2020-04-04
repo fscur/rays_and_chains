@@ -8,6 +8,8 @@
 #include "engine/window/r_window.h"
 #include "engine/string/r_string.h"
 #include "r_window_glfw.h"
+#include "engine/lib/r_lib.h"
+#include "r_window_glfw_i.h"
 
 r_logger_i* Logger = NULL;
 r_string_i* String = NULL;
@@ -93,42 +95,42 @@ r_window_glfw_swap_buffers(const r_window_t* window) {
   glfwSwapBuffers(window->handle);
 }
 
+internal char* //
+r_window_glfw_get_api_name(void) {
+  return R_WINDOW_GLFW_API_NAME;
+}
+
+internal void //
+r_window_glfw_init(r_window_glfw_i* api, r_api_db_i* api_db) {
+  String = (r_string_i*)api_db->find_by_name(api_db->instance, R_STRING_API_NAME);
+  Logger = (r_logger_i*)api_db->find_by_name(api_db->instance, R_LOGGER_API_NAME);
+}
+
+internal void //
+r_window_glfw_destroy(r_window_t* window) {
+  glfwTerminate();
+}
+
 size_t //
 r_window_glfw_get_size(void) {
   return 0;
 }
 
 size_t //
-r_window_glfw_get_api_size() {
-  return sizeof(r_window_i);
+r_window_glfw_get_api_size(void) {
+  return sizeof(r_window_glfw_i);
 }
 
 void //
 r_window_glfw_load(r_lib_load_info_t* load_info) {
-  R_LIB_LOADER_FN fn = load_info->fn;
-  void* handle = load_info->handle;
-  r_lib_i* lib_api = (r_lib_i*)load_info->api_memory_addr;
-  lib_api->init = (R_LIB_INIT)fn(handle, "r_window_glfw_init");
-  lib_api->destroy = (R_LIB_DESTROY)fn(handle, "r_window_glfw_destroy");
-}
-
-void //
-r_window_glfw_init(r_window_i* api, r_api_db_i* api_db) {
-  
+  r_window_glfw_i* api = (r_window_glfw_i*)load_info->api_memory_addr;
+  api->get_api_name = &r_window_glfw_get_api_name;
+  api->init = &r_window_glfw_init;
+  api->destroy = &r_window_glfw_destroy;
   api->create = &r_window_glfw_create;
   api->show = &r_window_glfw_show;
   api->set_title = &r_window_glfw_set_title;
   api->set_backcolor = &r_window_glfw_set_backcolor;
   api->process_input = &r_window_glfw_process_input;
   api->swap_buffers = &r_window_glfw_swap_buffers;
-
-  api_db->add(api_db->instance, R_WINDOW_GLFW_API_NAME, api);
-
-  String = (r_string_i*)api_db->find_by_name(api_db->instance, R_STRING_API_NAME);
-  Logger = (r_logger_i*)api_db->find_by_name(api_db->instance, R_LOGGER_API_NAME);
-}
-
-void //
-r_window_glfw_destroy(r_window_t* window) {
-  glfwTerminate();
 }

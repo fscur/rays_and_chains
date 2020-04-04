@@ -9,7 +9,7 @@
 #include "engine/main/r_cmd_line.windows.c"
 #include "engine/main/r_console.windows.c"
 #include "engine/gfx/r_gfx.windows.c"
-#include "engine/lib_loader/r_lib_loader.windows.c"
+#include "engine/lib/r_lib_loader.windows.c"
 #include "engine/algorithms/r_murmur3.c"
 #include "engine/collections/r_hashtable.c"
 #include "engine/app/r_app.windows.c"
@@ -39,37 +39,37 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShow
   __hInstance = hInstance;
   __nShowCmd = nShowCmd;
 
-    int argc = 0;
-    char** argv = NULL;
+  int argc = 0;
+  char** argv = NULL;
 
-    if (!r_try_get_cmd_line(&argc, &argv))
-      return 1;
+  if (!r_try_get_cmd_line(&argc, &argv))
+    return 1;
 
-    if (strcmp(argv[argc - 1], "launcher") == 0) {
-      redirect_stdout();
-      argc--;
-    }
+  if (strcmp(argv[argc - 1], "launcher") == 0) {
+    redirect_stdout();
+    argc--;
+  }
 
-    r_cmd_line_cmds_t cmd_line_cmds = {0};
-    r_string_copy_ansi(cmd_line_cmds.log_filename, R_LOGGER_FILE_DEVICE_FILENAME);
+  r_cmd_line_cmds_t cmd_line_cmds = {0};
+  r_string_copy_ansi(cmd_line_cmds.log_filename, R_LOGGER_FILE_DEVICE_FILENAME);
 
-    if (!r_try_parse_cmd_line(argc, argv, &cmd_line_cmds))
-      return 1;
+  if (!r_try_parse_cmd_line(argc, argv, &cmd_line_cmds))
+    return 1;
 
-    r_free_cmd_line(argv);
+  r_free_cmd_line(argv);
 
-  #if _DEBUG
-    if (cmd_line_cmds.show_attach_msg) {
-      MessageBoxA(NULL, "attach", "attach", MB_OK);
-    }
-  #endif
+#if _DEBUG
+  if (cmd_line_cmds.show_attach_msg) {
+    MessageBoxA(NULL, "attach", "attach", MB_OK);
+  }
+#endif
 
-    r_main_info_t main_info = {0};
-    r_string_copy_ansi(main_info.app_filename, cmd_line_cmds.app_name);
-    r_string_concat_ansi(main_info.app_filename, ".dll");
-    r_string_copy_ansi(main_info.log_filename, cmd_line_cmds.log_filename);
+  r_main_info_t main_info = {0};
+  r_string_copy_ansi(main_info.app_filename, cmd_line_cmds.app_name);
+  r_string_concat_ansi(main_info.app_filename, ".dll");
+  r_string_copy_ansi(main_info.log_filename, cmd_line_cmds.log_filename);
 
-    r_main(&main_info, &on_success, &on_error);
+  r_main(&main_info, &on_success, &on_error);
 
-    return 0;
+  return 0;
 }

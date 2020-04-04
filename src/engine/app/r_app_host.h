@@ -4,8 +4,8 @@ extern "C" {
 #endif
 
 #include "engine/core/r_core_types.h"
-//todo: remove this!!!!
-#include "engine/lib_loader/r_lib.h"
+// todo: remove this!!!!
+#include "engine/lib/r_lib.h"
 
 typedef struct r_memory_t r_memory_t;
 typedef struct r_api_db_t r_api_db_t;
@@ -15,7 +15,7 @@ typedef struct r_app_i r_app_i;
 
 typedef struct r_app_host_t {
   r_memory_t* memory;
-  r_frame_info_t* frame_info;  
+  r_frame_info_t* frame_info;
   r_api_db_i* api_db_api;
   r_api_db_t* api_db;
   r_app_i* app_api;
