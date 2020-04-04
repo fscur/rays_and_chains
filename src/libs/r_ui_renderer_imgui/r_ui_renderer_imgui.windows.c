@@ -1,6 +1,3 @@
-#include "glad.c"
-#include "imgui_impl_opengl3.c"
-#include "imgui_impl_glfw.c"
 #include "r_ui_renderer_imgui_render.c"
 #include "r_ui_renderer_imgui.c"
 

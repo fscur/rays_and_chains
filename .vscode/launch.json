@@ -55,6 +55,19 @@
       "processId": "${command:pickProcess}"
     },
     {
+      "name": "(Windows) Launch Sandbox",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/bin/windows/r_engine.exe",
+      "args": [
+        "sandbox"
+      ],
+      "stopAtEntry": true,
+      "cwd": "${workspaceFolder}/bin/windows",
+      "environment": [],
+      "externalConsole": true
+    },
+    {
       "name": "(Windows) Launch Hammer",
       "type": "cppvsdbg",
       "request": "launch",

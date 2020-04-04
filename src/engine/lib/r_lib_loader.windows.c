@@ -9,6 +9,9 @@
 
 #pragma comment(lib, "Shlwapi.lib")
 
+// todo: filipe.scur@gmail.com | 4/4/2020
+// make this code cross-platform... theres just too much overlap between the linux and windows code
+// we should make the all file and memory functions call from the engine itself
 internal void //
 r_lib_loader_get_temp_file_name(const char* file_name, char* tmp_file_name) {
   char tmp_path[R_SHORT_STRING_LENGTH] = {0};
@@ -80,9 +83,9 @@ r_lib_loader_load_lib(r_memory_t* memory, const char* file_name) {
   size_t api_size = get_api_size();
   size_t state_size = get_size();
   r_memory_arena_t* lib_memory_arena = r_memory_add_arena(memory, state_size + api_size + lib_size);
+  void* state_memory_addr = r_memory_arena_push(lib_memory_arena, state_size);
   void* api_memory_addr = r_memory_arena_push(lib_memory_arena, api_size);
   void* lib_memory_addr = r_memory_arena_push(lib_memory_arena, lib_size);
-  void* state_memory_addr = r_memory_arena_push(lib_memory_arena, state_size);
 
   r_lib_load_info_t load_info = {0};
   load_info.fn = &r_lib_loader_fn;

@@ -17,8 +17,8 @@
 #include "engine/ui/r_ui.h"
 #include "engine/ui/r_ui_i.h"
 
-#include "libs/r_window_glfw/r_window_glfw.h"
-#include "libs/r_logger_outputstring_device/r_logger_outputstring_device.h"
+#include "libs/r_window_glfw/r_window_glfw_i.h"
+#include "libs/r_logger_outputstring_device/r_logger_outputstring_device_i.h"
 
 internal r_logger_i* Logger = NULL;
 internal r_window_i* Window = NULL;
@@ -29,16 +29,6 @@ internal hammer_t* _this = NULL;
 
 float t = 0.0f;
 bool invert = true;
-
-size_t //
-hammer_get_api_size(void) {
-  return sizeof(r_app_i);
-}
-
-size_t //
-hammer_get_size(void) {
-  return sizeof(hammer_t);
-}
 
 r_app_info_t //
 hammer_get_app_info(void) {
@@ -52,14 +42,7 @@ hammer_get_app_info(void) {
   return app_info;
 }
 
-void //
-hammer_load(r_lib_load_info_t* load_info) {
-  r_app_i* app_api = (r_app_i*)load_info->api_memory_addr;
-  app_api->get_app_info = (R_APP_GET_APP_INFO)load_info->fn(load_info->handle, "hammer_get_app_info");
-  app_api->init = (R_APP_INIT)load_info->fn(load_info->handle, "hammer_init");
-  app_api->run = (R_APP_RUN)load_info->fn(load_info->handle, "hammer_run");
-  app_api->destroy = (R_APP_DESTROY)load_info->fn(load_info->handle, "hammer_destroy");
-}
+
 
 internal void //
 hammer_init_logger(r_api_db_i* api_db) {
@@ -125,3 +108,22 @@ hammer_run(hammer_t* this, r_frame_info_t* frame_info) {
 
 void //
 hammer_destroy(hammer_t* this) {}
+
+size_t //
+hammer_get_api_size(void) {
+  return sizeof(r_app_i);
+}
+
+size_t //
+hammer_get_size(void) {
+  return sizeof(hammer_t);
+}
+
+void //
+hammer_load(r_lib_load_info_t* load_info) {
+  r_app_i* app_api = (r_app_i*)load_info->api_memory_addr;
+  app_api->get_app_info = &hammer_get_app_info;
+  app_api->init = &hammer_init;
+  app_api->run = &hammer_run;
+  app_api->destroy = &hammer_destroy;
+}

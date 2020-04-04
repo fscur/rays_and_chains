@@ -34,12 +34,12 @@ r_string_to_wide(const char* ansi_string, wchar_t* wide_string, const size_t len
 
 void //
 r_string_copy_ansi(char* destination, const char* source) {
-  sprintf(destination, source);
+  sprintf(destination, "%s", source);
 }
 
 void //
 r_string_copy_wide(wchar_t* destination, const wchar_t* source) {
-  wsprintf(destination, source);
+  wsprintf(destination, L"%ls", source);
 }
 
 void //

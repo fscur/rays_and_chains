@@ -43,7 +43,7 @@ r_window_glfw_create(r_window_desc_t* window_descriptor) {
 
   glfwGetWindowSize((GLFWwindow*)window->handle, &window->width, &window->height);
   window->should_close = false;
-  String->copy_wide(window_descriptor->title, window->title);
+  String->copy_wide(window->title, window_descriptor->title);
 
   // glfwSetWindowPos(window->handle, window_descriptor->x, window_descriptor->y);
   glfwMakeContextCurrent(window->handle);
