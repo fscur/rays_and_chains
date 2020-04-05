@@ -3,6 +3,7 @@ REM todo: pass debug/release as parameter
 
 call "engine\build_engine_debug.bat"
 call "apps\build_apps_debug.bat" sandbox
+call "apps\build_apps_debug.bat" hammer
 call "libs\build_libs_debug.bat" r_window_glfw
 call "libs\build_libs_debug.bat" r_ui_renderer_imgui
 call "libs\build_libs_debug.bat" r_gfx_opengl

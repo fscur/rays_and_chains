@@ -61,7 +61,7 @@ sandbox_init_logger(r_api_db_i* api_db) {
 }
 
 internal void //
-sandbox_init_window() {
+sandbox_init_window(void) {
   r_app_info_t app_info = sandbox_get_app_info();
   r_window_desc_t window_desc = {.x = 0,
                                  .y = 0,
@@ -75,7 +75,7 @@ sandbox_init_window() {
 }
 
 internal void //
-sandbox_init_ui() {
+sandbox_init_ui(void) {
   this->ui = Ui->create();
   this->ui_renderer = Ui_Renderer->create(this->main_window);
   sandbox_ui_init(this, Ui);
@@ -106,7 +106,7 @@ sandbox_run(void* state, r_frame_info_t* frame_info) {
   // this->renderer->add_cmd(renderer, *cmd);
   // this->renderer->sort(renderer);
   // this->renderer->submit(renderer);
-  Window->set_backcolor(this->main_window, (r_color_t){1.0f, 0.0f, 0.0f, 1.0f});
+  Window->set_backcolor(this->main_window, (r_color_t){0.0f, 0.04f, 0.054f, 1.00f});
   Ui_Renderer->render(this->ui_renderer, this->ui);
   Window->swap_buffers(this->main_window);
   this->running = !this->main_window->should_close;

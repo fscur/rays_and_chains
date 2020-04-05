@@ -25,7 +25,7 @@ internal r_window_i* Window = NULL;
 internal r_string_i* String = NULL;
 internal r_ui_i* Ui = NULL;
 
-internal hammer_t* _this = NULL;
+internal hammer_t* this = NULL;
 
 float t = 0.0f;
 bool invert = true;
@@ -64,13 +64,12 @@ hammer_init_window() {
                                  .back_color = (r_color_t){0.0f, 0.0f, 0.0f, 1.0f}};
 
   String->copy_wide(window_desc.title, app_info.title);
-  _this->main_window = Window->create(&window_desc);
-  Window->show(_this->main_window);
+  this->main_window = Window->create(&window_desc);
+  Window->show(this->main_window);
 }
 
 internal void //
-hammer_init_globals(hammer_t* this, r_api_db_i* api_db) {
-  _this = this;
+hammer_init_globals(r_api_db_i* api_db) {
   Window = api_db->find_by_name(api_db->instance, R_WINDOW_GLFW_API_NAME);
   String = api_db->find_by_name(api_db->instance, R_STRING_API_NAME);
   Logger = api_db->find_by_name(api_db->instance, R_LOGGER_API_NAME);
@@ -78,15 +77,16 @@ hammer_init_globals(hammer_t* this, r_api_db_i* api_db) {
 }
 
 void //
-hammer_init(hammer_t* this, r_api_db_i* api_db) {
-  hammer_init_globals(this, api_db);
+hammer_init(void* state, r_api_db_i* api_db) {
+  this = state;
+  hammer_init_globals(api_db);
   hammer_init_logger(api_db);
   hammer_init_window();
   this->running = true;
 }
 
 void //
-hammer_run(hammer_t* this, r_frame_info_t* frame_info) {
+hammer_run(void* state, r_frame_info_t* frame_info) {
   Logger->debug("Running.");
   Window->process_input(this->main_window);
   Window->set_backcolor(this->main_window, (r_color_t){t, 0.0f, 0.0f, 1.0f});
@@ -107,7 +107,7 @@ hammer_run(hammer_t* this, r_frame_info_t* frame_info) {
 }
 
 void //
-hammer_destroy(hammer_t* this) {}
+hammer_destroy(void* state) {}
 
 size_t //
 hammer_get_api_size(void) {

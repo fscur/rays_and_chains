@@ -33,15 +33,6 @@ hammer_get_size();
 dll_export r_app_info_t //
 hammer_get_app_info();
 
-dll_export void //
-hammer_init(hammer_t* this, r_api_db_i* api_db);
-
-dll_export void //
-hammer_run(hammer_t* this, r_frame_info_t* frame_info);
-
-dll_export void //
-hammer_destroy(hammer_t* this);
-
 #ifdef __cplusplus
 }
 #endif

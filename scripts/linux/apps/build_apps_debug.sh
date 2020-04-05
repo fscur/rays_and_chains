@@ -1,18 +1,32 @@
-clear
+pushd () {
+    command pushd "$@" > /dev/null
+}
 
-inc_dir="-Isrc -Iinc"
-lib_dir=lib
-bin_dir=bin/linux
-src_dir=src
+popd () {
+    command popd "$@" > /dev/null
+}
+
+root="../../.."
+inc_dir=$root/inc
+lib_dir=$root/lib/linux
+bin_dir=$root/bin/linux
+src_dir=$root/src
+
 compiler_flags="-std=c11 -ggdb -Wl,-rpath=$lib_dir -Wl,-rpath=$bin_dir -Wall -Wformat -D_DEBUG=1 -D_GNU_SOURCE -Wno-unused-function" 
 
+pushd $root
 mkdir bin -p
 cd bin
 mkdir linux -p
-cd ..
+cd linux
+mkdir libs -p
+cd ../..
+popd
+
+echo Compiling $1.
 
 gcc $compiler_flags -o $bin_dir/$1.so $src_dir/apps/$1/$1.linux.c -shared -fPIC \
-$inc_dir \
+-I$inc_dir -I$src_dir \
 -L$lib_dir -L$bin_dir
-# \
-#-l:lib_window.so -l:lib_server.so
+
+echo Done.

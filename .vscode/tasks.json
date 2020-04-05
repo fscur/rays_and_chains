@@ -11,7 +11,10 @@
         "command": "p:\\scripts\\windows\\build_all_debug.bat"
       },
       "linux": {
-        "command": "./scripts/linux/build_all_debug.sh"
+        "options": {
+          "cwd": "${workspaceFolder}/scripts/linux"
+        },
+        "command": "./build_all_debug.sh"
       },
       "group": {
         "kind": "build",
@@ -31,7 +34,10 @@
         "command": "p:\\scripts\\windows\\engine\\build_engine_debug.bat"
       },
       "linux": {
-        "command": "./scripts/linux/engine/build_engine_debug.sh"
+        "options": {
+          "cwd": "${workspaceFolder}/scripts/linux/engine/"
+        },
+        "command": "./build_engine_debug.sh"
       },
       "group": {
         "kind": "build",
@@ -51,7 +57,10 @@
         "command": "p:\\scripts\\windows\\engine\\build_launcher_debug.bat"
       },
       "linux": {
-        "command": "./scripts/linux/engine/build_laucher_debug.sh"
+        "options": {
+          "cwd": "${workspaceFolder}/scripts/linux/engine/"
+        },
+        "command": "./build_laucher_debug.sh"
       },
       "group": {
         "kind": "build",
@@ -71,7 +80,10 @@
         "command": "p:\\scripts\\windows\\apps\\build_apps_debug.bat sandbox"
       },
       "linux": {
-        "command": "./scripts/linux/apps/build_apps_debug.sh sandbox"
+        "options": {
+          "cwd": "${workspaceFolder}/scripts/linux/apps/"
+        },
+        "command": "./build_apps_debug.sh sandbox"
       },
       "group": {
         "kind": "build",
@@ -91,47 +103,10 @@
         "command": "p:\\scripts\\windows\\apps\\build_apps_debug.bat hammer"
       },
       "linux": {
-        "command": "./scripts/linux/apps/build_apps_debug.sh hammer"
-      },
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "problemMatcher": [
-        "$msCompile"
-      ]
-    },
-    {
-      "label": "build bumpver : debug",
-      "type": "shell",
-      "windows": {
         "options": {
-          "cwd": "p:\\scripts\\windows"
+          "cwd": "${workspaceFolder}/scripts/linux/apps/"
         },
-        "command": "p:\\scripts\\windows\\tools\\build_bumpver_debug.bat"
-      },
-      "linux": {
-        "command": "./scripts/linux/tools/build_bumpver_debug.sh"
-      },
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "problemMatcher": [
-        "$msCompile"
-      ]
-    },
-    {
-      "label": "build pdb_path_fixer : debug",
-      "type": "shell",
-      "windows": {
-        "options": {
-          "cwd": "p:\\scripts\\windows"
-        },
-        "command": "p:\\scripts\\windows\\tools\\build_pdb_path_fixer_debug.bat"
-      },
-      "linux": {
-        "command": "./scripts/linux/tools/build_pdb_path_fixer_debug.sh"
+        "command": "clear & ./build_apps_debug.sh hammer"
       },
       "group": {
         "kind": "build",
@@ -151,7 +126,10 @@
         "command": "p:\\scripts\\windows\\libs\\build_libs_debug.bat r_window_glfw"
       },
       "linux": {
-        "command": "./scripts/linux/libs/build_window_glfw.sh"
+        "options": {
+          "cwd": "${workspaceFolder}/scripts/linux/libs/"
+        },
+        "command": "./build_window_glfw.sh"
       },
       "group": {
         "kind": "build",
@@ -171,7 +149,10 @@
         "command": "p:\\scripts\\windows\\libs\\build_libs_debug.bat r_ui_renderer_imgui"
       },
       "linux": {
-        "command": "./scripts/linux/libs/build_ui_imgui.sh"
+        "options": {
+          "cwd": "${workspaceFolder}/scripts/linux/libs/"
+        },
+        "command": "./build_ui_renderer_imgui.sh"
       },
       "group": {
         "kind": "build",
@@ -191,7 +172,10 @@
         "command": "p:\\scripts\\windows\\libs\\build_libs_debug.bat r_gfx_opengl"
       },
       "linux": {
-        "command": "./scripts/linux/libs/build_gfx_opengl.sh"
+        "options": {
+          "cwd": "${workspaceFolder}/scripts/linux/libs/"
+        },
+        "command": "./build_gfx_opengl.sh"
       },
       "group": {
         "kind": "build",
@@ -211,7 +195,10 @@
         "command": "p:\\scripts\\windows\\libs\\build_libs_debug.bat r_logger_outputstring_device"
       },
       "linux": {
-        "command": "./scripts/linux/libs/build_libs_debug.sh r_logger_outputstring_device"
+        "options": {
+          "cwd": "${workspaceFolder}/scripts/linux/libs/"
+        },
+        "command": "./build_libs_debug.sh r_logger_outputstring_device"
       },
       "group": {
         "kind": "build",
@@ -238,6 +225,46 @@
         "isDefault": true
       },
       "problemMatcher": []
-    }
+    },
+    {
+      "label": "build bumpver : debug",
+      "type": "shell",
+      "windows": {
+        "options": {
+          "cwd": "p:\\scripts\\windows"
+        },
+        "command": "p:\\scripts\\windows\\tools\\build_bumpver_debug.bat"
+      },
+      "linux": {
+        "command": ""
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [
+        "$msCompile"
+      ]
+    },
+    {
+      "label": "build pdb_path_fixer : debug",
+      "type": "shell",
+      "windows": {
+        "options": {
+          "cwd": "p:\\scripts\\windows"
+        },
+        "command": "p:\\scripts\\windows\\tools\\build_pdb_path_fixer_debug.bat"
+      },
+      "linux": {
+        "command": ""
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [
+        "$msCompile"
+      ]
+    },
   ]
 }
