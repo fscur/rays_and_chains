@@ -26,7 +26,7 @@ typedef struct r_lib_load_info_t {
 typedef struct r_lib_i {
   size_t (*get_size)(void);
   char* (*get_api_name)(void);
-  void* (*init)(void* api, r_api_db_i* db);
+  void* (*init)(r_api_db_i* db);
   void* (*destroy)(void* state);
 } r_lib_i;
 

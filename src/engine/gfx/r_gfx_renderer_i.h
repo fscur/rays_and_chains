@@ -5,7 +5,6 @@ extern "C" {
 
 #include "engine/core/r_core_types.h"
 
-#define R_GFX_RENDERER_API_ID 5
 #define R_GFX_RENDERER_API_NAME "r_gfx_renderer"
 
 typedef struct r_gfx_renderer_t r_gfx_renderer_t;
@@ -18,6 +17,9 @@ typedef struct r_gfx_renderer_i {
   void (*sort)(r_gfx_renderer_t* instance);
   void (*submit)(const r_gfx_renderer_t* instance);
 } r_gfx_renderer_i;
+
+void //
+r_string_register_api(r_api_db_t* api_db, r_memory_arena_t* apis_arena);
 
 #ifdef __cplusplus
 }

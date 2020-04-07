@@ -23,7 +23,11 @@
     "xlocale": "c",
     "time.h": "c",
     "r_lib_loader.h": "c",
-    "r_lib.h": "c"
+    "r_lib.h": "c",
+    "r_logger_device_i.h": "c",
+    "r_logger.h": "c",
+    "windows.h": "c",
+    "r_logger_file_device_i.h": "c"
   },
   "editor.wordWrapColumn": 100,
   "files.exclude": {

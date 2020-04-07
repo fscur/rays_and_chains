@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <wchar.h>
 #include "engine/string/r_string.h"
+#include "r_string_i.c"
 
 size_t //
 r_string_length_ansi(const char* string) {

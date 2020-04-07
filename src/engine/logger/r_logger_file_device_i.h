@@ -17,6 +17,9 @@ typedef struct r_logger_file_device_i {
   R_LOGGER_FILE_DEVICE_SET_FILENAME set_filename;
 } r_logger_file_device_i;
 
+void //
+r_logger_file_device_register_api(r_api_db_t* api_db, r_memory_arena_t* apis_arena);
+
 #ifdef __cplusplus
 }
 #endif

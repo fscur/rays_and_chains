@@ -19,6 +19,9 @@ typedef struct r_window_i {
   void (*set_title)(r_window_t* window, const wchar_t* title);
 } r_window_i;
 
+void //
+r_window_register_api(r_api_db_t* api_db, r_memory_arena_t* apis_arena);
+
 #ifdef __cplusplus
 }
 #endif

@@ -13,7 +13,7 @@ typedef struct r_ui_renderer_imgui_i r_ui_renderer_imgui_i;
 typedef struct r_ui_renderer_imgui_i {
   size_t (*get_size)(void);
   char* (*get_api_name)(void);
-  void (*init)(r_ui_renderer_imgui_i* api, r_api_db_i* db);
+  void (*init)(r_api_db_i* db);
   void (*destroy)(r_ui_renderer_t* state);
   void (*render)(r_ui_renderer_t* ui_renderer, r_ui_t* ui);
   r_ui_renderer_t* (*create)();

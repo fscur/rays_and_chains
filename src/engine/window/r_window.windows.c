@@ -5,8 +5,8 @@
 #endif
 
 #pragma comment(lib, "user32.lib")
-
 #include <windows.h>
+#include "r_window_i.c"
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 

@@ -24,6 +24,9 @@ typedef struct r_logger_i {
   R_LOGGER_FATAL fatal;
 } r_logger_i;
 
+void //
+r_logger_register_api(r_api_db_t* api_db, r_memory_arena_t* apis_arena);
+
 #ifdef __cplusplus
 }
 #endif

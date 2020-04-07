@@ -77,7 +77,7 @@ r_ui_renderer_imgui_create(r_window_t* window) {
 }
 
 void //
-r_ui_renderer_imgui_init(r_ui_renderer_imgui_i* api, r_api_db_i* api_db) {
+r_ui_renderer_imgui_init(r_api_db_i* api_db) {
   Logger = (r_logger_i*)api_db->find_by_name(api_db->instance, R_LOGGER_API_NAME);
   Ui = (r_ui_i*)api_db->find_by_name(api_db->instance, R_UI_API_NAME);
 }

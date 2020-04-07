@@ -15,7 +15,7 @@ typedef struct r_logger_device_i r_logger_device_i;
 typedef struct r_logger_outputstring_device_i {
   size_t (*get_size)(void);
   char* (*get_api_name)(void);
-  void (*init)(r_logger_outputstring_device_i* api, r_api_db_i* db);
+  void (*init)(r_api_db_i* db);
   void (*destroy)(void* state);
   r_logger_device_i* (*create)(void);
 } r_logger_outputstring_device_i;

@@ -1,6 +1,7 @@
 #include "r_api_db.h"
 #include "engine/string/r_string.h"
 #include "engine/collections/r_hashtable.h"
+#include "engine/memory/r_memory_arena.h"
 #include <stdlib.h>
 
 typedef struct r_hashtable_t r_hashtable_t;
@@ -10,9 +11,9 @@ typedef struct r_api_db_t {
 } r_api_db_t;
 
 r_api_db_t* //
-r_api_db_create() {
+r_api_db_create(r_memory_arena_t* memory_arena) {
   r_hashtable_t* apis = r_hashtable_create();
-  r_api_db_t* db = calloc(1, sizeof(r_api_db_t));
+  r_api_db_t* db = r_memory_arena_push_struct(memory_arena, r_api_db_t);
   db->apis = apis;
   return db;
 }

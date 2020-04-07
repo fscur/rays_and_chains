@@ -48,7 +48,7 @@ r_app_host_reload(r_app_host_t* this) {
     u8 index = this->reloaded_libs[i];
     r_lib_t lib = this->libs[index];
     r_lib_i* lib_api = (r_lib_i*)lib.api;
-    lib_api->init(lib.state, this->api_db_api);
+    lib_api->init(this->api_db_api);
   }
 
   this->reloaded_lib_count = 0;

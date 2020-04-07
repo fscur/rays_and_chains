@@ -101,7 +101,7 @@ r_window_glfw_get_api_name(void) {
 }
 
 internal void //
-r_window_glfw_init(r_window_glfw_i* api, r_api_db_i* api_db) {
+r_window_glfw_init(r_api_db_i* api_db) {
   String = (r_string_i*)api_db->find_by_name(api_db->instance, R_STRING_API_NAME);
   Logger = (r_logger_i*)api_db->find_by_name(api_db->instance, R_LOGGER_API_NAME);
 }

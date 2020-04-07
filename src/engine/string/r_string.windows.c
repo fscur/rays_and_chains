@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
+#include "r_string_i.c"
 #include "engine/string/r_string.h"
 
 #pragma comment(lib, "user32.lib")

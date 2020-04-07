@@ -39,6 +39,9 @@ typedef struct r_ui_i {
   r_ui_frame_t* (*create_frame)(r_ui_t* this, r_ui_widget_t* parent, const wchar_t* title);
 } r_ui_i;
 
+void //
+r_ui_register_api(r_api_db_t* api_db, r_memory_arena_t* apis_arena);
+
 #ifdef __cplusplus
 }
 #endif

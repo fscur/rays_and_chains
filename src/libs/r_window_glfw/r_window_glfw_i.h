@@ -17,7 +17,7 @@ typedef struct r_window_glfw_i r_window_glfw_i;
 typedef struct r_window_glfw_i {
   size_t (*get_size)(void);
   char* (*get_api_name)(void);
-  void (*init)(r_window_glfw_i* api, r_api_db_i* db);
+  void (*init)(r_api_db_i* db);
   void (*destroy)(r_window_t* state);
   r_window_t* (*create)(r_window_desc_t* window_description);
   void (*show)(r_window_t* window);

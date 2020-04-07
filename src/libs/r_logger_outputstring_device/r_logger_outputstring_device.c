@@ -11,7 +11,7 @@
 #include <stdlib.h>
 
 internal void //
-r_logger_outputstring_device_init(r_logger_outputstring_device_i* api, r_api_db_i* api_db) {}
+r_logger_outputstring_device_init(r_api_db_i* api_db) {}
 
 internal void //
 r_logger_outputstring_device_destroy(void* this) {}

@@ -9,6 +9,7 @@ extern "C" {
 #include <stdint.h>
 #include <wchar.h>
 #include <stdio.h>
+#include <inttypes.h>
 
 #include "r_core_version.h"
 #include "r_core_defines.h"
@@ -87,6 +88,7 @@ typedef struct r_gfx_renderer_t r_gfx_renderer_t;
 typedef struct r_ui_t r_ui_t;
 typedef struct r_ui_renderer_t r_ui_renderer_t;
 typedef struct r_memory_arena_t r_memory_arena_t;
+typedef struct r_logger_device_i r_logger_device_i;
 
 #ifdef __cplusplus
 }

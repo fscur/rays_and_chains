@@ -33,15 +33,7 @@ r_gfx_opengl_bind(r_gfx_renderer_t* renderer) {
 }
 
 void //
-r_gfx_opengl_init(r_gfx_opengl_i* api, r_api_db_i* api_db) {
-
-  // i32 success = gladLoadGL();
-
-  // if (!success) {
-  //   Logger->fatal("[r_gfx_opengl_init] Could not load glad.");
-  //   exit(1);
-  // }
-
+r_gfx_opengl_init(r_api_db_i* api_db) {
   String = (r_string_i*)api_db->find_by_name(api_db->instance, R_STRING_API_NAME);
   Logger = (r_logger_i*)api_db->find_by_name(api_db->instance, R_LOGGER_API_NAME);
 }

@@ -1,7 +1,5 @@
-#include <stdio.h>
-#include <inttypes.h>
-#include "r_logger.h"
 #include "r_logger_device_i.h"
+#include "r_logger.h"
 
 void //
 r_logger_create(r_frame_info_t* frame_info) {
